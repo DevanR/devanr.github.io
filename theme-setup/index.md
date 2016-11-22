@@ -6,7 +6,7 @@ modified: 2016-09-12T08:42:37-04:00
 image:
   feature: so-simple-sample-image-6.jpg
   credit: WeGraphics
-  creditlink: http://wegraphics.net/downloads/free-ultimate-blurred-background-pack/
+  creditlink: https://wegraphics.net/downloads/free-ultimate-blurred-background-pack/
 ---
 
 General notes and suggestions for customizing **So Simple Theme**.
@@ -16,13 +16,13 @@ General notes and suggestions for customizing **So Simple Theme**.
 
 ## Installation
 
-So Simple now requires [Jekyll](http://jekyllrb.com/) 3.0. Make sure to run `bundle update` if you aren't on the latest version to update all gem dependencies.
+So Simple now requires [Jekyll](https://jekyllrb.com/) 3.0. Make sure to run `bundle update` if you aren't on the latest version to update all gem dependencies.
 
 If you are creating a new Jekyll site using So Simple follow these steps:
 
-1. Fork the [So Simple repo](http://github.com/mmistakes/so-simple-theme/fork).
+1. Fork the [So Simple repo](https://github.com/mmistakes/so-simple-theme/fork).
 2. Clone the repo you just forked and rename it.
-3. [Install Bundler](http://bundler.io) `gem install bundler` and Run `bundle install` to install Jekyll and all dependencies.
+3. [Install Bundler](https://bundler.io) `gem install bundler` and Run `bundle install` to install Jekyll and all dependencies.
 4. Update `_config.yml`, add navigation, and replace demo posts and pages with your own. Full details below.
 
 If you want to use So Simple with an existing Jekyll site follow these steps:
@@ -115,20 +115,20 @@ Your site's logo, appears in the header below the navigation bar and is used as 
 
 #### url
 
-Used to generate absolute URLs for sitemaps, feeds and for generating canonical URLs in a page's `<head>`. When developing locally either comment this out or use something like `http://localhost:4000` so all assets load properly. *Don't include a trailing `/`*.
+Used to generate absolute URLs for sitemaps, feeds and for generating canonical URLs in a page's `<head>`. When developing locally either comment this out or use something like `https://localhost:4000` so all assets load properly. *Don't include a trailing `/`*.
 
 Examples:
 
 ```yaml
 url: https://mmistakes.github.io/so-simple-theme
-url: http://localhost:4000
-url: http://yourdomain.com
+url: https://localhost:4000
+url: https://yourdomain.com
 url: 
 ```
 
 #### Google Analytics and Webmaster Tools
 
-Google Analytics UA and Webmaster Tool verification tags can be entered under `owner` in `_config.yml`. For more information on obtaining these meta tags check [Google Webmaster Tools](http://support.google.com/webmasters/bin/answer.py?hl=en&answer=35179) and [Bing Webmaster Tools](https://ssl.bing.com/webmaster/configure/verify/ownership) support.
+Google Analytics UA and Webmaster Tool verification tags can be entered under `owner` in `_config.yml`. For more information on obtaining these meta tags check [Google Webmaster Tools](https://support.google.com/webmasters/bin/answer.py?hl=en&answer=35179) and [Bing Webmaster Tools](https://ssl.bing.com/webmaster/configure/verify/ownership) support.
 
 ### Navigation Links
 
@@ -139,7 +139,7 @@ To set what links appear in the top navigation edit `_data/navigation.yml`. Use 
   url: /portfolio/
 
 - title: Made Mistakes
-  url: http://mademistakes.com  
+  url: https://mademistakes.com  
 ```
 
 ---
@@ -194,22 +194,22 @@ To add attribution to a feature image use the following YAML front matter on pos
 image:
   feature: feature-image-filename.jpg
   credit: Michael Rose #name of the person or site you want to credit
-  creditlink: http://mademistakes.com #url to their site or licensing
+  creditlink: https://mademistakes.com #url to their site or licensing
 ```
 
 ### Videos
 
-Video embeds are responsive and scale with the width of the main content block with the help of [FitVids](http://fitvidsjs.com/).
+Video embeds are responsive and scale with the width of the main content block with the help of [FitVids](https://fitvidsjs.com/).
 
 Not sure if this only effects Kramdown or if it's an issue with Markdown in general. But adding YouTube video embeds causes errors when building your Jekyll site. To fix add a space between the `<iframe>` tags and remove `allowfullscreen`. Example below:
 
 ```html
-<iframe width="560" height="315" src="http://www.youtube.com/embed/PWf4WUoMXwg" frameborder="0"> </iframe>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/PWf4WUoMXwg" frameborder="0"> </iframe>
 ```
 
 ### Link Post Type
 
-So Simple Theme supports **link posts**, made famous by John Gruber. To activate just add `link: http://url-you-want-linked` to the post's YAML front matter and you're done. Here's an [example of a link post]({{ site.url }}/articles/sample-link-post) if you need a visual.
+So Simple Theme supports **link posts**, made famous by John Gruber. To activate just add `link: https://url-you-want-linked` to the post's YAML front matter and you're done. Here's an [example of a link post]({{ site.url }}/articles/sample-link-post) if you need a visual.
 
 ### Author Override
 
@@ -222,7 +222,7 @@ Start by modifying `authors.yml` file in the `_data` folder and add your authors
 
 billy_rick:
   name: Billy Rick
-  web: http://thewhip.com
+  web: https://thewhip.com
   email: billy@rick.com
   bio: "What do you want, jewels? I am a very extravagant man."
   avatar: bio-photo-2.jpg
@@ -305,7 +305,7 @@ Jekyll 2.x added support for Sass files making it much easier to modify a theme'
 
 For example if you wanted a red background instead of white you'd change `$body-color: #ebebeb;` to `$body-color: $cc0033;`.
 
-To modify the site's JavaScript files I setup a Grunt build script to lint/concatenate/minify all scripts into `scripts.min.js`. [Install Node.js](http://nodejs.org/), then [install Grunt](http://gruntjs.com/getting-started), and then finally install the dependencies for the theme contained in `package.json`:
+To modify the site's JavaScript files I setup a Grunt build script to lint/concatenate/minify all scripts into `scripts.min.js`. [Install Node.js](https://nodejs.org/), then [install Grunt](https://gruntjs.com/getting-started), and then finally install the dependencies for the theme contained in `package.json`:
 
 ```bash
 npm install
@@ -317,7 +317,7 @@ From the theme's root, run `grunt` to concatenate JavaScript files, and optimize
 
 ## Questions?
 
-Found a bug or aren't quite sure how something works? By all means Ping me on Twitter [@mmistakes](http://twitter.com/mmistakes) or [file a GitHub Issue](https://github.com/mmistakes/so-simple-theme/issues/new). And if you make something cool with this theme feel free to let me know.
+Found a bug or aren't quite sure how something works? By all means Ping me on Twitter [@mmistakes](https://twitter.com/mmistakes) or [file a GitHub Issue](https://github.com/mmistakes/so-simple-theme/issues/new). And if you make something cool with this theme feel free to let me know.
 
 ---
 
