@@ -1,8 +1,8 @@
 # Site wide configuration
 
-title: Blog
+title:
 locale: en_GB
-description: Personal Blog for Devan Rehunathan
+description:
 logo: site-logo.png
 search: true
 url: https://devanr.github.io

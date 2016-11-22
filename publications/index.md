@@ -3,9 +3,7 @@ layout: page
 title: Publications
 excerpt: "List of peer-reviewed publications"
 image:
-  feature: so-simple-sample-image-6.jpg
-  credit: WeGraphics
-  creditlink: https://wegraphics.net/downloads/free-ultimate-blurred-background-pack/
+  feature: st_andrews_banner.jpg
 ---
 
 * D. Rehunathan, S. Bhatti, O. Chandran and P. Hui. **vNurse: Using
