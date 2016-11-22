@@ -54,4 +54,4 @@ D. Miras. **A comparison of TCP behaviour at high speeds using ns-2 and Linux.**
 ns-2 for realistic vehicular network simulation.** *Proc. Mobility2007 - 4th
 international conference on mobile technology, applications, and systems and
 the 1st international symposium on Computer human interaction in mobile
-technology.**
+technology.*
