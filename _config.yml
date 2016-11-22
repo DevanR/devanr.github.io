@@ -5,7 +5,7 @@ locale: en_GB
 description: Personal Blog for Devan Rehunathan
 logo: site-logo.png
 search: true
-url: https://devan.github.io
+url: https://devanr.github.io
 
 # Jekyll configuration
 
