@@ -1,0 +1,57 @@
+[
+
+  
+    {
+      "title"			: "Building a Mechanical Keyboard",
+      "link"			: "http://localhost:4000/articles/keyboard/",
+      "excerpt"		: ""
+    }
+  
+
+
+
+  
+
+  
+
+  
+
+  
+    ,{
+      "title"			: "Publications",
+      "link"			: "http://localhost:4000/publications/",
+      "excerpt"		: "List of peer-reviewed publications"
+    }
+  
+
+  
+
+  
+
+  
+    ,{
+      "title"			: "Theme Setup",
+      "link"			: "http://localhost:4000/theme-setup/",
+      "excerpt"		: "Instructions on how to install and customize the Jekyll theme So Simple."
+    }
+  
+
+  
+    ,{
+      "title"			: "About",
+      "link"			: "http://localhost:4000/about/",
+      "excerpt"		: "An introduction of myself"
+    }
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+]
