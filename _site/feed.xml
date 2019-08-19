@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><?xml-stylesheet type="text/xml" href="http://localhost:4000/feed.xslt.xml"?><feed xmlns="http://www.w3.org/2005/Atom"><generator uri="http://jekyllrb.com" version="3.3.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2017-02-01T12:16:27+00:00</updated><id>http://localhost:4000//</id><title type="html">Devan Rehunathan</title><entry><title type="html">Building a Mechanical Keyboard</title><link href="http://localhost:4000/articles/keyboard/" rel="alternate" type="text/html" title="Building a Mechanical Keyboard" /><published>2017-01-06T00:00:00+00:00</published><updated>2017-01-06T00:00:00+00:00</updated><id>http://localhost:4000/articles/keyboard</id><content type="html" xml:base="http://localhost:4000/articles/keyboard/">&lt;p&gt;I was inspired by a colleague of mine to do some experimenting with
+<?xml version="1.0" encoding="utf-8"?><?xml-stylesheet type="text/xml" href="http://localhost:4000/feed.xslt.xml"?><feed xmlns="http://www.w3.org/2005/Atom"><generator uri="http://jekyllrb.com" version="3.3.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2019-08-19T22:00:31+08:00</updated><id>http://localhost:4000//</id><title type="html">Devan Rehunathan</title><entry><title type="html">Building a Mechanical Keyboard</title><link href="http://localhost:4000/articles/keyboard/" rel="alternate" type="text/html" title="Building a Mechanical Keyboard" /><published>2017-01-06T00:00:00+08:00</published><updated>2017-01-06T00:00:00+08:00</updated><id>http://localhost:4000/articles/keyboard</id><content type="html" xml:base="http://localhost:4000/articles/keyboard/">&lt;p&gt;I was inspired by a colleague of mine to do some experimenting with
 electronics. After some thought, I decided to build a mechanical keyboard. It
 is reasonably straight-forward and seemed like a good project to cut my teeth
 on. This article is a brief overview of how I went about doing it.&lt;/p&gt;
@@ -43,7 +43,7 @@ friend who happened to be in China source out a manufacturer and had everything
 shipped to him. He then brought it to UK for me when he returned from his
 travels. One thing to note, is that the minimum order in my case was 10 pieces.&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;/images/keyboard/pcb.jpg&quot; alt=&quot;PCB&quot; class=&quot;img-responsive&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images/keyboard/PCB.jpg&quot; alt=&quot;PCB&quot; class=&quot;img-responsive&quot; /&gt;&lt;/p&gt;
 
 &lt;h5 id=&quot;firmware&quot;&gt;Firmware&lt;/h5&gt;
 &lt;p&gt;One of the decisions that influenced my choice of micro-controller was the
