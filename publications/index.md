@@ -14,13 +14,13 @@ Applications and Services.*
 Protocols with Virtual Machines.** *Proc. SIMUTools2011 - 4th International
 Conference on Simulation Tools and Techniques*
 
-* D. Rehunathan, S. Bhatti. **Application of Virtual Mobile Networking to
-Real-Time Patient Monitoring.** *Proc. ATNAC2010 - 2nd IEEE Australasian
-Telecommuication Networks and Applications Conference.*
-
 * D. Rehunathan, S. Bhatti. **A Comparative Assessment of Routing for Mobile
 Networks.** *Proc. WIMOB2010 - 6th IEEE International Conference on Wireless and
 Mobile Computing, Networking and Communications.*
+
+* D. Rehunathan, S. Bhatti. **Application of Virtual Mobile Networking to
+Real-Time Patient Monitoring.** *Proc. ATNAC2010 - 2nd IEEE Australasian
+Telecommuication Networks and Applications Conference.*
 
 * D. Rehunathan, S Bhatti. **Comparing Nework Protocols via Elimination of
 MAC/PHY Effects (POSTER).** *Proc. WOWMOM2010 - IEEE International Symposium on a
@@ -34,6 +34,10 @@ secure naming.** *Proc. MILCOM2009 28th IEEE Military Communications Conference.
 Communications, Joint Conference of the IEEE Computer and Communications
 Societies.*
 
+* M. Bateman, S. Bhatti, G. Bigwood, D. Rehunathan, C. Allison, T. Henderson,
+D. Miras. **A comparison of TCP behaviour at high speeds using ns-2 and Linux.**
+*Proc. CNS2008 11th Communications and Networking Simulation Symposium.*
+
 * G. Bigwood, D. Rehunathan, M. Bateman, T. Henderson, S. Bhatti. **Exploiting
 self-reported social networks for routing in ubiquitous computing environments.**
 *Proc. SAUCE2008 1st International Workshop on Social Aspects of Ubiquitous
@@ -42,10 +46,6 @@ Computing Environments.*
 * S. Bhatti, M. Bateman, D. Rehunathan, T. Henderson, G. Bigwood, D. Miras.
 **Revisiting inter-flow fairness. Proc. BROADNETS2008 5th International**
 *Conference on Broadband Communications, Networks and Systems.*
-
-* M. Bateman, S. Bhatti, G. Bigwood, D. Rehunathan, C. Allison, T. Henderson,
-D. Miras. **A comparison of TCP behaviour at high speeds using ns-2 and Linux.**
-*Proc. CNS2008 11th Communications and Networking Simulation Symposium.*
 
 * D. Rehunathan, Boon-Chong Seet, Trung-Tuan Luong. **Federating of MITSIMLab and
 ns-2 for realistic vehicular network simulation.** *Proc. Mobility2007 - 4th
