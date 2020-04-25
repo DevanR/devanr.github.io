@@ -2,6 +2,118 @@
 
   
     {
+      "title"			: "Learning about WebRTC",
+      "link"			: "http://localhost:4000/articles/webrtc/",
+      "excerpt"		: ""
+    }
+  
+
+  
+    ,{
+      "title"			: "Book Review: Refuse to Choose",
+      "link"			: "http://localhost:4000/articles/refuse-to-choose/",
+      "excerpt"		: ""
+    }
+  
+
+  
+    ,{
+      "title"			: "Book Summary: Time Series Forecasting with Python (WIP)",
+      "link"			: "http://localhost:4000/articles/time-series-forecasting/",
+      "excerpt"		: ""
+    }
+  
+
+  
+    ,{
+      "title"			: "Getting Django to work with React",
+      "link"			: "http://localhost:4000/articles/django-react/",
+      "excerpt"		: ""
+    }
+  
+
+  
+    ,{
+      "title"			: "Book Summary: How to Live on Twenty-Four Hours a Day [1]",
+      "link"			: "http://localhost:4000/articles/24-hours-a-day/",
+      "excerpt"		: ""
+    }
+  
+
+  
+    ,{
+      "title"			: "Book Summary: 12 Ways for Your Child to Get the Best Out Of School",
+      "link"			: "http://localhost:4000/articles/how-to-get-the-best-out-of-school/",
+      "excerpt"		: ""
+    }
+  
+
+  
+    ,{
+      "title"			: "Book Summary: The Mind and It's Control",
+      "link"			: "http://localhost:4000/articles/how-to-control-your-mind/",
+      "excerpt"		: ""
+    }
+  
+
+  
+    ,{
+      "title"			: "Book Summary: How to Get Rich",
+      "link"			: "http://localhost:4000/articles/how-to-get-rich/",
+      "excerpt"		: ""
+    }
+  
+
+  
+    ,{
+      "title"			: "Notes on Freelancing",
+      "link"			: "http://localhost:4000/articles/freelancing/",
+      "excerpt"		: ""
+    }
+  
+
+  
+    ,{
+      "title"			: "Notes on Programming",
+      "link"			: "http://localhost:4000/articles/dont-call-yourself-a-programmer/",
+      "excerpt"		: ""
+    }
+  
+
+  
+    ,{
+      "title"			: "Notes on Startups (WIP)",
+      "link"			: "http://localhost:4000/articles/startups/",
+      "excerpt"		: ""
+    }
+  
+
+  
+    ,{
+      "title"			: "Notes on Negotiation (WIP)",
+      "link"			: "http://localhost:4000/articles/negotiation/",
+      "excerpt"		: ""
+    }
+  
+
+  
+    ,{
+      "title"			: "Notes: How the Economic Machine Works",
+      "link"			: "http://localhost:4000/articles/how-the-economic-machine-works/",
+      "excerpt"		: ""
+    }
+  
+
+  
+    ,{
+      "title"			: "Notes on Learning (WIP)",
+      "link"			: "http://localhost:4000/articles/how-to-learn/",
+      "excerpt"		: ""
+    }
+  
+
+  
+    ,{
       "title"			: "Building a Mechanical Keyboard",
       "link"			: "http://localhost:4000/articles/keyboard/",
       "excerpt"		: ""
@@ -40,6 +152,10 @@
       "link"			: "http://localhost:4000/theme-setup/",
       "excerpt"		: "Instructions on how to install and customize the Jekyll theme So Simple."
     }
+  
+
+  
+
   
 
   

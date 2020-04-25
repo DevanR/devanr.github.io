@@ -292,7 +292,7 @@ bundle <span class="nb">exec </span>jekyll serve
 <p>For example. Say you want to group all your posts under blog/ instead of articles/. In your post add <code class="highlighter-rouge">categories: blog</code> to the YAML front matter, rename or duplicate articles/index.md to blog/index.md and update the <em>for loop</em> to limit posts to just the blog category.</p>
 
 <div class="language-liquid highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
-<span class="p">{%</span><span class="w"> </span><span class="nt">for</span><span class="w"> </span><span class="nv">post</span><span class="w"> </span><span class="kr">in</span><span class="w"> </span><span class="nv">site.categories.blog</span><span class="w"> </span><span class="p">%}</span>
+<span class="p">{%</span><span class="w"> </span><span class="nt">for</span><span class="w"> </span><span class="nv">post</span><span class="w"> </span><span class="nt">in</span><span class="w"> </span><span class="nv">site.categories.blog</span><span class="w"> </span><span class="p">%}</span>
 
 </code></pre></div></div>
 
@@ -300,7 +300,7 @@ bundle <span class="nb">exec </span>jekyll serve
 
 <h3 id="feature-images">Feature Images</h3>
 
-<p>A good rule of thumb is to keep feature images nice and wide so you don’t push the body text too far down. An image cropped around around 1024 x 256 pixels will keep file size down with an acceptable resolution for most devices. If you want to serve these images responsively I’d suggest looking at the <a href="https://github.com/robwierzbowski/jekyll-picture-tag">Jekyll Picture Tag</a> plugin<sup id="fnref:plugins"><a href="#fn:plugins" class="footnote">1</a></sup>.</p>
+<p>A good rule of thumb is to keep feature images nice and wide so you don’t push the body text too far down. An image cropped around around 1024 x 256 pixels will keep file size down with an acceptable resolution for most devices. If you want to serve these images responsively I’d suggest looking at the <a href="https://github.com/robwierzbowski/jekyll-picture-tag">Jekyll Picture Tag</a> plugin<sup id="fnref:plugins" role="doc-noteref"><a href="#fn:plugins" class="footnote">1</a></sup>.</p>
 
 <p>The post and page layouts make the assumption that the feature images live in the <code class="highlighter-rouge">images/</code> folder. To add a feature image to a post or page just include the filename in the front matter like so.</p>
 
@@ -436,10 +436,10 @@ bundle <span class="nb">exec </span>jekyll serve
 <h2 id="license">License</h2>
 
 <p>This theme is free and open source software, distributed under the MIT License. So feel free to use this Jekyll theme on your site without linking back to me or including a disclaimer.</p>
-<div class="footnotes">
+<div class="footnotes" role="doc-endnotes">
   <ol>
-    <li id="fn:plugins">
-      <p>If you’re using GitHub Pages to host your site be aware that plugins are disabled. You’ll need to build your site locally and then manually deploy if you want to use this sweet plugin. <a href="#fnref:plugins" class="reversefootnote">&#8617;</a></p>
+    <li id="fn:plugins" role="doc-endnote">
+      <p>If you’re using GitHub Pages to host your site be aware that plugins are disabled. You’ll need to build your site locally and then manually deploy if you want to use this sweet plugin. <a href="#fnref:plugins" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
     </li>
   </ol>
 </div>
@@ -453,7 +453,7 @@ bundle <span class="nb">exec </span>jekyll serve
   <footer role="contentinfo" class="entry-wrapper">
     
 
-<span>&copy; 2019 Devan Rehunathan. Powered by <a href="http://jekyllrb.com" rel="nofollow">Jekyll</a> using the <a href="https://mademistakes.com/work/so-simple-jekyll-theme/" rel="nofollow">So Simple Theme</a>.</span>
+<span>&copy; 2020 Devan Rehunathan. Powered by <a href="http://jekyllrb.com" rel="nofollow">Jekyll</a> using the <a href="https://mademistakes.com/work/so-simple-jekyll-theme/" rel="nofollow">So Simple Theme</a>.</span>
 <div class="social-icons">
 	
 	
@@ -462,7 +462,7 @@ bundle <span class="nb">exec </span>jekyll serve
 	
 	
 	
-	
+	<a href="https://github.com/DevanR" title="Devan Rehunathan on Github" target="_blank"><i class="fa fa-github-square fa-2x"></i></a>
 	
   
 	

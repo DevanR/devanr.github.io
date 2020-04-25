@@ -3,7 +3,7 @@ layout: post
 title: "Book Review: Refuse to Choose"
 excerpt: ""
 categories: articles
-tags: [self-improvement]
+tags: [review, self-improvement]
 comments: false
 share: true
 modified:

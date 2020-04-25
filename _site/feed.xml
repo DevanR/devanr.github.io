@@ -1,130 +1,1663 @@
-<?xml version="1.0" encoding="utf-8"?><?xml-stylesheet type="text/xml" href="http://localhost:4000/feed.xslt.xml"?><feed xmlns="http://www.w3.org/2005/Atom"><generator uri="http://jekyllrb.com" version="3.8.6">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2019-08-19T22:58:52+08:00</updated><id>http://localhost:4000//</id><title type="html">Devan Rehunathan</title><entry><title type="html">Building a Mechanical Keyboard</title><link href="http://localhost:4000/articles/keyboard/" rel="alternate" type="text/html" title="Building a Mechanical Keyboard" /><published>2017-01-06T00:00:00+08:00</published><updated>2017-01-06T00:00:00+08:00</updated><id>http://localhost:4000/articles/keyboard</id><content type="html" xml:base="http://localhost:4000/articles/keyboard/">&lt;p&gt;I was inspired by a colleague of mine to do some experimenting with
-electronics. After some thought, I decided to build a mechanical keyboard. It
-is reasonably straight-forward and seemed like a good project to cut my teeth
-on. This article is a brief overview of how I went about doing it.&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.0.0">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2020-04-26T00:15:23+08:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Devan Rehunathan</title><entry><title type="html">Learning about WebRTC</title><link href="http://localhost:4000/articles/webrtc/" rel="alternate" type="text/html" title="Learning about WebRTC" /><published>2020-04-24T00:00:00+08:00</published><updated>2020-04-24T00:00:00+08:00</updated><id>http://localhost:4000/articles/webrtc</id><content type="html" xml:base="http://localhost:4000/articles/webrtc/">&lt;p&gt;I was reading about the of people were facing with Zoom recently.  Given the
+rise of COVID-19 and the need to work remotely, remote conferencing software
+seems to very much in demand.  This got me thinking about the technologies
+involved. This post is about me going down the rabbit hole and is a summary of
+my explorations.&lt;/p&gt;
 
-&lt;p&gt;A basic keyboard is made up of a micro-controller, switches and some means of
-communicating with a computer (usually USB). The firmware on the
-microcontroller, translates the key presses into the appropriate keycodes
-which are received by the computer.&lt;/p&gt;
-
-&lt;p&gt;My goal was to keep things as simple and inexpensive as possible. I chose a
-minimalistic design and a 40 key footprint. I was also wanted to make as much
-from scratch as possible. (While it is possible to cast you own key caps, but
-that was going too far down the rabbit hole for me!) The goal was to build a
-keyboard that I would use everyday.&lt;/p&gt;
-
-&lt;p&gt;Once I understand how it worked &lt;a href=&quot;http://blog.komar.be/how-to-make-a-keyboard-the-matrix/&quot;&gt;1&lt;/a&gt;, I set about designing and sourcing the
-parts. Here is a brief description of the components I used.&lt;/p&gt;
-
-&lt;h5 id=&quot;micro-controller&quot;&gt;Micro-controller&lt;/h5&gt;
-&lt;p&gt;I used the Pro Micro 5V/16MHz ATMega 32U4 Module &lt;a href=&quot;https://learn.sparkfun.com/tutorials/pro-micro--fio-v3-hookup-guide&quot;&gt;2&lt;/a&gt; as seemed to be the most
-affordable. Its datasheet can be found here &lt;a href=&quot;http://dlnmh9ip6v2uc.cloudfront.net/datasheets/Dev/Arduino/Boards/Pro-Micro-v11-5V_B.pdf&quot;&gt;3&lt;/a&gt;. I bought these from Ebay.&lt;/p&gt;
-
-&lt;h5 id=&quot;diodes&quot;&gt;Diodes&lt;/h5&gt;
-&lt;p&gt;I used the 1N4148 Diodes, which I purchased from Amazon.&lt;/p&gt;
-
-&lt;h5 id=&quot;switches&quot;&gt;Switches&lt;/h5&gt;
-&lt;p&gt;I decided to go with Gateron Brown Switches from Massdrop. I would have
-preferred the standard Cherry MX switches, but none were available at the time.
-These were tactile with an average activation force.&lt;/p&gt;
-
-&lt;h5 id=&quot;pcb&quot;&gt;PCB&lt;/h5&gt;
-&lt;p&gt;Initially, I designed my PCB with Eagle &lt;a href=&quot;http://www.autodesk.com/products/eagle/overview&quot;&gt;4&lt;/a&gt;. It was only later in the design
-process that I discovered that the size provided in the free version was too
-small. I switched to KiCAD &lt;a href=&quot;http://kicad-pcb.org/&quot;&gt;5&lt;/a&gt;, which looking back I should have used in the
-first place. Its open source, free and has a large community. Overall a very
-nice piece of software. I highly recommend it.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/keyboard/schema.jpg&quot; alt=&quot;PCB Schema&quot; class=&quot;img-responsive&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Once designed I had the PCB made in China. While I speak Mandaring, I had a
-friend who happened to be in China source out a manufacturer and had everything
-shipped to him. He then brought it to UK for me when he returned from his
-travels. One thing to note, is that the minimum order in my case was 10 pieces.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/keyboard/PCB.jpg&quot; alt=&quot;PCB&quot; class=&quot;img-responsive&quot; /&gt;&lt;/p&gt;
-
-&lt;h5 id=&quot;firmware&quot;&gt;Firmware&lt;/h5&gt;
-&lt;p&gt;One of the decisions that influenced my choice of micro-controller was the
-keyboard firmware that it supported. The tmk_keyboard firmware &lt;a href=&quot;https://github.com/tmk/tmk_keyboard&quot;&gt;6&lt;/a&gt; is available
-for the Pro Micro and it has a large community. It has a number for nice
-feature, including the support of various micro-controllers, a in-built
-layering system, good documentation and it was still being actively developed.
-In this case I stood on the shoulders of giants. I relied heavily on the kind
-folks at deskthority to get the right information to hook everything up
-correctly &lt;a href=&quot;https://deskthority.net/workshop-f7/how-to-build-your-very-own-keyboard-firmware-t7177.html#p141386&quot;&gt;7&lt;/a&gt;, &lt;a href=&quot;https://deskthority.net/workshop-f7/all-about-custom-keyboard-controllers-t2340.html&quot;&gt;8&lt;/a&gt; and &lt;a href=&quot;https://deskthority.net/workshop-f7/how-to-use-a-pro-micro-as-a-cheap-controller-converter-like-soarer-s-t8448.html&quot;&gt;9&lt;/a&gt;.&lt;/p&gt;
-
-&lt;h6 id=&quot;keycaps&quot;&gt;Keycaps&lt;/h6&gt;
-&lt;p&gt;I used blank Ortholinear DSA PBT keycaps online &lt;a href=&quot;http://pimpmykeyboard.com/&quot;&gt;10&lt;/a&gt; (ErgoDox base set). While
-the custom sets are beautiful, I wanted to be able to touch type, so having
-them blank seemed appropriate. Also, I could not justify the price.&lt;/p&gt;
-
-&lt;h5 id=&quot;layout&quot;&gt;Layout&lt;/h5&gt;
-&lt;p&gt;I used an amazing online keyboard layout tool &lt;a href=&quot;http://www.keyboard-layout-editor.com/&quot;&gt;11&lt;/a&gt; to design and spec out my
-layout. I decided to go minimalist and see how far I could go with as little
-keys as possible. I eventually settled with a 40 key layout, with two
-additional functional layers.&lt;/p&gt;
-
-&lt;h5 id=&quot;case&quot;&gt;Case&lt;/h5&gt;
-&lt;p&gt;I came across a Case and Plate building tool &lt;a href=&quot;http://builder.swillkb.com/&quot;&gt;12&lt;/a&gt;, which accepts keyboard
-layouts as inputs and returns SVG schematics for the switch plate and
-corresponding case. These have to be converted into STL. Thankfully, there is a
-youtube video &lt;a href=&quot;https://youtu.be/8CROo67W24M?list=LL-4okkubPyyCkBs9PqysCdwa&quot;&gt;13&lt;/a&gt; that shows how this can be done with FreeCAD &lt;a href=&quot;https://www.freecadweb.org/&quot;&gt;14&lt;/a&gt;. I had the
-case laser cut from Acrylic in China. Like the PCB, the minimum order was 10.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/keyboard/case.jpg&quot; alt=&quot;PCB&quot; class=&quot;img-responsive&quot; /&gt;&lt;/p&gt;
-
-&lt;h5 id=&quot;screws&quot;&gt;Screws&lt;/h5&gt;
-&lt;p&gt;I went with a 5mm round head bolt and nut to screw the case together. This was
-purchased from Amazon.&lt;/p&gt;
-
-&lt;h5 id=&quot;tools&quot;&gt;Tools&lt;/h5&gt;
-&lt;p&gt;Seeing as I had never done this before, I had to get the tools to assemble
-everything. Here is the bare minimum tools that you would need to get the job
-done.&lt;/p&gt;
+&lt;p&gt;Rediscovering WebRTC [1]&lt;/p&gt;
 
 &lt;ul&gt;
-  &lt;li&gt;Soldering iron&lt;/li&gt;
-  &lt;li&gt;Solder&lt;/li&gt;
-  &lt;li&gt;Solder sucker&lt;/li&gt;
-  &lt;li&gt;Flush Flathead craft pliers&lt;/li&gt;
-  &lt;li&gt;Flat head screwdriver&lt;/li&gt;
-  &lt;li&gt;Multimeter&lt;/li&gt;
-  &lt;li&gt;Tweezers&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://webrtc.org/&quot;&gt;WebRTC&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;h5 id=&quot;summary&quot;&gt;Summary&lt;/h5&gt;
-&lt;p&gt;Here the final complete keyboard:&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/keyboard/front.jpg&quot; alt=&quot;Keyboard front&quot; class=&quot;img-responsive&quot; /&gt;
-&lt;img src=&quot;/images/keyboard/back.jpg&quot; alt=&quot;Keyboard back&quot; class=&quot;img-responsive&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Break down of the cost of materials:&lt;/p&gt;
+&lt;p&gt;WebSockets vs WebRTC [2]&lt;/p&gt;
 
 &lt;ul&gt;
-  &lt;li&gt;10x (Case and PCB) -&amp;gt; £80   (£8 each)&lt;/li&gt;
-  &lt;li&gt;100x diodes        -&amp;gt; £1.70 (£0.68 for 40)&lt;/li&gt;
-  &lt;li&gt;120x switches      -&amp;gt; £31   (£10 for 40)&lt;/li&gt;
-  &lt;li&gt;120x keycaps       -&amp;gt; £62   (£20 for 40)&lt;/li&gt;
-  &lt;li&gt;1x Microcontroller -&amp;gt; £2.5  (£2.5 each)&lt;/li&gt;
-  &lt;li&gt;1x USB cable       -&amp;gt; £1.4  (£1.4 each)&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://bloggeek.me/webrtc-vs-websockets/&quot;&gt;Websockets vs WebRTC&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;p&gt;So it works out to about £43 per complete keyboard. It is now my main keyboard
-at work. Performance wise, it’s taking awhile to get used to the multiple
-keyboard layers and the switches are a bit lighter to the touch than what I’m
-used to. Also, the I’ve realised that the mini-USB connection on the
-micro-controller is the weakest point of the build. I’ve already managed to
-break it once, so constantly removing the cable is not really an option.
-Thankfully, I can leave it on when I store it.&lt;/p&gt;
+&lt;p&gt;Python implementation of WebRTC [3] [4]&lt;/p&gt;
 
-&lt;p&gt;I have learned a lot about electronics and making for this project. It’s really
-opened my eyes in terms of what is possible with the Internet and the low price
-of electronic parts available online. I’ve replaced the resistors of my Samsung
-TV and fixed the broken switch of my bicycle lights with my new found skills.
-It’s amazing what one can do with a soldering iron and a multi-meter! Overall,
-I’m glad I did this project.&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/aiortc/aiortc&quot;&gt;aiortc&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.youtube.com/watch?v=uKwB6r3upMU&quot;&gt;FOSSDEM Talk&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
 
-&lt;p&gt;For anyone thinking of building their own keyboard, I would highly recommend it
-and there are a ton of useful resources available here &lt;a href=&quot;https://geekhack.org/index.php?topic=69582.0&quot;&gt;15&lt;/a&gt; to get you started.&lt;/p&gt;</content><category term="keyboard" /><category term="diy" /></entry></feed>
+&lt;p&gt;HTTP3 [5] [6]&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://http3-explained.haxx.se/en/why-quic&quot;&gt;QUIC&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/facebookincubator/mvfst&quot;&gt;mvfst&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Python implementation of QUIC [7]&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/aiortc/aioquic&quot;&gt;aioquic&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</content><author><name></name></author><category term="webrtc" /></entry><entry><title type="html">Book Review: Refuse to Choose</title><link href="http://localhost:4000/articles/refuse-to-choose/" rel="alternate" type="text/html" title="Book Review: Refuse to Choose" /><published>2020-04-18T00:00:00+08:00</published><updated>2020-04-18T00:00:00+08:00</updated><id>http://localhost:4000/articles/refuse-to-choose</id><content type="html" xml:base="http://localhost:4000/articles/refuse-to-choose/">&lt;h5 id=&quot;what-scanner-are-you&quot;&gt;What Scanner Are You?&lt;/h5&gt;
+
+&lt;p&gt;This book was recommended in a post on HackerNews. As someone who has
+always been fascinated with multiple subjects, it’s always seemed like
+a curse. Always finding new things to learn and experiment but never
+having sufficient time to do to. The premise of this book, is that,
+that are other people out there like me, and the term coined here is
+“Scanner”. Discovering this term made this book worth it for me.&lt;/p&gt;
+
+&lt;h5 id=&quot;notes&quot;&gt;Notes&lt;/h5&gt;
+
+&lt;p&gt;Embrace the joys of learning, however long or brief that they may be.
+Give yourself completely to the process and trust your own instincts.
+Commit to everything that interests you.&lt;/p&gt;
+
+&lt;p&gt;Actively analyse what interests you and investigate that interest with
+short projects. Use the feedback from these projects to decide whether
+to invest for time. Action and feedback, rinse and repeat.&lt;/p&gt;
+
+&lt;p&gt;Start small, start now. Start everything, don’t worry about finishing.&lt;/p&gt;
+
+&lt;p&gt;I’m care primarily about my surroundings and the people I work with.
+Happiness is more important than success for me. I’ve learned that
+the most important career question is, “Will this make me happy?”.&lt;/p&gt;
+
+&lt;p&gt;And whatever position I’m in, I’m the happiest when I’m providing the
+best value, ie, being the most valuable player.&lt;/p&gt;
+
+&lt;h3 id=&quot;potential-careers&quot;&gt;Potential Careers&lt;/h3&gt;
+
+&lt;p&gt;Troubleshooter
+Writer
+Researcher
+Inventor
+Abstract Writer&lt;/p&gt;</content><author><name></name></author><category term="review" /><category term="self-improvement" /></entry><entry><title type="html">Book Summary: Time Series Forecasting with Python (WIP)</title><link href="http://localhost:4000/articles/time-series-forecasting/" rel="alternate" type="text/html" title="Book Summary: Time Series Forecasting with Python (WIP)" /><published>2020-04-16T00:00:00+08:00</published><updated>2020-04-16T00:00:00+08:00</updated><id>http://localhost:4000/articles/time-series-forecasting</id><content type="html" xml:base="http://localhost:4000/articles/time-series-forecasting/">&lt;p&gt;I am interested in combining the benefits of Django and React
+in a single web application. Here are some notes on the topic.
+My goal is not to create a web application but to understand
+the mechanism of how this can be achieved.&lt;/p&gt;
+
+&lt;h5 id=&quot;part-1&quot;&gt;Part 1&lt;/h5&gt;
+
+&lt;h4 id=&quot;python&quot;&gt;Python&lt;/h4&gt;
+
+&lt;p&gt;What are the libraries?&lt;/p&gt;
+
+&lt;h4 id=&quot;time-series-forecasting-defined&quot;&gt;Time Series forecasting defined&lt;/h4&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;nomenclature&lt;/li&gt;
+  &lt;li&gt;definitions&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&quot;forecasting-as-a-supervised-learning-problem&quot;&gt;Forecasting as a Supervised Learning problem&lt;/h4&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;classification&lt;/li&gt;
+  &lt;li&gt;regression&lt;/li&gt;
+  &lt;li&gt;sliding window (reframe)&lt;/li&gt;
+  &lt;li&gt;univariate time series&lt;/li&gt;
+  &lt;li&gt;multi variate time series&lt;/li&gt;
+  &lt;li&gt;one step forecast&lt;/li&gt;
+  &lt;li&gt;multi step forecast&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&quot;time-series-forecasting-defined-1&quot;&gt;Time Series forecasting defined&lt;/h4&gt;
+
+&lt;h5 id=&quot;part-2&quot;&gt;Part 2&lt;/h5&gt;
+
+&lt;h4 id=&quot;loading-data&quot;&gt;Loading Data&lt;/h4&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;read_csv()&lt;/li&gt;
+  &lt;li&gt;Pandas series&lt;/li&gt;
+  &lt;li&gt;series.head()&lt;/li&gt;
+  &lt;li&gt;series.tail()&lt;/li&gt;
+  &lt;li&gt;series.size&lt;/li&gt;
+  &lt;li&gt;series[time_index]&lt;/li&gt;
+  &lt;li&gt;series.describe()&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&quot;basic-feature-engineering&quot;&gt;Basic Feature Engineering&lt;/h4&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;change the timeseries into something that can be digested by a supervised learning model&lt;/li&gt;
+  &lt;li&gt;in essence we select the best features&lt;/li&gt;
+  &lt;li&gt;we test by checking the results of all our features&lt;/li&gt;
+  &lt;li&gt;honestly, feels like spray and pray&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&quot;data-visualization&quot;&gt;Data Visualization&lt;/h4&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Line Plots.&lt;/li&gt;
+  &lt;li&gt;Histograms and Density Plots.&lt;/li&gt;
+  &lt;li&gt;Box and Whisker Plots.&lt;/li&gt;
+  &lt;li&gt;Heat Maps.&lt;/li&gt;
+  &lt;li&gt;Lag Plots or Scatter Plots.&lt;/li&gt;
+  &lt;li&gt;Autocorrelation Plots.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;All the visualisation methods can be used to quickly glean information about
+the data&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Some linear time series forecasting methods assume a well-behaved
+distribution of observations (i.e. a bell curve or normal distribution)&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Comparing box and whisker plots by consistent intervals is a useful tool.
+Within an interval, it can help to spot outliers (dots above or below the
+whiskers). Across intervals, in this case years, we can look for multiple
+year trends, seasonality, and other structural information that could be
+modeled.&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;</content><author><name></name></author><category term="summary" /><category term="python" /><category term="forecasting" /></entry><entry><title type="html">Getting Django to work with React</title><link href="http://localhost:4000/articles/django-react/" rel="alternate" type="text/html" title="Getting Django to work with React" /><published>2020-04-12T00:00:00+08:00</published><updated>2020-04-12T00:00:00+08:00</updated><id>http://localhost:4000/articles/django-react</id><content type="html" xml:base="http://localhost:4000/articles/django-react/">&lt;p&gt;I am interested in combining the benefits of Django and React
+in a single web application. Here are some notes on the topic.
+My goal is not to create a web application but to understand
+the mechanism of how this can be achieved.&lt;/p&gt;
+
+&lt;h5 id=&quot;patterns&quot;&gt;Patterns&lt;/h5&gt;
+
+&lt;h4 id=&quot;option-1&quot;&gt;Option &lt;a href=&quot;https://www.valentinog.com/blog/drf/&quot;&gt;1&lt;/a&gt;&lt;/h4&gt;
+&lt;p&gt;React in its own “frontend” Django app: load a single HTML template and let React manage the frontend (difficulty: medium)&lt;/p&gt;
+
+&lt;h3 id=&quot;backend---django&quot;&gt;Backend - Django&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;create a frontend app&lt;/li&gt;
+  &lt;li&gt;serve a view with a Html template that contains the React App&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;frontend---react&quot;&gt;Frontend - React&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;create a React component that is loaded from the Html template&lt;/li&gt;
+  &lt;li&gt;React component fetches data via Django API/URL&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;The approach here seems straight forward but limited. The examples here do not
+go into depth as to how data can be saved.&lt;/p&gt;
+
+&lt;h4 id=&quot;option-2&quot;&gt;Option &lt;a href=&quot;https://www.digitalocean.com/community/tutorials/how-to-build-a-modern-web-application-to-manage-customer-information-with-django-and-react-on-ubuntu-18-04&quot;&gt;2&lt;/a&gt;&lt;/h4&gt;
+&lt;p&gt;Django REST as a standalone API + React as a standalone SPA (difficulty: hard, it involves JWT for authentication)&lt;/p&gt;
+
+&lt;h3 id=&quot;backend---django-1&quot;&gt;Backend - Django&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;create a django project&lt;/li&gt;
+  &lt;li&gt;whitelist local React server for CORS&lt;/li&gt;
+  &lt;li&gt;create model migrations and corresponding data migrations&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;frontend---react-1&quot;&gt;Frontend - React&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;create React project within Django project&lt;/li&gt;
+  &lt;li&gt;install a HTTP client to consume API (e.g. axios)&lt;/li&gt;
+  &lt;li&gt;create Service.js file to contain axios functions&lt;/li&gt;
+  &lt;li&gt;create custom component that instantiates API Service.js&lt;/li&gt;
+  &lt;li&gt;bind service to component, so that it can be called in Html&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;rest-api---django-restframework&quot;&gt;REST API - django-restframework&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;create API endpoints in urls.py&lt;/li&gt;
+  &lt;li&gt;create API methods in views.py (with @api_view decorator)&lt;/li&gt;
+  &lt;li&gt;re-use in-built HTTP responses&lt;/li&gt;
+  &lt;li&gt;create model serializers to convert Python objects into JSON for React consumption&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;cross-origin-resource-sharing-cors&quot;&gt;Cross Origin Resource Sharing (CORS)&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;install CORS support as Django middleware to allow access to local React server&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&quot;option-3&quot;&gt;Option 3.&lt;/h4&gt;
+&lt;p&gt;Mix and match: mini React apps inside Django templates (difficulty: simple, but not so maintainable in the long run)&lt;/p&gt;
+
+&lt;p&gt;This raises two questions for me. Firstly, what would be the best way of
+handling sessions with this setup?  Secondly, what is the advantage of having a
+Python backend in the first place?  Would it be better to use Node instead?
+What are the tradeoffs?&lt;/p&gt;</content><author><name></name></author><category term="django" /><category term="react" /></entry><entry><title type="html">Book Summary: How to Live on Twenty-Four Hours a Day [1]</title><link href="http://localhost:4000/articles/24-hours-a-day/" rel="alternate" type="text/html" title="Book Summary: How to Live on Twenty-Four Hours a Day [1]" /><published>2020-01-10T00:00:00+08:00</published><updated>2020-01-10T00:00:00+08:00</updated><id>http://localhost:4000/articles/24-hours-a-day</id><content type="html" xml:base="http://localhost:4000/articles/24-hours-a-day/">&lt;p&gt;“The wish to accomplish something outside their formal programme is common to
+all men who in the course of evolution have risen past a certain level. “&lt;/p&gt;
+
+&lt;p&gt;After a certain amount of success, man often desires to become more. And in doing
+so, with limited resources, encounters sadness.&lt;/p&gt;
+
+&lt;p&gt;The truth is that you will never have more time. It is the one constant thing that
+all men have. (Not sure how much I agree with this.)&lt;/p&gt;
+
+&lt;p&gt;“The most important preliminary to the task of arranging one’s life so that one
+may live fully and comfortably within one’s daily budget of twenty-four hours
+is the calm realisation of the extreme difficulty of the task, of the
+sacrifices and the endless effort which it demands. I cannot too strongly
+insist on this. “&lt;/p&gt;
+
+&lt;p&gt;“If you imagine that you will be able to achieve your ideal by ingeniously
+planning out a time-table with a pen on a piece of paper, you had better give
+up hope at once. If you are not prepared for discouragements and disillusions;
+if you will not be content with a small result for a big effort, then do not
+begin. Lie down again and resume the uneasy doze which you call your existence.
+“&lt;/p&gt;
+
+&lt;p&gt;Beware of undertaking too much at the start. Be content with quite a little.
+Allow for accidents. Allow for human nature, especially your own.&lt;/p&gt;
+
+&lt;p&gt;A failure or so, in itself, would not matter, if it did not incur a loss of
+self-esteem and of self-confidence. But just as nothing succeeds like success,
+so nothing fails like failure. Most people who are ruined are ruined by
+attempting too much. Therefore, in setting out on the immense enterprise of
+living fully and comfortably within the narrow limits of twenty-four hours a
+day, let us avoid at any cost the risk of an early failure. I will not agree
+that, in this business at any rate, a glorious failure is better than a petty
+success. I am all for the petty success. A glorious failure leads to nothing;
+a petty success may lead to a success that is not petty.&lt;/p&gt;
+
+&lt;p&gt;If my typical man wishes to live fully and completely he must, in his mind,
+arrange a day within a day. And this inner day, a Chinese box in a larger
+Chinese box, must begin at 6 p.m. and end at 10 a.m. It is a day of sixteen
+hours; and during all these sixteen hours he has nothing whatever to do but
+cultivate his body and his soul and his fellow men. During those sixteen hours
+he is free; he is not a wage-earner; he is not preoccupied with monetary
+cares; he is just as good as a man with a private income. This must be his
+attitude. And his attitude is all important. His success in life (much more
+important than the amount of estate upon what his executors will have to pay
+estate duty) depends on it.&lt;/p&gt;
+
+&lt;p&gt;One of the chief things which my typical man has to learn is that the mental
+faculties are capable of a continuous hard activity; they do not tire like an
+arm or a leg. All they want is change—not rest, except in sleep.&lt;/p&gt;
+
+&lt;p&gt;But remember, at the start, those ninety nocturnal minutes thrice a week must
+be the most important minutes in the ten thousand and eighty. They must be
+sacred, quite as sacred as a dramatic rehearsal or a tennis match. Instead of
+saying, “Sorry I can’t see you, old chap, but I have to run off to the tennis
+club,” you must say, “…but I have to work.” This, I admit, is intensely
+difficult to say. Tennis is so much more urgent than the immortal soul.&lt;/p&gt;
+
+&lt;p&gt;And without the power to concentrate—that is to say, without the power to
+dictate to the brain its task and to ensure obedience—true life is impossible.
+Mind control is the first element of a full existence.&lt;/p&gt;
+
+&lt;p&gt;When you leave your house, concentrate your mind on a subject (no matter what,
+to begin with). You will not have gone ten yards before your mind has skipped
+away under your very eyes and is larking round the corner with another
+subject.&lt;/p&gt;
+
+&lt;p&gt;By the regular practice of concentration (as to which there is no secret—save
+the secret of perseverance) you can tyrannise over your mind (which is not the
+highest part of you) every hour of the day, and in no matter what place.&lt;/p&gt;
+
+&lt;p&gt;The exercise of concentrating the mind (to which at least half an hour a day
+should be given) is a mere preliminary, like scales on the piano. Having
+acquired power over that most unruly member of one’s complex organism, one has
+naturally to put it to the yoke. Useless to possess an obedient mind unless one
+profits to the furthest possible degree by its obedience. A prolonged primary
+course of study is indicated.&lt;/p&gt;
+
+&lt;p&gt;Now as to what this course of study should be there cannot be any question;
+there never has been any question. All the sensible people of all ages are
+agreed upon it. And it is not literature, nor is it any other art, nor is it
+history, nor is it any science. It is the study of one’s self. Man, know
+thyself.&lt;/p&gt;
+
+&lt;p&gt;We do not reflect. I mean that we do not reflect upon genuinely important
+things; upon the problem of our happiness, upon the main direction in which we
+are going, upon what life is giving to us, upon the share which reason has (or
+has not) in determining our actions, and upon the relation between our
+principles and our conduct.&lt;/p&gt;
+
+&lt;p&gt;I suppose that you will not have the audacity to deny this. And if you admit
+it, and still devote no part of your day to the deliberate consideration of
+your reason, principles, and conduct, you admit also that while striving for a
+certain thing you are regularly leaving undone the one act which is necessary
+to the attainment of that thing.&lt;/p&gt;
+
+&lt;p&gt;Yes, books are valuable. But not reading of books will take the place of a
+daily, candid, honest examination of what one has recently done, and what one
+is about to do—of a steady looking at one’s self in the face (disconcerting
+though the sight may be).&lt;/p&gt;
+
+&lt;p&gt;When shall this important business be accomplished? The solitude of the evening
+journey home appears to me to be suitable for it. A reflective mood naturally
+follows the exertion of having earned the day’s living.&lt;/p&gt;
+
+&lt;p&gt;The most important of all perceptions is the continual perception of cause and
+effect—in other words, the perception of the continuous development of the
+universe—in still other words, the perception of the course of evolution. When
+one has thoroughly got imbued into one’s head the leading truth that nothing
+happens without a cause, one grows not only large-minded, but large-hearted.&lt;/p&gt;
+
+&lt;p&gt;You need not be devoted to the arts, not to literature, in order to live
+fully.&lt;/p&gt;
+
+&lt;p&gt;The whole field of daily habit and scene is waiting to satisfy that curiosity
+which means life, and the satisfaction of which means an understanding heart.&lt;/p&gt;
+
+&lt;p&gt;I suggest no particular work as a start. The attempt would be futile in the
+space of my command. But I have two general suggestions of a certain
+importance. The first is to define the direction and scope of your efforts.
+Choose a limited period, or a limited subject, or a single author. Say to
+yourself: “I will know something about the French Revolution, or the rise of
+railways, or the works of John Keats.” And during a given period, to be
+settled beforehand, confine yourself to your choice. There is much pleasure to
+be derived from being a specialist.&lt;/p&gt;
+
+&lt;p&gt;The second suggestion is to think as well as to read. I know people who read
+and read, and for all the good it does them they might just as well cut
+bread-and-butter. They take to reading as better men take to drink. They fly
+through the shires of literature on a motor-car, their sole object being
+motion. They will tell you how many books they have read in a year.&lt;/p&gt;
+
+&lt;p&gt;Unless you give at least forty-five minutes to careful, fatiguing reflection
+(it is an awful bore at first) upon what you are reading, your ninety minutes
+of a night are chiefly wasted. This means that your pace will be slow.&lt;/p&gt;</content><author><name></name></author><category term="summary" /><category term="productivity" /></entry><entry><title type="html">Book Summary: 12 Ways for Your Child to Get the Best Out Of School</title><link href="http://localhost:4000/articles/how-to-get-the-best-out-of-school/" rel="alternate" type="text/html" title="Book Summary: 12 Ways for Your Child to Get the Best Out Of School" /><published>2019-12-28T00:00:00+08:00</published><updated>2019-12-28T00:00:00+08:00</updated><id>http://localhost:4000/articles/how-to-get-the-best-out-of-school</id><content type="html" xml:base="http://localhost:4000/articles/how-to-get-the-best-out-of-school/">&lt;h4 id=&quot;1-make-the-most-of-early-childhood&quot;&gt;1. Make the most of Early Childhood&lt;/h4&gt;
+
+&lt;p&gt;It is the most early years that the connections within the child’s brain are
+formed. These are the connections that build brain architecture - the foundation
+upon which all later learning, behaivour and health depend.&lt;/p&gt;
+
+&lt;p&gt;Because of this, what you do at home - nurturing your child, helping them
+develop those essential brain connections through play and interaction
+with you as parents is critical.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Expose your child to a broad vocabulary and a love of reading.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Tips to expand your child’s vocabulary&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;talk to them regularly&lt;/li&gt;
+  &lt;li&gt;drop the baby talk&lt;/li&gt;
+  &lt;li&gt;read books to them&lt;/li&gt;
+  &lt;li&gt;label household items&lt;/li&gt;
+  &lt;li&gt;share stories and ask questions&lt;/li&gt;
+  &lt;li&gt;encourage them to write and read on their own&lt;/li&gt;
+  &lt;li&gt;pay attention to their vocabulary and correct mistakes constructively&lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;repeat words and meanings multiple times so they fully understand the&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Be a positive role model about the importance of eductation&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Expose your children to stimulating environments&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Minimise your child’s exposure to stress&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Don’t forget to play&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;There is a deep need to set aside time for unstructured play.
+Playing is very important to their development!&lt;/p&gt;
+
+&lt;h4 id=&quot;2-be-you-childs-best-teacher&quot;&gt;2. Be you child’s best teacher&lt;/h4&gt;
+
+&lt;p&gt;Your child loves you. What you do and say has a big influence on them.&lt;/p&gt;
+
+&lt;p&gt;Be respectful and constructive when dealing with your child’s school
+and its teachers.&lt;/p&gt;
+
+&lt;p&gt;Model a positive attitude about education.&lt;/p&gt;
+
+&lt;p&gt;Emphasise that maths is important and talk about it positively.&lt;/p&gt;
+
+&lt;p&gt;Be a positive role model to your children about self-discipline,
+well-being and resilience.&lt;/p&gt;
+
+&lt;h4 id=&quot;3-dont-start-you-child-school-until-they-are-ready&quot;&gt;3. Don’t start you child school until they are ready&lt;/h4&gt;
+
+&lt;p&gt;Don’t be in a hurry to send your children to school.&lt;/p&gt;
+
+&lt;p&gt;Not all children start school with the same skills and ability.&lt;/p&gt;
+
+&lt;p&gt;Don’t stress - all children progress through their learning differently.&lt;/p&gt;
+
+&lt;p&gt;Avoid the temptation to compare your children with other children.&lt;/p&gt;
+
+&lt;p&gt;Avoid repeating a year if possible.&lt;/p&gt;
+
+&lt;h4 id=&quot;4-find-the-right-school-for-your-child&quot;&gt;4. Find the right school for your child&lt;/h4&gt;
+
+&lt;p&gt;Start your school search closer to home.&lt;/p&gt;
+
+&lt;p&gt;How schools handle student behaviour and bullying is important.&lt;/p&gt;
+
+&lt;p&gt;Don’t be afraid to ask questions, especially of the principle and teaching staff.&lt;/p&gt;
+
+&lt;p&gt;Don’t use NAPLAN results as the only source of information about schools.&lt;/p&gt;
+
+&lt;p&gt;Find out about schools by talking to people who know the school and by visiting
+schools.&lt;/p&gt;
+
+&lt;p&gt;Don’t listen to gossip. Make your own informed decisions.&lt;/p&gt;
+
+&lt;h4 id=&quot;5-partner-closely-with-your-childs-school&quot;&gt;5. Partner closely with your child’s school&lt;/h4&gt;
+
+&lt;p&gt;Develop a strong three-way partnership. There are two key roles parents play
+in this partnership. The first is to prepare, encourage and support your child
+so they are ready to learn from the moment they walk into school everyday. The
+second is to maintain an effective three-way communication with the school so
+you know how your child is progressing in the classroom and in their other
+school relationships. It’s also important that teachers know what’s happening
+in the home environment to maximise their efforts at being effective teachers.&lt;/p&gt;
+
+&lt;p&gt;Children who tend to have the best school experience turn up to school almost
+every day well rested, well fed and in a positive frame of mind about their
+education. They also have good social and emotional skills taught and modelled
+by their parents and loved ones at home. Knowing how to behave appropriately,
+demonstrating self-discipline, having the ability to delay gratification and
+showing resilience are all skills that help children get the most out of their
+school experience and life in general.&lt;/p&gt;
+
+&lt;p&gt;These fundamental ‘home curriculum’ skills need to be locked in to children
+so that they are ready to learn during the day at school. When children
+come home from school we need to reinforce what they have learnt at school,
+reinforce the value of education and make sure our children get a good night’s
+sleep so they’re ready for the next day.&lt;/p&gt;
+
+&lt;h4 id=&quot;6-seek-advice-if-your-child-has-special-needs&quot;&gt;6. Seek advice if your child has special needs&lt;/h4&gt;
+
+&lt;p&gt;Seek assistance as soon as you think your child might need extra support.&lt;/p&gt;
+
+&lt;p&gt;Your child has a right to enrol at school.&lt;/p&gt;
+
+&lt;p&gt;Make sure you find out the schooling and care options available to your child.&lt;/p&gt;
+
+&lt;p&gt;Planning and coordinating educational decisions together with your child is
+important.&lt;/p&gt;
+
+&lt;h4 id=&quot;7-set-high-expectations-for-your-child&quot;&gt;7. Set high expectations for your child&lt;/h4&gt;
+
+&lt;p&gt;Set expectations for your child carefully and thoughtfully so they respond by
+stepping up, doing their best, working hard and ‘reaching’ for those
+expectations.&lt;/p&gt;
+
+&lt;p&gt;It’s important to explain that you are setting high expectations because you
+think your child is capable of achieving them and, in many cases, greater than
+your child probably thinks that they themselves can achieve. Explain that
+they’re stretch targets and will require hard work for your child to achieve.
+Natural talent will not be enough. Explain clearly that your expectation is
+that they work towards those goals and they you will be satisfied know your
+child worked as hard as they could to achieve them, even if they did’nt make
+it. Praise great progress and praise the journey of progress your child has
+been on. Praise the effort and praise the skill that they have been used even
+if they don’t quite hit the mark.&lt;/p&gt;
+
+&lt;p&gt;Make sure your child knows that falling short of your and their expectations is
+not failure. We want to get away from the idea that performance an
+all-or-nothing concept.&lt;/p&gt;
+
+&lt;p&gt;You want your child to enjoy the experience of learning, not just be focused on
+exam or assignment marks. Maximise the effort to meet those expectations and the
+enjoyment of the learning journey; minimise the stress if your child does not get
+there.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;Set high expectations with your child&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Praise your child’s effort more than the outcome.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Motivate your child by helping them set ‘personal best’ goals.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Use disappointment as a teaching moment for your child.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Teach your child about keeping their school results in perspective.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Help your child learn to handle stress and failure now, so they can manage
+both in adult life.&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&quot;8-understand-the-role-of-homework&quot;&gt;8. Understand the role of homework&lt;/h4&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;As children get older the more value there is in homework.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Homework should be practise, practise, practise.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;There should be timely feedback, marking and discussion of homework.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;The right type and the right amount of homework is important.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Oversee and support your child’s homework - don’t do it for them.&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&quot;9-stay-informed-about-your-childs-progress&quot;&gt;9. Stay informed about your child’s progress&lt;/h4&gt;
+
+&lt;p&gt;Improvement in a child’s learning is the key academic outcome most parents
+expect from their child’s school. Improvement is important because, irrespective
+of where a child starts in any school year, what matters to the majority of
+parents is that their child keeps improving. How much improvement and how it’s
+measured is a subject of enormous debate.&lt;/p&gt;
+
+&lt;p&gt;We need to know how our children are doing at school so that we can play an
+effective role as partners in improving our children’s learning.&lt;/p&gt;
+
+&lt;p&gt;With regards to talking to your child about school…
+the tip is to ask them what conversations they had with their teachers, were
+there areas where they disagreed with their teacher or other students and what
+were they about? These are good questions to start a deep conversation.&lt;/p&gt;
+
+&lt;p&gt;Speak regulary with your child’s teacher.&lt;/p&gt;
+
+&lt;p&gt;School reports are a starting point.&lt;/p&gt;
+
+&lt;p&gt;5 questions to ask in parent-teacher interviews:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;How has my child’s education improved during the year?&lt;/li&gt;
+  &lt;li&gt;Where should my child be now?&lt;/li&gt;
+  &lt;li&gt;What does my child need to learn next?&lt;/li&gt;
+  &lt;li&gt;Is my child engaged in class and enjoying the subject?&lt;/li&gt;
+  &lt;li&gt;Is my child happy?&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Use the ACARA website work samples and learning progressionsto compare the standard.&lt;/p&gt;
+
+&lt;h4 id=&quot;10-understand-naplan&quot;&gt;10. Understand NAPLAN&lt;/h4&gt;
+
+&lt;p&gt;It’s the students gain/improvement over the years that matters.&lt;/p&gt;
+
+&lt;p&gt;Beware of coasting schools.&lt;/p&gt;
+
+&lt;h4 id=&quot;11-guide-your-child-through-high-school&quot;&gt;11. Guide your child through high school&lt;/h4&gt;
+
+&lt;p&gt;Have fun during the years your children are at high school. Take advantage of all the
+opportunities the school offers. Enjoy sports carnivals, musical events, parent forums
+and school based programs like school development days. If you’re able to, help out
+on excursions, volunteer to work at the school canteen occasionally or regularly or
+maybe coach or offer to manage a sporting team.&lt;/p&gt;
+
+&lt;p&gt;Remember your child will have unique learning experiences and memories of high school.
+It will be a gift for you and your child to have some common experiences, so try not
+to let too many slip by.&lt;/p&gt;
+
+&lt;p&gt;Three key factors to help your child choose elective subjects:&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;pursue subjects that reflect their strengths&lt;/li&gt;
+  &lt;li&gt;choose subjects that will keep them interested&lt;/li&gt;
+  &lt;li&gt;choose subjects that will keep them motivated&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&quot;12-manage-your-childs-use-of-technology&quot;&gt;12. Manage your child’s use of technology&lt;/h4&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;Reduce your own screen time to set an example&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Set and enforce realistic, firm rules about screen time.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Don’t allow screens in your child’s bedroom.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Use parental controls to help manage your child’s screen time and their access to restricted
+content.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Being bored has its benefits for children and adults.&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&quot;final-thoughts&quot;&gt;Final Thoughts&lt;/h4&gt;
+
+&lt;p&gt;Don’t be pressured to get parenting right all the time.&lt;/p&gt;
+
+&lt;p&gt;Take comfort in the face that children are quite resilient and despite out
+limitations and errors, they will most likely grow up and leave school as fully
+functional and well-adjusted adults.&lt;/p&gt;
+
+&lt;p&gt;Enjoy the experience of having a child at school.&lt;/p&gt;
+
+&lt;p&gt;Remember that ultimately, we want our children to leave school happy with what
+they have achieved, have had every opportunity to learn to their fullest
+potential and with their well-being and resilience supported and strengthened.&lt;/p&gt;</content><author><name></name></author><category term="summary" /></entry><entry><title type="html">Book Summary: The Mind and It’s Control</title><link href="http://localhost:4000/articles/how-to-control-your-mind/" rel="alternate" type="text/html" title="Book Summary: The Mind and It's Control" /><published>2019-08-05T00:00:00+08:00</published><updated>2019-08-05T00:00:00+08:00</updated><id>http://localhost:4000/articles/how-to-control-your-mind</id><content type="html" xml:base="http://localhost:4000/articles/how-to-control-your-mind/">&lt;h4 id=&quot;controlling-the-subconcious-mind&quot;&gt;Controlling the subconcious mind&lt;/h4&gt;
+
+&lt;p&gt;The subconcious is the like the cellar of the mind. It contains
+many past thoughts. It needs to be cleared in order for the concious
+mind to be control. Uncleared, it acts as an opposing force, seeking
+to re-manifest the past thoughts.&lt;/p&gt;
+
+&lt;p&gt;To clear the barriers in one’s subconcious, one has to think Holy
+thoughts continuous. So as to clear out or perhaps re-program the
+subconcious.&lt;/p&gt;
+
+&lt;p&gt;#### Beware a trick of the Mind&lt;/p&gt;
+
+&lt;p&gt;“It is foolishness to worry about the future while allowing the
+devil to conquer the present.”&lt;/p&gt;
+
+&lt;p&gt;The challenges of spiritual life is very simple: to be good, truly
+moral and master of ourselves for only this moment. What time is there
+outside this moment, that we should worry about it?&lt;/p&gt;
+
+&lt;h4 id=&quot;the-simplest-and-surest-method-of-controlling-the-mind&quot;&gt;The simplest and surest method of controlling the mind&lt;/h4&gt;
+
+&lt;p&gt;Love God. But if you do not believe in God, than believe in
+yourself.&lt;/p&gt;
+
+&lt;h4 id=&quot;summary&quot;&gt;Summary&lt;/h4&gt;
+
+&lt;p&gt;Mind-control has always, been a difficult task even for a heroic person; but it
+is not an impossible one. There are well-defined methods.&lt;/p&gt;
+
+&lt;p&gt;The entire secret of controlling the mind is given by Sri Krsna in the two
+words abhydsa and vairagya, practice and dispassion.&lt;/p&gt;
+
+&lt;p&gt;To bring these two disciplines into the stream of our life: we have to develop
+a strong will to control the mind; we have to understand the nature of our
+mind; we have to learn certain techniques and practise them.&lt;/p&gt;
+
+&lt;p&gt;In order to strengthen the will, we need to overcome our pleasure-motive
+and’also understand what is involved in controlling the mind.&lt;/p&gt;
+
+&lt;p&gt;The nature of the mind is explained from the Hindu point of view in The
+Complete Works of Swami Vivekananda.&lt;/p&gt;
+
+&lt;p&gt;To be able to control our mind we must know how not to make our task
+unnecessarily difficult.&lt;/p&gt;
+
+&lt;p&gt;Mind-control is the personal task of the person concerned. The object of
+mind-control is the realization of our absolute oneness with the Divine. For
+this no price can be too great to pay.&lt;/p&gt;
+
+&lt;p&gt;“To be able to practise effectively the disciplines leading to mind-control we
+need a favourable inner climate. This includes the capacity to accept certain
+features of life as inevitable.&lt;/p&gt;
+
+&lt;p&gt;For controlling the mind we need two sets of inner disciplines: one to give a
+healthy general direction to the mind, and the other to save us in
+emergencies.”&lt;/p&gt;
+
+&lt;p&gt;“The purer the mind, the easier it is to control. So we should practise
+disciplines for the purification of the mind. Our object should be to bring
+about a preponderance of sattw in our inner nature, and then to transcend
+sattva by purifying it according * to authentic disciplines.”&lt;/p&gt;
+
+&lt;p&gt;“The easiest method of doing tins, however, is cultivating holy company.&lt;/p&gt;
+
+&lt;p&gt;The Vedantic disciplines can be helpfully supplemented by the Yoga disciplines
+taught by Patanjali.&lt;/p&gt;
+
+&lt;p&gt;Along with the practice of the disciplines of Yoga should go the practice of
+discrimination. Then we shall be able to train the mind to behave. When it has
+been trained to behave, the senses will have been trained not to come in
+contact with their objects, but to obey the mind. Then pratydhara will have
+been achieved.&lt;/p&gt;
+
+&lt;p&gt;Certain ancillary measures which greatly help the effective practice of the
+main disciplines should be given attention. These measures are: keeping our
+human relationships in order; giving the mind a healthy occupation; making
+right use of the imagination; and guarding against despondency.&lt;/p&gt;
+
+&lt;p&gt;Mind-control is greatly helped by the practice of meditation, and meditation by
+mind-control.&lt;/p&gt;
+
+&lt;p&gt;In explosive inner situations to apply highpower emergency brakes, Patafijalfs
+teaching is: practise thinking contrary thoughts. Ceaseless chanting of the
+Lords name and also taking refuge in God help.”&lt;/p&gt;
+
+&lt;p&gt;“Methodical control of thought is a great secret in controlling the mind.&lt;/p&gt;
+
+&lt;p&gt;Without controlling the subconscious, the mind cannot be controlled. The
+subconscious can be controlled by pouring holy thought into it, as it were, and
+by the practice of Prdnaydma and other disciplines, among which is bhaktL These
+rouse the kundalinl, the latent spiritual power in a person.&lt;/p&gt;
+
+&lt;p&gt;We must beware of a harmful kind of imagination. By being truly moral only for
+this moment, and then at the next moment for the next moment, and so on always
+we can guard against such a possibility.&lt;/p&gt;
+
+&lt;p&gt;Believers are at an advantage in controlling the mind.&lt;/p&gt;
+
+&lt;p&gt;The simplest and surest method of controlling the mind is through love of God.&lt;/p&gt;
+
+&lt;p&gt;Those who do not believe in God can control the mind by transcending the gunas
+through self-effort.&lt;/p&gt;
+
+&lt;p&gt;Mind-control is valuable because it leads to the highest blessing —the
+illumined state of being,”&lt;/p&gt;</content><author><name></name></author><category term="summary" /><category term="self-improvement" /></entry><entry><title type="html">Book Summary: How to Get Rich</title><link href="http://localhost:4000/articles/how-to-get-rich/" rel="alternate" type="text/html" title="Book Summary: How to Get Rich" /><published>2019-06-07T00:00:00+08:00</published><updated>2019-06-07T00:00:00+08:00</updated><id>http://localhost:4000/articles/how-to-get-rich</id><content type="html" xml:base="http://localhost:4000/articles/how-to-get-rich/">&lt;h4 id=&quot;1-seek-wealth-not-money-or-status&quot;&gt;1. Seek Wealth, Not Money or Status&lt;/h4&gt;
+
+&lt;p&gt;Wealth is assets that earn while you sleep&lt;/p&gt;
+
+&lt;p&gt;Wealth buys your freedom&lt;/p&gt;
+
+&lt;p&gt;Money is how we transfer wealth&lt;/p&gt;
+
+&lt;p&gt;Status is your rank in the social hierarchy&lt;/p&gt;
+
+&lt;p&gt;Status is a very old game (zero sum game)&lt;/p&gt;
+
+&lt;p&gt;People creating wealth will always be attacked by people playing status games&lt;/p&gt;
+
+&lt;h4 id=&quot;2-make-abundance-for-the-world&quot;&gt;2. Make Abundance for the World&lt;/h4&gt;
+
+&lt;p&gt;Ethical wealth creation makes abundance for the world&lt;/p&gt;
+
+&lt;p&gt;Everyone can be rich&lt;/p&gt;
+
+&lt;h4 id=&quot;3-free-markets-are-intrinsic-to-humans&quot;&gt;3. Free Markets Are Intrinsic to Humans&lt;/h4&gt;
+
+&lt;p&gt;Too many takers and not enough makers will plunge a society into ruin&lt;/p&gt;
+
+&lt;h4 id=&quot;4-making-money-isnt-about-luck&quot;&gt;4. Making Money Isn’t About Luck&lt;/h4&gt;
+
+&lt;p&gt;Wealth stacks up one chip at a time, not all at once&lt;/p&gt;
+
+&lt;p&gt;We’re talking about getting wealthy so you can retire, so you have your
+freedom. Not retire in the sense that you don’t do anything. But in the sense
+that you don’t have to be any place you don’t want to be, you don’t have to do
+anything you don’t want to do, you can wake up when you want, you can sleep
+when you want, you don’t have a boss. That’s freedom.&lt;/p&gt;
+
+&lt;p&gt;We’re talking about enough wealth to get to freedom. Especially thanks to the
+Internet these days, though, opportunities are massively abundant. I, in fact,
+have too many ways to make money, I don’t have enough time. I have
+opportunities pouring out of my ears and the thing I keep running out of is
+time.&lt;/p&gt;
+
+&lt;p&gt;There’s just so many ways to create wealth, to create products, to create
+businesses, to create opportunities, and to, as a byproduct, get paid by
+society that I can’t even handle it all.&lt;/p&gt;
+
+&lt;h4 id=&quot;5-make-luck-your-destiny&quot;&gt;5. Make Luck Your Destiny&lt;/h4&gt;
+
+&lt;p&gt;Build your character in a way so luck becomes deterministic.&lt;/p&gt;
+
+&lt;p&gt;But I would say your character, your reputation, these are things that you can
+build that then will let you take up advantage of opportunities that other
+people may characterize as lucky but you know that it wasn’t luck.&lt;/p&gt;
+
+&lt;p&gt;“you can’t be normal and expect abnormal returns.”&lt;/p&gt;
+
+&lt;h4 id=&quot;6-you-wont-get-rich-renting-out-your-time&quot;&gt;6. You Won’t Get Rich Renting Out Your Time&lt;/h4&gt;
+
+&lt;p&gt;You must own equity to gain your financial freedom&lt;/p&gt;
+
+&lt;p&gt;You want a career where your inputs don’t match your outputs&lt;/p&gt;
+
+&lt;h4 id=&quot;7-live-below-your-means-for-freedom&quot;&gt;7. Live Below Your Means for Freedom&lt;/h4&gt;
+
+&lt;p&gt;People living far below their means enjoy a freedom that people busy upgrading their lifestyles just can’t fathom.&lt;/p&gt;
+
+&lt;p&gt;Ideally, you’ll make your money in discrete lumps (over time)&lt;/p&gt;
+
+&lt;h4 id=&quot;8-give-society-what-it-doesnt-know-how-to-get&quot;&gt;8. Give Society What It Doesn’t Know How to Get&lt;/h4&gt;
+
+&lt;p&gt;Society will pay you for creating what it wants, but doesn’t know how to get, and delivering it at scale.&lt;/p&gt;
+
+&lt;p&gt;Figure out what product you can provide and then figure out how to scale it&lt;/p&gt;
+
+&lt;h4 id=&quot;9-the-internet-has-massively-broadened-career-possibilities&quot;&gt;9. The Internet Has Massively Broadened Career Possibilities&lt;/h4&gt;
+
+&lt;p&gt;The Internet allows you to scale any niche obsession&lt;/p&gt;
+
+&lt;h4 id=&quot;10-play-long-term-games-with-long-term-people&quot;&gt;10. Play Long-term Games With Long-term People&lt;/h4&gt;
+
+&lt;p&gt;Pick an industry where you can play long-term games with long-term people. All returns in life come from compound interest over many turns of the game.&lt;/p&gt;
+
+&lt;p&gt;Long-term players make each other rich&lt;/p&gt;
+
+&lt;p&gt;Returns come from compound interest in iterated games&lt;/p&gt;
+
+&lt;h4 id=&quot;11-pick-partners-with-intelligence-energy-and-integrity&quot;&gt;11. Pick Partners With Intelligence, Energy and Integrity&lt;/h4&gt;
+
+&lt;p&gt;Motivation has to come intrinsically&lt;/p&gt;
+
+&lt;p&gt;When I was younger, I used to try and talk people into things. I had this idea
+that you could sell someone into doing something. But you can’t. You can’t keep
+them motivated. You can get them inspired initially. It might work if you’re a
+king like Henry V, and you’re trying to get them to just charge into battle,
+and then they’ll figure it out.&lt;/p&gt;
+
+&lt;p&gt;But if you’re trying to keep someone motivated for the long-term, that
+motivation has to come intrinsically. You can’t just create it, nor can you be
+the crutch for them if they don’t have that intrinsic motivation. So, you have
+to make sure people actually are high-energy, and want to do what you want them
+to do, and what you want to work with them on.&lt;/p&gt;
+
+&lt;p&gt;Integrity is what someone does, despite what they say they do&lt;/p&gt;
+
+&lt;p&gt;Reading signals is very, very important. Signals are what people do despite
+what they say. So, it’s important to pay attention to subtle signals. We all
+know that socially if someone treats a waiter, or waitress in a restaurant
+really badly, then it’s only a matter of time until they treat you badly.&lt;/p&gt;
+
+&lt;h4 id=&quot;12-partner-with-rational-optimists&quot;&gt;12. Partner With Rational Optimists&lt;/h4&gt;
+
+&lt;p&gt;Don’t partner with pessimists&lt;/p&gt;
+
+&lt;p&gt;Partner with rational optimists&lt;/p&gt;
+
+&lt;p&gt;We’re descended from pessimists&lt;/p&gt;
+
+&lt;p&gt;but of course there are obvious exceptions”, BOCTAOE&lt;/p&gt;
+
+&lt;h4 id=&quot;13-arm-yourself-with-specific-knowledge&quot;&gt;13. Arm Yourself With Specific Knowledge&lt;/h4&gt;
+
+&lt;p&gt;! Arm yourself with specific knowledge. It can’t be trained but it can be found by pursuing your genuine curiosity.&lt;/p&gt;
+
+&lt;p&gt;If you want to make money you have to get paid at scale. And why you, that’s
+accountability, at scale, that’s leverage, and just you getting paid as
+opposed to somebody else getting paid , that’s specific knowledge.&lt;/p&gt;
+
+&lt;p&gt;The thing is that we have this idea that everything can be taught, everything
+can be taught in school. And it’s not true that everything can be taught. In
+fact, the most interesting things cannot be taught.But everything can be
+learned. And very often that learning either comes from some innate
+characteristics in your DNA, or it could be through your childhood where you
+learn soft skills which are very, very hard to teach later on in life, or it’s
+something that is brand new so nobody else knows how to do it either, or it’s
+true on the job training because you’re pattern matching into highly complex
+environments, basically building judgment in a specific domain.&lt;/p&gt;
+
+&lt;p&gt;Specific knowledge can’t be trained&lt;/p&gt;
+
+&lt;p&gt;Specific knowledge is found by pursuing your curiosity&lt;/p&gt;
+
+&lt;p&gt;So, specific knowledge is found much more by pursuing your innate talents, your
+genuine curiosity, and your passion. It’s not by going to school for whatever
+it is the hottest job, it’s not for going into whatever field investors say is
+the hottest.&lt;/p&gt;
+
+&lt;p&gt;Very often specific knowledge is at the edge of knowledge. It’s also stuff
+that’s just being figured out or is really hard to figure out.&lt;/p&gt;
+
+&lt;p&gt;So, if you’re not 100% into it somebody else who is 100% into it will
+outperform you. And they won’t just outperform you by a little bit, they’ll
+outperform you by a lot because now we’re operating the domain of ideas,
+compound interest really applies and leverage really applies.&lt;/p&gt;
+
+&lt;p&gt;So, if you’re operating with 1,000 times leverage and somebody is right 80% of
+the time, and somebody else is right 90% of time, the person who’s right 90% of
+the time will literally get paid hundreds of times more by the market because
+of the leverage and because of the compounding factors and being correct. So,
+you really want to make sure you’re good at it so that genuine curiosity is
+very important.&lt;/p&gt;
+
+&lt;p&gt;Building specific knowledge will feel like play to you&lt;/p&gt;
+
+&lt;h4 id=&quot;14-specific-knowledge-is-highly-creative-or-technical&quot;&gt;14. Specific Knowledge Is Highly Creative or Technical&lt;/h4&gt;
+
+&lt;p&gt;Specific knowledge tends to be creative or technical. It’s on the bleeding edge of technology, art and communication.&lt;/p&gt;
+
+&lt;p&gt;it’s that it is highly specific to the situation, it’s specific to the individual, it’s specific to the problem, and it can only be built as part of a larger obsession, interest, and time spent in that domain.&lt;/p&gt;
+
+&lt;p&gt;It can’t just be read straight out of a single book, nor can it be taught in a single course, nor can it be programmed into a single algorithm.&lt;/p&gt;
+
+&lt;p&gt;You can’t be too deliberate about assembling specific knowledge&lt;/p&gt;
+
+&lt;p&gt;But I think if you go around trying to build it a little too deliberately, if
+you become too goal-oriented on the money, then you won’t pick the right thing.
+You won’t actually pick the thing that you love to do, so you won’t go deep
+enough into it.&lt;/p&gt;
+
+&lt;p&gt;Build specific knowledge where you are a natural&lt;/p&gt;
+
+&lt;p&gt;So, whatever you are a natural at, you want to double down on that.&lt;/p&gt;
+
+&lt;p&gt;And then there are probably multiple things you’re natural at because
+personalities and humans are very complex. So, we want to be able to take the
+things that you are natural at and combine them so that you automatically, just
+through sheer interest and enjoyment, end up top 25% or top 10% or top 5% at a
+number of things.&lt;/p&gt;
+
+&lt;h4 id=&quot;15-learn-to-sell-learn-to-build&quot;&gt;15. Learn to Sell, Learn to Build&lt;/h4&gt;
+
+&lt;p&gt;Learn to sell. Learn to build. If you can do both, you will be unstoppable.(your specific knowledge)&lt;/p&gt;
+
+&lt;h4 id=&quot;16-read-what-you-love-until-you-love-to-read&quot;&gt;16. Read What You Love Until You Love to Read&lt;/h4&gt;
+
+&lt;p&gt;Read the original scientific books in a field&lt;/p&gt;
+
+&lt;p&gt;Don’t fear any book&lt;/p&gt;
+
+&lt;p&gt;So, you have to make sure that you’re building on a steel frame of
+understanding because you’re putting together a foundation for skyscraper, and
+you’re not just memorizing things because you’re just memorizing things you’re
+lost. So the foundations are ultra important.&lt;/p&gt;
+
+&lt;p&gt;And the ultimate, the ultimate is when you walk into a library and you look at
+it up and down and you don’t fear any book. You know that you can take any book
+off the shelf, you can read it, you can understand it, you can absorb what is
+true, you can reject what is false, and you have a basis for even working that
+out that is logical and scientific and not purely just based on opinions.&lt;/p&gt;
+
+&lt;p&gt;The means of learning are abundant, the desire to learn is scarce&lt;/p&gt;
+
+&lt;h4 id=&quot;17-the-foundations-are-math-and-logic&quot;&gt;17. The Foundations Are Math and Logic&lt;/h4&gt;
+
+&lt;p&gt;The ultimate foundations are math and logic&lt;/p&gt;
+
+&lt;p&gt;It’s better to read a great book really slowly than to fly through a hundred books quickly&lt;/p&gt;
+
+&lt;p&gt;What you are really looking for are algorithms. What you are really looking for
+is understanding. It’s better to go through a book really slowly and struggle
+and stumble and rewind, than it is to fly through it quickly and say, “Well,
+now I’ve read 20 books, I’ve read 30 books, I’ve read 50 books in the field.”&lt;/p&gt;
+
+&lt;p&gt;It’s like Bruce Lee said, “I don’t fear the man who knows a thousand kicks and
+a thousand punches, I fear the man who’s practiced one punch ten thousand times
+or one kick ten thousand times.” It’s that understanding that comes through
+repetition and through usage and through logic and foundations that really
+makes you a smart thinker.&lt;/p&gt;
+
+&lt;p&gt;Learn persuasion and programming&lt;/p&gt;
+
+&lt;h4 id=&quot;18-theres-no-actual-skill-called-business&quot;&gt;18. There’s No Actual Skill Called “Business”&lt;/h4&gt;
+
+&lt;p&gt;There’s no actual skill called business. Avoid business schools and magazines.&lt;/p&gt;
+
+&lt;p&gt;Doing is faster than watching&lt;/p&gt;
+
+&lt;p&gt;The number of “doing” iterations drives the learning curve&lt;/p&gt;
+
+&lt;p&gt;If you’re willing to bleed a little every day, you may win big later&lt;/p&gt;
+
+&lt;p&gt;We’re evolved for small victories all the time but that becomes very expensive. That’s where the crowd is. That’s where the herd is. So, if you’re willing to bleed a little bit every day but in exchange you’ll win big later, you will do better.&lt;/p&gt;
+
+&lt;p&gt;That is, by the way, entrepreneurship. Entrepreneurs bleed every day.&lt;/p&gt;
+
+&lt;p&gt;They’re not making money, they’re losing money, they’re constantly stressed out, all the responsibility is upon them, but when they win they win big. On average they’ll make more.&lt;/p&gt;
+
+&lt;h4 id=&quot;19-embrace-accountability-to-get-leverage&quot;&gt;19. Embrace Accountability to Get Leverage&lt;/h4&gt;
+
+&lt;p&gt;Embrace accountability. Society will reward you with leverage.&lt;/p&gt;
+
+&lt;p&gt;You have to have accountability to get leverage&lt;/p&gt;
+
+&lt;p&gt;A well-functioning team has clear accountability for each position&lt;/p&gt;
+
+&lt;p&gt;People who can fail in public have a lot of power&lt;/p&gt;
+
+&lt;h4 id=&quot;21-take-accountability-to-earn-equity&quot;&gt;21. Take Accountability to Earn Equity&lt;/h4&gt;
+
+&lt;p&gt;If you have high accountability, you’re less replaceable and you can get a piece of the business.&lt;/p&gt;
+
+&lt;p&gt;! Taking accountability is like taking equity in all your work&lt;/p&gt;
+
+&lt;h4 id=&quot;21-labor-and-capital-are-old-leverage&quot;&gt;21. Labor and Capital Are Old Leverage&lt;/h4&gt;
+
+&lt;p&gt;Wealth requires leverage. Labor and capital are older forms of leverage that everyone is fighting over.&lt;/p&gt;
+
+&lt;p&gt;You need specific knowledge and accountability to obtain capital&lt;/p&gt;
+
+&lt;h4 id=&quot;22-product-and-media-are-new-leverage&quot;&gt;22. Product and Media are New Leverage&lt;/h4&gt;
+
+&lt;p&gt;Product leverage is where the new fortunes are made&lt;/p&gt;
+
+&lt;p&gt;Combining all three forms of leverage is a magic combination
+(product, media and code)&lt;/p&gt;
+
+&lt;p&gt;Probably the most interesting thing to keep in mind about the new forms of
+leverage is they are permissionless. They don’t require somebody else’s
+permission for you to use them or succeed.&lt;/p&gt;
+
+&lt;h4 id=&quot;23-product-leverage-is-egalitarian&quot;&gt;23. Product Leverage is Egalitarian&lt;/h4&gt;
+
+&lt;p&gt;Product leverage is a positive sum game&lt;/p&gt;
+
+&lt;p&gt;Creating wealth with product leads to more ethical wealth&lt;/p&gt;
+
+&lt;p&gt;You want to use the product that is used by the most people&lt;/p&gt;
+
+&lt;h4 id=&quot;24-pick-a-business-model-with-leverage&quot;&gt;24. Pick a Business Model With Leverage&lt;/h4&gt;
+
+&lt;p&gt;Ideally, you should pick a business model with network effects, low marginal costs and scale economies.&lt;/p&gt;
+
+&lt;p&gt;Scale economies: the more you produce, the cheaper it gets&lt;/p&gt;
+
+&lt;p&gt;Zero marginal cost of reproduction: producing more is free&lt;/p&gt;
+
+&lt;p&gt;Network effects: value grows as the square of the customers&lt;/p&gt;
+
+&lt;p&gt;Network effect businesses are natural monopolies&lt;/p&gt;
+
+&lt;p&gt;In a network effect, each new user adds value to the existing users&lt;/p&gt;
+
+&lt;p&gt;Zero marginal cost businesses can pivot into network effect businesses&lt;/p&gt;
+
+&lt;h4 id=&quot;25-example-from-laborer-to-entrepreneur&quot;&gt;25. Example: From Laborer to Entrepreneur&lt;/h4&gt;
+
+&lt;p&gt;The continuum from laborer to real estate tech company goes from low to high
+specific knowledge, accountability and leverage.&lt;/p&gt;
+
+&lt;h4 id=&quot;26-judgment-is-the-decisive-skill&quot;&gt;26. Judgment Is the Decisive Skill&lt;/h4&gt;
+
+&lt;p&gt;Everything we’ve discussed so far has been setting you up to apply judgment.&lt;/p&gt;
+
+&lt;p&gt;In an age of infinite leverage, judgment becomes the most important skill&lt;/p&gt;
+
+&lt;p&gt;Everything else you do is setting you up to apply judgment&lt;/p&gt;
+
+&lt;p&gt;Judgment, especially demonstrated judgment, with high accountability, clear track record, is critical.&lt;/p&gt;
+
+&lt;p&gt;Judgment is knowing the long-term consequences of your actions&lt;/p&gt;
+
+&lt;p&gt;My definition of wisdom is knowing the long term consequences of your actions,
+so they’re not all that different. Wisdom is just judgment on a personal
+domain.&lt;/p&gt;
+
+&lt;p&gt;Without experience, judgment is often less than useless&lt;/p&gt;
+
+&lt;p&gt;Intellect without any experience is often worse than useless because you get
+the confidence that the intellect gives you, and you get some of the
+credibility, but because you had no skin in the game, and you had no real
+experience, and no real accountability, you’re just throwing darts.&lt;/p&gt;
+
+&lt;p&gt;The real world is always far, far more complex than we can intellectualize.
+Especially all the interesting, fast-moving edge domains and problems, you
+can’t get there without experience. If you are smart and you iterate fast, it’s
+not even you put 10,000 hours into something, but you take 10,000 tries at
+something.&lt;/p&gt;
+
+&lt;p&gt;The people with the best judgment are among the least emotional&lt;/p&gt;
+
+&lt;p&gt;Judgment is the exercise of wisdom. Wisdom comes from experience; and that
+experience can be accelerated through short iterations.&lt;/p&gt;
+
+&lt;p&gt;The more outraged someone is, the worse their judgment&lt;/p&gt;
+
+&lt;h4 id=&quot;27-set-an-aspirational-hourly-rate&quot;&gt;27. Set an Aspirational Hourly Rate&lt;/h4&gt;
+
+&lt;p&gt;If outsourcing a task will cost less than your hourly rate, outsource it.&lt;/p&gt;
+
+&lt;p&gt;Set and enforce an aspirational hourly rate&lt;/p&gt;
+
+&lt;p&gt;No one is going to value you more than you value yourself. You just have to set
+a very high personal hourly rate and you have to stick to it. Even since I was
+young, I just decided I was worth a lot more than the market though I was
+worth, but I started treating myself that way.&lt;/p&gt;
+
+&lt;p&gt;You can’t penny pinch your way to wealth&lt;/p&gt;
+
+&lt;p&gt;You can penny-pinch your way to a basic sustenance. You can keep your expenses
+low, maybe retire early and not spend too much. That’s perfectly valid. But
+we’re here to talk about wealth creation. If you’re going to do that, then that
+has to be your number one overwhelming priority.&lt;/p&gt;
+
+&lt;p&gt;My aspirational rate was $5,000/hr&lt;/p&gt;
+
+&lt;p&gt;If you can outsource something for less than your hourly rate, do it&lt;/p&gt;
+
+&lt;p&gt;Paul Graham basically said it pretty well for Y Combinator startups, he said,
+“You should be working on your product and getting product-market fit. And you
+should be exercising and eating healthy.” That’s about it. That’s all you have
+time for while you’re on this mission.&lt;/p&gt;
+
+&lt;h4 id=&quot;28-work-as-hard-as-you-can&quot;&gt;28. Work As Hard As You Can&lt;/h4&gt;
+
+&lt;p&gt;Work as hard as you can. Even though what you work on and who you work with are more important.&lt;/p&gt;
+
+&lt;p&gt;Finding Product-Market-Founder Fit to expand on Marc Andreessen’s definition,
+he came up with Product-Market Fit. I will add Product-Market-Founder Fit,
+which is how well you are personally suited to that business. The combination
+of that three, that should be your overwhelming goal.&lt;/p&gt;
+
+&lt;p&gt;You can save yourself a lot of time if you pick the right area to work in.
+Picking the right people to work with is the next most important piece. Third
+comes how hard you work. They’re like three legs of a stool; if you shortchange
+on any one of them, the whole stool’s gonna fall down. It’s not like you can
+pick one over the other that easily.&lt;/p&gt;
+
+&lt;p&gt;Nobody really works 80 hours a week&lt;/p&gt;
+
+&lt;p&gt;Inspiration is perishable&lt;/p&gt;
+
+&lt;p&gt;Impatience with actions, patience with results&lt;/p&gt;
+
+&lt;h4 id=&quot;29-be-too-busy-to-do-coffee&quot;&gt;29. Be Too Busy to “Do Coffee”&lt;/h4&gt;
+
+&lt;p&gt;You should be too busy to “do coffee”, while still keeping an uncluttered calendar.&lt;/p&gt;
+
+&lt;p&gt;One has to be utterly ruthless about dodging meetings. When you do do meetings,
+do walking meetings, do standing meetings. Keep them short, keep them
+actionable, keep them small. Any meeting with eight people sitting around at a
+conference table, nothing is getting done in that meeting. You are literally
+just dying one hour at a time.&lt;/p&gt;
+
+&lt;p&gt;People will meet with you when you have proof of work&lt;/p&gt;
+
+&lt;p&gt;You have to do the work. To use a crypto analogy, you have to have proof of
+work. If you have proof of work, and you truly have something interesting, then
+you shouldn’t hesitate to put it together in an email and send it to somebody.
+Even then, when you’re asking for a meeting, you wanna be super actionable
+about it.&lt;/p&gt;
+
+&lt;p&gt;Networking is overrated even early in your career&lt;/p&gt;
+
+&lt;h4 id=&quot;30-keep-redefining-what-you-do&quot;&gt;30. Keep Redefining What You Do&lt;/h4&gt;
+
+&lt;p&gt;Keep redefining what you do until you’re the best at what you do&lt;/p&gt;
+
+&lt;p&gt;Until you arrive at a comfortable place where like, “Yes this is something I
+can be amazing at while still being authentic to who I am.” And this is not
+going to be an overnight discovery. It’s going to be a long journey but at
+least you know about how to think about it.&lt;/p&gt;
+
+&lt;p&gt;Find founder-product-market fit&lt;/p&gt;
+
+&lt;h4 id=&quot;31-escape-competition-through-authenticity&quot;&gt;31. Escape Competition Through Authenticity&lt;/h4&gt;
+
+&lt;p&gt;Competition can make you play the wrong game. No one can compete with you on being you.&lt;/p&gt;
+
+&lt;p&gt;In entrepreneurship, the masses are never right&lt;/p&gt;
+
+&lt;p&gt;Combine your vocation and avocation&lt;/p&gt;
+
+&lt;h4 id=&quot;32-play-stupid-games-win-stupid-prizes&quot;&gt;32. Play Stupid Games, Win Stupid Prizes&lt;/h4&gt;
+
+&lt;p&gt;Competition will blind you to greater games. You’re one step away from a better market.&lt;/p&gt;
+
+&lt;h4 id=&quot;33-eventually-you-will-get-what-you-deserve&quot;&gt;33. Eventually You Will Get What You Deserve&lt;/h4&gt;
+
+&lt;p&gt;Apply specific knowledge with leverage and eventually you will get what you deserve.&lt;/p&gt;
+
+&lt;p&gt;Product-market fit is inevitable if you’re doing something you love to do and the market wants it.&lt;/p&gt;
+
+&lt;h4 id=&quot;34-reject-most-advice&quot;&gt;34. Reject Most Advice&lt;/h4&gt;
+
+&lt;p&gt;Most advice is people giving you their winning lottery ticket numbers.&lt;/p&gt;
+
+&lt;p&gt;The best founders listen to everyone but make up their own mind&lt;/p&gt;
+
+&lt;p&gt;Advice is maxims you can recall later, when you get your own experience&lt;/p&gt;
+
+&lt;h4 id=&quot;35-a-calm-mind-a-fit-body-a-house-full-of-love&quot;&gt;35. A Calm Mind, a Fit Body, a House Full of Love&lt;/h4&gt;
+
+&lt;p&gt;When you’re finally wealthy, you’ll realize it wasn’t what you were seeking in the first place.&lt;/p&gt;
+
+&lt;p&gt;“A calm mind, a fit body and a house full of love. These things can not be bought. They must be earned.”&lt;/p&gt;
+
+&lt;h4 id=&quot;36-there-are-no-get-rich-quick-schemes&quot;&gt;36. There Are No Get Rich Quick Schemes&lt;/h4&gt;
+
+&lt;p&gt;Anyone giving advice on how to get rich should have made their money elsewhere&lt;/p&gt;
+
+&lt;p&gt;“If you want to be a philosopher king first become a king then become a
+philosopher. Not first become a philosopher and then become a king.”&lt;/p&gt;
+
+&lt;h4 id=&quot;37-productize-yourself&quot;&gt;37. Productize Yourself&lt;/h4&gt;
+
+&lt;p&gt;Figure out what you’re uniquely good at and apply as much leverage as possible.&lt;/p&gt;
+
+&lt;p&gt;Find hobbies that make you rich, fit and creative&lt;/p&gt;
+
+&lt;p&gt;I would change that slightly. I would say one that makes you money, one that
+makes you fit, and one that makes you smarter.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;startups&lt;/li&gt;
+  &lt;li&gt;strength training/yoga&lt;/li&gt;
+  &lt;li&gt;music&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Making money should be a function of your identity and what you like to do.&lt;/p&gt;
+
+&lt;p&gt;From Admiral Hyman Rickover:
+The man in charge must concern himself with
+details. If he does not consider them important, neither will his subordinates.
+Yet “the devil is in the details.” It is hard and monotonous to pay attention
+to seemingly minor matters. In my work, I probably spend about ninety-nine
+percent of my time on what others may call petty details. Most managers would
+rather focus on lofty policy matters. But when the details are ignored, the
+project fails. No infusion of policy or lofty ideals can then correct the
+situation.&lt;/p&gt;
+
+&lt;h4 id=&quot;final-thoughts&quot;&gt;Final thoughts&lt;/h4&gt;
+
+&lt;p&gt;Take away from this. The areas where I can do with the most improvement are
+taking responsibility actively and paying attention to the details.&lt;/p&gt;</content><author><name></name></author><category term="summary" /><category term="self-improvement" /></entry><entry><title type="html">Notes on Freelancing</title><link href="http://localhost:4000/articles/freelancing/" rel="alternate" type="text/html" title="Notes on Freelancing" /><published>2019-04-05T00:00:00+08:00</published><updated>2019-04-05T00:00:00+08:00</updated><id>http://localhost:4000/articles/freelancing</id><content type="html" xml:base="http://localhost:4000/articles/freelancing/">&lt;h3 id=&quot;everything-i-know-about-freelancing-1&quot;&gt;Everything I know about Freelancing &lt;a href=&quot;https://andyadams.org/everything-i-know-about-freelancing/&quot;&gt;1&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;50% of your time should be spent growing your business.&lt;/p&gt;
+
+&lt;p&gt;Bill by day or week, not hour. Except retainers.&lt;/p&gt;
+
+&lt;p&gt;Specialize in projects where you can charge more.&lt;/p&gt;
+
+&lt;p&gt;Take your finely-calculated estimate and 3x it, both in time and money.&lt;/p&gt;
+
+&lt;p&gt;You should get really comfortable with “no”; Both saying “no” to bad fits, and
+hearing “no” from clients who can’t afford you.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Min 60 pounds per hour, 20 hours per week (480 per day)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Talk about budget early in the conversation. (But only after you’ve discovered the pain point and established credability.)&lt;/p&gt;
+
+&lt;p&gt;Always bill, even for small fixes.&lt;/p&gt;
+
+&lt;p&gt;Collect payment (50% – 100%) before starting work, particularly for new clients
+you’re not comfortable with. You can make exceptions for large or repeat
+clients whom you’re confident will pay.&lt;/p&gt;
+
+&lt;p&gt;Expect late payments. Don’t hesitate to politely nag, they probably just forgot.&lt;/p&gt;
+
+&lt;p&gt;Your clients won’t realize they’ll need maintenance on their project unless you
+tell them. Include maintenance as part of every proposal, lest the client
+spends their whole budget on building the first version.&lt;/p&gt;
+
+&lt;p&gt;An incomplete list of red flags:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;If a potential client tells you how something should be implemented, they
+don’t want you to think too much and don’t value your expertise.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;If a client previously posted their projects to Fiverr or UpWork, it’s a
+signal they don’t value expertise.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;If a client won’t listen to your advice because something is not your
+speciality, they probably see you as an implementer, not a partner. You
+probably sold yourself short and/or the client doesn’t value you like they
+should.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;If a client tells you how long a project should take you to finish, they
+think they know an awful lot about your field.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;If a potential client can’t explain why they chose you to talk to (i.e. for
+your expertise, because of an article they read, because of a referral, etc),
+they’re probably shopping around and you’re bidding against other
+contractors. This isn’t the worst thing in the world, but you’ll have minimal
+leverage.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;If a client starts asking for detailed breakdowns of your time spent when
+they haven’t asked in the past, you’re probably being viewed as too expensive
+and should brace for an end or change to the relationship.&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Your first interactions with anyone will set the tone for the rest of the
+relationship. If you crush the first emails, phone calls, or meetings, your
+reputation will be solidified for the long-term.&lt;/p&gt;
+
+&lt;p&gt;Identify your “champion” within larger organizations – someone who will
+advocate for you. They are worth a lot – do them favors and you’ll find your
+invoices will get paid faster, more work will come your way, and you’ll have
+staying power within the organization. Often this person is the one who
+benefits most from your work or someone who felt the most pain before you came
+along.&lt;/p&gt;
+
+&lt;p&gt;Never never never never burn bridges.&lt;/p&gt;
+
+&lt;p&gt;If you specialize, specialize in a type of customer rather than a technology.&lt;/p&gt;
+
+&lt;p&gt;Referrals are #1 source of leads for basically every freelancer, followed by
+writing &amp;amp; job boards. Build rapport with clients, and you’ll fill up your
+schedule.&lt;/p&gt;
+
+&lt;p&gt;When you’re starting out, I’d recommend picking a skill that is in widespread
+demand, but might be slightly boring or even lower-pay. This can help you
+establish a baseline of work while you’re figuring out what you want to
+specialize in.&lt;/p&gt;
+
+&lt;p&gt;You need to keep a mental model of your ideal client in mind. If you don’t
+think about your ideal client regularly, you’ll find yourself drifting into
+whatever project comes along. Having a particular customer in mind helps focus
+your marketing &amp;amp; sales efforts, and allows you to say “not a fit” more often.
+A helpful way to determine what exactly you’re specializing in is to fill in
+the blanks: “I’m &lt;strong&gt;__&lt;/strong&gt;&lt;em&gt;, an expert in &lt;strong&gt;__&lt;/strong&gt;&lt;/em&gt; helping &lt;strong&gt;__&lt;/strong&gt;_ &lt;strong&gt;__&lt;/strong&gt;&lt;em&gt;. Unlike
+my competition, I &lt;strong&gt;__&lt;/strong&gt;&lt;/em&gt;.”&lt;/p&gt;
+
+&lt;p&gt;Don’t work on promises. Get projects down on paper with clear terms, and have
+your clients sign.&lt;/p&gt;
+
+&lt;p&gt;Most clients don’t care about code quality, period. Write quality code anyways,
+time permitting.&lt;/p&gt;
+
+&lt;p&gt;You should absolutely own the work. When in doubt, go above and beyond. You’ll
+regret the times when you do the minimum.&lt;/p&gt;
+
+&lt;p&gt;Break large projects up into 4-6 week chunks. This protects you in case of
+overruns, allows you to slowly build trust with the client, and allows easy
+pivots in case the project needs to change.&lt;/p&gt;
+
+&lt;p&gt;Resist the temptation to overbook.&lt;/p&gt;
+
+&lt;p&gt;The value you provide will be &amp;gt; 50% communication, &amp;lt; 50% technical.&lt;/p&gt;
+
+&lt;p&gt;If a client gives you a design to implement, make your implementation pixel-perfect.&lt;/p&gt;
+
+&lt;p&gt;Buy a tool if it saves you 30 minutes. Purchases under $50 should be instant.
+Spending $ on books should also be a no-brainer. For $20, if a book gives you
+an idea to get 1 more client, it’s paid for itself 100x (thanks Mark Cuban).
+Get a good mic &amp;amp; webcam if you’re remote.&lt;/p&gt;
+
+&lt;p&gt;Build at least 2 months savings, probably more, because you’re going to have a
+dry spell from time-to-time. Live on last month’s income to help mitigate any
+slowdowns.&lt;/p&gt;
+
+&lt;p&gt;A lot of people debate what you should call yourself: Freelancer, Con$ultant,
+or Contractor. You should probably stick with “Consultant”, but what matters
+more is that you position yourself as a high-value professional. The easiest
+way to do that is to raise your rates.&lt;/p&gt;
+
+&lt;p&gt;Don’t call yourself a programmer.&lt;/p&gt;
+
+&lt;h3 id=&quot;double-your-freelancing-rate-2&quot;&gt;Double Your Freelancing Rate &lt;a href=&quot;https://doubleyourfreelancing.com/&quot;&gt;2&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;Strive to understand the pain that the customer is feeling.&lt;/p&gt;
+
+&lt;p&gt;Always qualify the value that you bring to the table.&lt;/p&gt;
+
+&lt;p&gt;In doing so we show that:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;“You’ve done your homework. You’ve spent the time to understand and
+calculate exactly what this project means to their business.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;You can anchor this upside against your costs. We’ll use basic psychology to
+communicate “spend $1 and get $2 back” when putting together our proposals.”&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;“All freelancers need to learn more about business. Not just how to run their
+freelance business, but also how larger businesses work: How they value
+projects, how they calculate ROI, when they make investments, etc. The better
+you are at communicating with a business in their language, the more they will
+trust you, and the more work you’ll get.”&lt;/p&gt;
+
+&lt;p&gt;“My approach to determining the scope (what will get done) and the
+prioritization (when each part will get done) is guided by the question: “Will
+doing this get us closer to the solution?” If a particular requirement didn’t
+get us any closer, and the cost of that requirement wasn’t outweighed by its
+ultimate ROI, it was shelved or reformulated to achieve those two ends.”&lt;/p&gt;
+
+&lt;p&gt;“Planning a roadmap should never be done in isolation. It shouldn’t be
+something you do away from your client, and it shouldn’t be something your
+client does without you. It’s a collaborative effort to figure out: “How can we
+get to the goal as quickly, cheaply, and reliably as possible?”&lt;/p&gt;
+
+&lt;p&gt;A solution is the inverse of a problem.&lt;/p&gt;
+
+&lt;p&gt;There are many paths, or roadmaps, that connect a problem with a solution.&lt;/p&gt;
+
+&lt;p&gt;Roadmaps get to a solution with varying degrees of sophistication and completeness.&lt;/p&gt;
+
+&lt;p&gt;A roadmap should be planned by both the driver (you) and the navigator (the client.)&lt;/p&gt;
+
+&lt;p&gt;How we justify our rates:
+“The reason we are hired is to satisfy our clients. This doesn’t mean just
+having a good relationship with them; it means helping make their business
+better off tomorrow than it was yesterday.  Value-based pricing is all about
+quantifying the surplus of success that we create for our customers.”&lt;/p&gt;
+
+&lt;p&gt;“Remember, a client is somebody we bring under our wings. We protect their
+company, and become their ally and partner. A customer, by definition, is
+somebody who purchases commodity goods.  Ask yourself: Do you want to have
+customers, or do you want to have clients?”&lt;/p&gt;
+
+&lt;p&gt;“Become an irreplaceable, irreducible ally to your clients, and they’ll reward
+you with more income because you’ll reward them with better results”&lt;/p&gt;
+
+&lt;p&gt;“Reducing your risk is essential to becoming a high value consultant.” “You’re
+a skilled developer, designer, marketer, or whatever, and you can provide a lot
+of value to your clients by applying your craft to their problems. But if your
+prospective clients aren’t confident in your ability to pull off their project,
+it’s likely you’ll be too risky to hire.”&lt;/p&gt;
+
+&lt;p&gt;“People buy from you for one of two reasons: they’re either convinced (either
+by you or by others, e.g. a referral) that hiring you is the best option; or
+alternatively, you’ve shown them that you’re the best.”&lt;/p&gt;
+
+&lt;p&gt;“Building your own Step Ladder of Trust”&lt;/p&gt;
+
+&lt;p&gt;“If you can sell your client on a low risk product that shows them that you’re
+both trustworthy and capable of producing value, the likelihood that you’ll win
+the full engagement skyrockets.”&lt;/p&gt;
+
+&lt;p&gt;“Here’s the structure we used to host our Roadmapping Sessions:
+Why do you want to create this project? (We’ve probably already discussed this, but repetition is key.)
+Who is the target audience (or buyer)?
+What is their profit model?
+What defines success? What defines failure?
+What risks, internal (e.g., untested business model) and external (e.g., risky 3rd party APIs), are there that could keep this project from being successful?
+What are the high level roles that will interact with this product? What actions do they take? How can those actions be divided into granular user stories?
+How do they plan on recouping the cost of this project? How can that timeline be shortened?
+Re-assess risks: Now that we know a lot more “about the details of the project, can we retire any of the perceived risks we pointed out earlier?”&lt;/p&gt;
+
+&lt;p&gt;“After the meeting, we’d type up a report that summarized the major takeaways
+of the meeting, and weigh in with additional insights and observations. And
+this is when we’d propose our project, which ends up becoming the proposal we
+talk about in the next chapter.”&lt;/p&gt;
+
+&lt;p&gt;“The first reason to package is that it gives your clients options. No one
+likes being forced to “take it or leave it”. Even though almost all of us would
+be willing to do a little less work for a little less money when our proposed
+budget isn’t realistic, this isn’t always obvious to our clients.  By
+presenting options, we’re giving our clients choice.”&lt;/p&gt;
+
+&lt;p&gt;“As consultants, it’s our job to get the client to the solution as quickly and
+cheaply as possible. So by estimating collaboratively, I can use my expertise
+in developing software and my past experience in working on similar projects to
+help setup both what we’ll do and when we’ll do it in a way that makes the most
+sense for the client and their needs.”&lt;/p&gt;
+
+&lt;p&gt;“The second reason for packaging is that it allows you to anchor the cost of
+one option against another.”&lt;/p&gt;
+
+&lt;p&gt;“By switching up what we’re offering, and by assigning different prices to
+these packages, we can ” “steer our clients toward the package that makes the
+most sense for both of us.”&lt;/p&gt;
+
+&lt;p&gt;“1x, 2.2x and 5x”&lt;/p&gt;
+
+&lt;p&gt;“Negotiate Scope, Not Price”&lt;/p&gt;
+
+&lt;p&gt;“Don’t Discount, Instead Add Freebies”&lt;/p&gt;
+
+&lt;h4 id=&quot;action-plan&quot;&gt;Action Plan&lt;/h4&gt;
+
+&lt;p&gt;Vision
+30 hours a week with 70 ponds per hour&lt;/p&gt;
+
+&lt;p&gt;Schedule
+Full time to OpenCraft(~35 hours)&lt;/p&gt;
+
+&lt;p&gt;Strategy
+Transition from Opencraft to Cosultant&lt;/p&gt;
+
+&lt;p&gt;Steps&lt;/p&gt;
+&lt;ol&gt;
+  &lt;li&gt;Choose your ideal client&lt;/li&gt;
+  &lt;li&gt;Choose your Niche&lt;/li&gt;
+  &lt;li&gt;Build a website and blog&lt;/li&gt;
+  &lt;li&gt;Have a schedule for blog posts&lt;/li&gt;
+  &lt;li&gt;Have a road map for products&lt;/li&gt;
+  &lt;li&gt;Build a funnel for clients&lt;/li&gt;
+&lt;/ol&gt;</content><author><name></name></author><category term="notes" /><category term="freelancing" /></entry><entry><title type="html">Notes on Programming</title><link href="http://localhost:4000/articles/dont-call-yourself-a-programmer/" rel="alternate" type="text/html" title="Notes on Programming" /><published>2019-04-02T00:00:00+08:00</published><updated>2019-04-02T00:00:00+08:00</updated><id>http://localhost:4000/articles/dont-call-yourself-a-programmer</id><content type="html" xml:base="http://localhost:4000/articles/dont-call-yourself-a-programmer/">&lt;h3 id=&quot;dont-call-yourself-a-programmer-1&quot;&gt;Don’t Call Yourself a Programmer &lt;a href=&quot;https://www.kalzumeus.com/2011/10/28/dont-call-yourself-a-programmer/&quot;&gt;1&lt;/a&gt;&lt;/h3&gt;
+
+&lt;h5 id=&quot;90-of-programming-jobs-are-in-creating-line-of-business-software&quot;&gt;90% of programming jobs are in creating Line of Business software:&lt;/h5&gt;
+
+&lt;p&gt;Software solves business problems.  Software often solves business problems
+despite being soul-crushingly boring and of minimal technical complexity.&lt;/p&gt;
+
+&lt;h5 id=&quot;engineers-are-hired-to-create-business-value-not-to-program-things&quot;&gt;Engineers are hired to create business value, not to program things:&lt;/h5&gt;
+
+&lt;p&gt;Producing beautiful software is not a goal.  Solving complex technical problems
+is not a goal.  Writing bug-free code is not a goal.  Using sexy programming
+languages is not a goal.  Add revenue.  Reduce costs.  Those are your only
+goals.&lt;/p&gt;
+
+&lt;p&gt;You really want to be attached to Profit Centers because it will bring you
+higher wages, more respect, and greater opportunities for everything of value
+to you.  It isn’t hard: a bright high schooler, given a paragraph-long
+description of a business, can usually identify where the Profit Center is.  If
+you want to work there, work for that.  If you can’t, either a) work elsewhere
+or b) engineer your transfer after joining the company&lt;/p&gt;
+
+&lt;h5 id=&quot;dont-call-yourself-a-programmer&quot;&gt;Don’t call yourself a programmer:&lt;/h5&gt;
+
+&lt;p&gt;Instead, describe yourself by what you have accomplished for previously
+employers vis-a-vis increasing revenues or reducing costs.  If you have not had
+the opportunity to do this yet, describe things which suggest you have the
+ability to increase revenue or reduce costs, or ideas to do so.&lt;/p&gt;
+
+&lt;h5 id=&quot;you-are-not-defined-by-your-chosen-software-stack&quot;&gt;You are not defined by your chosen software stack:&lt;/h5&gt;
+
+&lt;p&gt;A good engineer has a track record of — repeat after me — increasing revenue or
+decreasing costs.&lt;/p&gt;
+
+&lt;h5 id=&quot;co-workers-and-bosses-are-not-usually-your-friends&quot;&gt;Co-workers and bosses are not usually your friends:&lt;/h5&gt;
+
+&lt;p&gt;You should be a good person to everyone you meet — it is the moral thing to do,
+and as a sidenote will really help your networking — but do not be under the
+delusion that everyone is your friend.&lt;/p&gt;
+
+&lt;h5 id=&quot;you-radically-overestimate-the-average-skill-of-the-competition-because-of-the-crowd-you-hang-around-with&quot;&gt;You radically overestimate the average skill of the competition because of the crowd you hang around with:&lt;/h5&gt;
+
+&lt;p&gt;Key takeaway: you probably are good enough to work at that company you think
+you’re not good enough for.  They hire better mortals, but they still hire
+mortals.&lt;/p&gt;
+
+&lt;h5 id=&quot;read-ad-send-in-resume-go-to-job-interview-receive-offer-is-the-exception-not-the-typical-case-for-getting-employment&quot;&gt;“Read ad. Send in resume. Go to job interview. Receive offer.” is the exception, not the typical case, for getting employment:&lt;/h5&gt;
+
+&lt;p&gt;There are many reasons why most hiring happens privately.  One is that publicly
+visible job offers get spammed by hundreds of resumes (particularly in this
+economy) from people who are stunningly inappropriate for the position.  The
+other is that other companies are so bad at hiring that, if you don’t have
+close personal knowledge about the candidate, you might accidentally hire a
+non-FizzBuzzer.&lt;/p&gt;
+
+&lt;h5 id=&quot;networking-it-isnt-just-for-tcp-packets&quot;&gt;Networking: it isn’t just for TCP packets:&lt;/h5&gt;
+
+&lt;p&gt;Networking just means a) meeting people who at some point can do things for you
+(or vice versa) and b) making a favorable impression on them.&lt;/p&gt;
+
+&lt;p&gt;Strive to help people.  It is the right thing to do, and people are keenly
+aware of who have in the past given them or theirs favors.  If you ever can’t
+help someone but know someone who can, pass them to the appropriate person with
+a recommendation.  If you do this right, two people will be happy with you and
+favorably disposed to helping you out in the future.&lt;/p&gt;
+
+&lt;h5 id=&quot;academia-is-not-like-the-real-world&quot;&gt;Academia is not like the real world:&lt;/h5&gt;
+
+&lt;p&gt;If you’re reading the rest of this, you know that your resume isn’t the primary
+way to get job interviews, so don’t spend huge amount of efforts optimizing
+something that you either have sufficiently optimized already (since you’ll get
+the same amount of interviews at 3.96 as you will at 3.8) or that you don’t
+need at all (since you’ll get job interviews because you’re competent at asking
+the right people to have coffee with you).&lt;/p&gt;
+
+&lt;h5 id=&quot;how-much-money-do-engineers-make&quot;&gt;How much money do engineers make?&lt;/h5&gt;
+
+&lt;p&gt;In general, big companies pay more (money, benefits, etc) than startups.
+Engineers with high perceived value make more than those with low perceived
+value.  Senior engineers make more than junior engineers.  People working in
+high-cost areas make more than people in low-cost areas.  People who are
+skilled in negotiation make more than those who are not.&lt;/p&gt;
+
+&lt;h5 id=&quot;how-do-i-become-better-at-negotiation&quot;&gt;How do I become better at negotiation?&lt;/h5&gt;
+
+&lt;p&gt;a.  Remember you’re selling the solution to a business need (raise revenue or
+decrease costs) rather than programming skill or your beautiful face.&lt;/p&gt;
+
+&lt;p&gt;b.  Negotiate aggressively with appropriate confidence, like the ethical
+professional you are.  It is what your counterparty is probably doing.  You’re
+aiming for a mutual beneficial offer, not for saying Yes every time they say
+something.&lt;/p&gt;
+
+&lt;p&gt;c.  “What is your previous salary?” is employer-speak for “Please give me
+reasons to pay you less money.”  Answer appropriately.&lt;/p&gt;
+
+&lt;p&gt;d.  Always have a counteroffer.  Be comfortable counteroffering around axes you
+care about other than money.  If they can’t go higher on salary then talk about
+vacation instead.&lt;/p&gt;
+
+&lt;p&gt;e.  The only time to ever discuss salary is after you have reached agreement in
+principle that they will hire you if you can strike a mutually beneficial deal.
+This is late in the process after they have invested a lot of time and money in
+you, specifically, not at the interview.  Remember that there are large costs
+associated with them saying “No, we can’t make that work” and, appropriately,
+they will probably not scuttle the deal over comparatively small issues which
+matter quite a bit to you, like e.g. taking their offer and countering for that
+plus a few thousand bucks then sticking to it.&lt;/p&gt;
+
+&lt;p&gt;f.  Read a book.  Many have been written about negotiation.  I like Getting To
+Yes.  It is a little disconcerting that negotiation skills are worth thousands
+of dollars per year for your entire career but engineers think that directed
+effort to study them is crazy when that could be applied to trivialities about
+a technology that briefly caught their fancy.&lt;/p&gt;
+
+&lt;h5 id=&quot;your-most-important-professional-skill-is-communication&quot;&gt;Your most important professional skill is communication:&lt;/h5&gt;
+
+&lt;p&gt;The dominant quality which gets you jobs is the ability to give people the
+perception that you will create value.  This is not necessarily coextensive
+with ability to create value.&lt;/p&gt;
+
+&lt;p&gt;Communication is a skill.  Practice it: you will get better.  One key sub-skill
+is being able to quickly, concisely, and confidently explain how you create
+value to someone who is not an expert in your field and who does not have a
+priori reasons to love you.  If when you attempt to do this technical buzzwords
+keep coming up (“Reduced 99th percentile query times by 200 ms by optimizing
+indexes on…”), take them out and try again.  You should be able to explain what
+you do to a bright 8 year old, the CFO of your company, or a programmer in a
+different specialty, at whatever the appropriate level of abstraction is.&lt;/p&gt;
+
+&lt;h5 id=&quot;you-will-often-be-called-to-do-enterprise-sales-and-other-stuff-you-got-into-engineering-to-avoid&quot;&gt;You will often be called to do Enterprise Sales and other stuff you got into engineering to avoid:&lt;/h5&gt;
+
+&lt;p&gt;When you have meetings with coworkers and are attempting to convince  them to
+implement your suggestions, you will also be doing Enterprise Sales.  If
+getting stuff done is your job description, then convincing people to get stuff
+done is a core job skill for you.  Spend appropriate effort on getting good at
+it.  This means being able to communicate effectively in memos, emails,
+conversations, meetings, and PowerPoint (when appropriate).  It means
+understanding how to make a business case for a technological initiative.  It
+means knowing that sometimes you will make technological sacrifices in pursuit
+of business objectives and that this is the right call.&lt;/p&gt;
+
+&lt;h5 id=&quot;modesty-is-not-a-career-enhancing-character-trait&quot;&gt;Modesty is not a career-enhancing character trait:&lt;/h5&gt;
+
+&lt;p&gt;You are an engineer.  You work magic which makes people’s lives better.  If you
+were in charge of the database specifically on an important project involving
+people then heck yes you lead the database effort which was crucial for the
+success of the project.  This is how the game is played.  If you feel poorly
+about it, you’re like a batter who feels poorly about stealing bases in
+baseball: you’re not morally superior, you’re just playing poorly.&lt;/p&gt;
+
+&lt;h5 id=&quot;all-business-decisions-are-ultimately-made-by-one-or-a-handful-of-multi-cellular-organisms-closely-related-to-chimpanzees-not-by-rules-or-by-algorithms&quot;&gt;All business decisions are ultimately made by one or a handful of multi-cellular organisms closely related to chimpanzees, not by rules or by algorithms:&lt;/h5&gt;
+
+&lt;p&gt;People are people.  Social grooming is a really important skill.  People will
+often back suggestions by friends because they are friends, even when other
+suggestions might actually be better.  People will often be favoritably
+disposed to people they have broken bread with.&lt;/p&gt;
+
+&lt;p&gt;People routinely favor people who they think are like them over people they
+think are not like them.&lt;/p&gt;
+
+&lt;p&gt;Actual grooming is at least moderately important, too, because people are
+hilariously easy to hack by expedients such as dressing appropriately for the
+situation, maintaining a professional appearance, speaking in a confident tone
+of voice, etc.&lt;/p&gt;
+
+&lt;h5 id=&quot;at-the-end-of-the-day-your-life-happiness-will-not-be-dominated-by-your-career&quot;&gt;At the end of the day, your life happiness will not be dominated by your career.&lt;/h5&gt;
+
+&lt;p&gt;Either talk to older people or trust the social scientists who have: family,
+faith, hobbies, etc etc generally swamp career achievements and money in terms
+of things which actually produce happiness.  Optimize appropriately.  Your
+career is important, and right now it might seem like the most important thing
+in your life, but odds are that is not what you’ll believe forever.  Work to
+live, don’t live to work.&lt;/p&gt;</content><author><name></name></author><category term="notes" /><category term="programming" /></entry></feed>
