@@ -30,7 +30,7 @@ twitter_username:
 github_username: devanr
 
 # Build settings
-theme: minima
+remote_theme: "mmistakes/so-simple-theme"
 plugins:
   - jekyll-feed
 
