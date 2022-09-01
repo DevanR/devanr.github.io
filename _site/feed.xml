@@ -1,0 +1,273 @@
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.0">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2022-09-02T00:03:56+08:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Devan</title><subtitle>A repository of thoughts and notes</subtitle><entry><title type="html">Experiment: Speeding up Django tests</title><link href="http://localhost:4000/articles/2022/09/01/speeding_up_django_tests.html" rel="alternate" type="text/html" title="Experiment: Speeding up Django tests" /><published>2022-09-01T00:00:00+08:00</published><updated>2022-09-01T00:00:00+08:00</updated><id>http://localhost:4000/articles/2022/09/01/speeding_up_django_tests</id><content type="html" xml:base="http://localhost:4000/articles/2022/09/01/speeding_up_django_tests.html"></content><author><name></name></author><category term="articles" /><category term="notes" /><category term="test" /><category term="experiment" /><category term="django" /></entry><entry><title type="html">Thoughts on Legacy Code</title><link href="http://localhost:4000/articles/2022/09/01/realisation_about_legacy_code.html" rel="alternate" type="text/html" title="Thoughts on Legacy Code" /><published>2022-09-01T00:00:00+08:00</published><updated>2022-09-01T00:00:00+08:00</updated><id>http://localhost:4000/articles/2022/09/01/realisation_about_legacy_code</id><content type="html" xml:base="http://localhost:4000/articles/2022/09/01/realisation_about_legacy_code.html"></content><author><name></name></author><category term="articles" /><category term="notes" /><category term="legacy-code" /></entry><entry><title type="html">Detecting Duplicate Django Tests</title><link href="http://localhost:4000/articles/2022/09/01/duplicate_django_tests.html" rel="alternate" type="text/html" title="Detecting Duplicate Django Tests" /><published>2022-09-01T00:00:00+08:00</published><updated>2022-09-01T00:00:00+08:00</updated><id>http://localhost:4000/articles/2022/09/01/duplicate_django_tests</id><content type="html" xml:base="http://localhost:4000/articles/2022/09/01/duplicate_django_tests.html">&lt;h1 id=&quot;hello-this-is-a-test&quot;&gt;Hello this is a test&lt;/h1&gt;
+
+&lt;p&gt;Insert some txt here.&lt;/p&gt;</content><author><name></name></author><category term="articles" /><category term="notes" /><category term="django" /></entry><entry><title type="html">Presentation: Test Driven</title><link href="http://localhost:4000/articles/2022/09/01/refactoring_presentation.html" rel="alternate" type="text/html" title="Presentation: Test Driven" /><published>2022-09-01T00:00:00+08:00</published><updated>2022-09-01T00:00:00+08:00</updated><id>http://localhost:4000/articles/2022/09/01/refactoring_presentation</id><content type="html" xml:base="http://localhost:4000/articles/2022/09/01/refactoring_presentation.html">&lt;p&gt;I recently had the opportunity to give a presentation at a company Lunch
+and Learn. I chose a topic that was close to my heart. Since I discovered
+Test Driven Development (TDD) as a junior engineer, its been the main tool I use
+to create value while developing.&lt;/p&gt;
+
+&lt;p&gt;This Presentation touches on the “Why” of TDD. The muddly waters of tests and
+integrated tests. And finally, how we can go about refactoring legacy codebases.&lt;/p&gt;
+
+&lt;p&gt;You can download a PDF of the slides &lt;a href=&quot;/assets/pdf/tdd.pdf&quot;&gt;here&lt;/a&gt;.&lt;/p&gt;</content><author><name></name></author><category term="articles" /><category term="presentation" /><category term="tdd" /></entry><entry><title type="html">Book Review: Hello Startup</title><link href="http://localhost:4000/articles/2020/09/22/hello_startup_review.html" rel="alternate" type="text/html" title="Book Review: Hello Startup" /><published>2020-09-22T00:00:00+08:00</published><updated>2020-09-22T00:00:00+08:00</updated><id>http://localhost:4000/articles/2020/09/22/hello_startup_review</id><content type="html" xml:base="http://localhost:4000/articles/2020/09/22/hello_startup_review.html">&lt;p&gt;I recently finished a wonderful book on the technical decisions of building a
+startup. I personally found the bits on picking a tech stach most interesting.&lt;/p&gt;
+
+&lt;h4 id=&quot;picking-a-tech-stack&quot;&gt;Picking a Tech Stack&lt;/h4&gt;
+
+&lt;p&gt;A good tech stack is one that scales faster than the people required to
+maintain it.&lt;/p&gt;
+
+&lt;p&gt;The current stack will definitely be wrong for the future, It just needs to get
+us there. Iteration is the key.&lt;/p&gt;
+
+&lt;p&gt;Pick a list of popular languages. You can quickly shorten this list by applying
+three filters: problem fit, programming paradigm, and performance requirements.&lt;/p&gt;
+
+&lt;p&gt;If you’re using a web framework to build something important to your
+business—something that’s more than a prototype—the best choice is usually a
+modular full stack framework. That way, you get the best of both worlds: a
+documented, community supported, open source framework where the defaults do a
+good job of handling most use cases, plus the ability to plug in custom
+libraries for a few special cases.&lt;/p&gt;
+
+&lt;p&gt;Django is for CRUD.
+Node.js is for realtime applications.&lt;/p&gt;
+
+&lt;p&gt;Consider splitting the web app by language and purpose.&lt;/p&gt;</content><author><name></name></author><category term="articles" /><category term="notes" /><category term="startup" /></entry><entry><title type="html">Ideal Setup (WIP)</title><link href="http://localhost:4000/articles/2020/04/28/nindo.html" rel="alternate" type="text/html" title="Ideal Setup (WIP)" /><published>2020-04-28T00:00:00+08:00</published><updated>2020-04-28T00:00:00+08:00</updated><id>http://localhost:4000/articles/2020/04/28/nindo</id><content type="html" xml:base="http://localhost:4000/articles/2020/04/28/nindo.html">&lt;p&gt;Here is my current collection of useful tools and models.  This is to serve a
+reminder and guide to myself and possibly a guide to others.&lt;/p&gt;
+
+&lt;h4 id=&quot;body&quot;&gt;Body&lt;/h4&gt;
+
+&lt;p&gt;The objective here is to maximise energy levels.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Minimal sugar&lt;/li&gt;
+  &lt;li&gt;Stay hydrated&lt;/li&gt;
+  &lt;li&gt;Stretch/Yoga breaks&lt;/li&gt;
+  &lt;li&gt;Daily cardio&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&quot;mind&quot;&gt;Mind&lt;/h4&gt;
+
+&lt;p&gt;The Objective here manage your daily state.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Being mindful throughout the day&lt;/li&gt;
+  &lt;li&gt;Practice empathy and kindness to all&lt;/li&gt;
+  &lt;li&gt;Having a vision&lt;/li&gt;
+  &lt;li&gt;Keeping a daily journal&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&quot;tools&quot;&gt;Tools&lt;/h4&gt;
+
+&lt;p&gt;I used to have specific tools that I used. But now, I’m a little more agnostic.
+The litmus test for me is to use any tool that is a force multiplier.&lt;/p&gt;
+
+&lt;h4 id=&quot;processes&quot;&gt;Processes&lt;/h4&gt;
+
+&lt;p&gt;The first round is probably going to be wrong. Get the first version out and
+use the right metrics for succes from day one. If it’s revenue, let that guide
+you.&lt;/p&gt;
+
+&lt;h4 id=&quot;useful-books&quot;&gt;Useful Books&lt;/h4&gt;
+
+&lt;p&gt;I will always be a voracious reader of books. But these days, I have to temper
+my enthusiasm to learn with a decent measure of practice. In some matters,
+experience does indeed trump knowledge and I am slowly trying to discern the
+line between the two.&lt;/p&gt;
+
+&lt;p&gt;So my advice here is to read as much as you can, but remember to practice what
+you read to find out what works best for you.&lt;/p&gt;
+
+&lt;h4 id=&quot;summary&quot;&gt;Summary&lt;/h4&gt;
+
+&lt;p&gt;Know what you want and fail your way to success.&lt;/p&gt;</content><author><name></name></author><category term="articles" /><category term="notes" /><category term="wip" /></entry><entry><title type="html">Notes on Test-Driven Development as Pragmatic Deliberate Practice</title><link href="http://localhost:4000/articles/2020/04/25/tdd-deliberate-practice.html" rel="alternate" type="text/html" title="Notes on Test-Driven Development as Pragmatic Deliberate Practice" /><published>2020-04-25T00:00:00+08:00</published><updated>2020-04-25T00:00:00+08:00</updated><id>http://localhost:4000/articles/2020/04/25/tdd-deliberate-practice</id><content type="html" xml:base="http://localhost:4000/articles/2020/04/25/tdd-deliberate-practice.html">&lt;p&gt;Test Driven Development has really helped me become a better programmer.  And
+there is no one better to learn it from from JB Rainsberger himself.  Here are
+some of my notes on two of my favourite topics, deliberate practice and TDD.&lt;/p&gt;
+
+&lt;p&gt;Fix bugs test first.&lt;/p&gt;
+
+&lt;p&gt;After reviewing the literature, I identified number of ways that experts in different fields learn:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;They engage in deliberate practice, so that each opportunity for practice has a goal and evaluation criteria.&lt;/li&gt;
+  &lt;li&gt;They compile an extensive experience bank.&lt;/li&gt;
+  &lt;li&gt;They obtain feedback that is accurate, diagnostic, and reasonably timely.&lt;/li&gt;
+  &lt;li&gt;They enrich their experiences by reviewing prior experience to derive new insights and lessons from mistakes.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Goals for TDD practise sessions.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Test-drive the integration point to a library you haven’t worked with before.&lt;/li&gt;
+  &lt;li&gt;Isolate more of your code from the integration point to a framework.&lt;/li&gt;
+  &lt;li&gt;Write fewer tests that need a framework testing library (like Robolectric, NUnitASP, rspec-rails, or JSFUnit) and more that use the plain testing framework (plain JUnit, RSpec, or pytest).&lt;/li&gt;
+  &lt;li&gt;Reduce the time it takes to write the next test.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Evaluation criteria for TDD practise sessions.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Did I build this part of the system more easily than usual?&lt;/li&gt;
+  &lt;li&gt;Do the names in this part of the system make it easier for others to understand how to change this code?&lt;/li&gt;
+  &lt;li&gt;Can I extend this part of the system more easily by only adding code, rather than having to change it?&lt;/li&gt;
+  &lt;li&gt;Does the setup code that I need to run my tests involve only the parts of the system that I’ve just designed?&lt;/li&gt;
+  &lt;li&gt;If I have multiple assertions in a test, do I consider this very strongly related to each other?&lt;/li&gt;
+  &lt;li&gt;Did the pace at which new tests passed feel fast to me? or at least faster than before?&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h5 id=&quot;thoughts&quot;&gt;Thoughts&lt;/h5&gt;
+
+&lt;p&gt;I think it boils down to having the discipline to invest in the time and
+opportunity to practice.&lt;/p&gt;</content><author><name></name></author><category term="articles" /><category term="tdd" /><category term="deliberate-practice" /></entry><entry><title type="html">Learning about WebRTC</title><link href="http://localhost:4000/articles/2020/04/24/webrtc.html" rel="alternate" type="text/html" title="Learning about WebRTC" /><published>2020-04-24T00:00:00+08:00</published><updated>2020-04-24T00:00:00+08:00</updated><id>http://localhost:4000/articles/2020/04/24/webrtc</id><content type="html" xml:base="http://localhost:4000/articles/2020/04/24/webrtc.html">&lt;p&gt;I was reading about the of people were facing with Zoom recently.  Given the
+rise of COVID-19 and the need to work remotely, remote conferencing software
+seems to very much in demand.  This got me thinking about the technologies
+involved. This post is about me going down the rabbit hole and is a summary of
+my explorations.&lt;/p&gt;
+
+&lt;p&gt;Rediscovering WebRTC [1]&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://webrtc.org/&quot;&gt;WebRTC&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;WebSockets vs WebRTC [2]&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://bloggeek.me/webrtc-vs-websockets/&quot;&gt;Websockets vs WebRTC&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Python implementation of WebRTC [3] [4]&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/aiortc/aiortc&quot;&gt;aiortc&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.youtube.com/watch?v=uKwB6r3upMU&quot;&gt;FOSSDEM Talk&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;HTTP3 [5] [6]&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://http3-explained.haxx.se/en/why-quic&quot;&gt;QUIC&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/facebookincubator/mvfst&quot;&gt;mvfst&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Python implementation of QUIC [7]&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/aiortc/aioquic&quot;&gt;aioquic&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</content><author><name></name></author><category term="articles" /><category term="webrtc" /></entry><entry><title type="html">Book Review: Refuse to Choose</title><link href="http://localhost:4000/articles/2020/04/18/refuse-to-choose.html" rel="alternate" type="text/html" title="Book Review: Refuse to Choose" /><published>2020-04-18T00:00:00+08:00</published><updated>2020-04-18T00:00:00+08:00</updated><id>http://localhost:4000/articles/2020/04/18/refuse-to-choose</id><content type="html" xml:base="http://localhost:4000/articles/2020/04/18/refuse-to-choose.html">&lt;h5 id=&quot;what-scanner-are-you&quot;&gt;What Scanner Are You?&lt;/h5&gt;
+
+&lt;p&gt;This book was recommended in a post on HackerNews. As someone who has
+always been fascinated with multiple subjects, it’s always seemed like
+a curse. Always finding new things to learn and experiment but never
+having sufficient time to do to. The premise of this book, is that,
+that are other people out there like me, and the term coined here is
+“Scanner”. Discovering this term made this book worth it for me.&lt;/p&gt;
+
+&lt;h5 id=&quot;notes&quot;&gt;Notes&lt;/h5&gt;
+
+&lt;p&gt;Embrace the joys of learning, however long or brief that they may be.
+Give yourself completely to the process and trust your own instincts.
+Commit to everything that interests you.&lt;/p&gt;
+
+&lt;p&gt;Actively analyse what interests you and investigate that interest with
+short projects. Use the feedback from these projects to decide whether
+to invest for time. Action and feedback, rinse and repeat.&lt;/p&gt;
+
+&lt;p&gt;Start small, start now. Start everything, don’t worry about finishing.&lt;/p&gt;
+
+&lt;p&gt;I’m care primarily about my surroundings and the people I work with.
+Happiness is more important than success for me. I’ve learned that
+the most important career question is, “Will this make me happy?”.&lt;/p&gt;
+
+&lt;p&gt;And whatever position I’m in, I’m the happiest when I’m providing the
+best value, ie, being the most valuable player.&lt;/p&gt;
+
+&lt;h3 id=&quot;potential-careers&quot;&gt;Potential Careers&lt;/h3&gt;
+
+&lt;p&gt;Troubleshooter
+Writer
+Researcher
+Inventor
+Abstract Writer&lt;/p&gt;</content><author><name></name></author><category term="articles" /><category term="review" /><category term="self-improvement" /></entry><entry><title type="html">Book Summary: Time Series Forecasting with Python (WIP)</title><link href="http://localhost:4000/articles/2020/04/16/time-series-forecasting.html" rel="alternate" type="text/html" title="Book Summary: Time Series Forecasting with Python (WIP)" /><published>2020-04-16T00:00:00+08:00</published><updated>2020-04-16T00:00:00+08:00</updated><id>http://localhost:4000/articles/2020/04/16/time-series-forecasting</id><content type="html" xml:base="http://localhost:4000/articles/2020/04/16/time-series-forecasting.html">&lt;p&gt;I am interested in combining the benefits of Django and React
+in a single web application. Here are some notes on the topic.
+My goal is not to create a web application but to understand
+the mechanism of how this can be achieved.&lt;/p&gt;
+
+&lt;h5 id=&quot;part-1&quot;&gt;Part 1&lt;/h5&gt;
+
+&lt;h4 id=&quot;python&quot;&gt;Python&lt;/h4&gt;
+
+&lt;p&gt;What are the libraries?&lt;/p&gt;
+
+&lt;h4 id=&quot;time-series-forecasting-defined&quot;&gt;Time Series forecasting defined&lt;/h4&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;nomenclature&lt;/li&gt;
+  &lt;li&gt;definitions&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&quot;forecasting-as-a-supervised-learning-problem&quot;&gt;Forecasting as a Supervised Learning problem&lt;/h4&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;classification&lt;/li&gt;
+  &lt;li&gt;regression&lt;/li&gt;
+  &lt;li&gt;sliding window (reframe)&lt;/li&gt;
+  &lt;li&gt;univariate time series&lt;/li&gt;
+  &lt;li&gt;multi variate time series&lt;/li&gt;
+  &lt;li&gt;one step forecast&lt;/li&gt;
+  &lt;li&gt;multi step forecast&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&quot;time-series-forecasting-defined-1&quot;&gt;Time Series forecasting defined&lt;/h4&gt;
+
+&lt;h5 id=&quot;part-2&quot;&gt;Part 2&lt;/h5&gt;
+
+&lt;h4 id=&quot;loading-data&quot;&gt;Loading Data&lt;/h4&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;read_csv()&lt;/li&gt;
+  &lt;li&gt;Pandas series&lt;/li&gt;
+  &lt;li&gt;series.head()&lt;/li&gt;
+  &lt;li&gt;series.tail()&lt;/li&gt;
+  &lt;li&gt;series.size&lt;/li&gt;
+  &lt;li&gt;series[time_index]&lt;/li&gt;
+  &lt;li&gt;series.describe()&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&quot;basic-feature-engineering&quot;&gt;Basic Feature Engineering&lt;/h4&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;change the timeseries into something that can be digested by a supervised learning model&lt;/li&gt;
+  &lt;li&gt;in essence we select the best features&lt;/li&gt;
+  &lt;li&gt;we test by checking the results of all our features&lt;/li&gt;
+  &lt;li&gt;honestly, feels like spray and pray&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&quot;data-visualization&quot;&gt;Data Visualization&lt;/h4&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Line Plots.&lt;/li&gt;
+  &lt;li&gt;Histograms and Density Plots.&lt;/li&gt;
+  &lt;li&gt;Box and Whisker Plots.&lt;/li&gt;
+  &lt;li&gt;Heat Maps.&lt;/li&gt;
+  &lt;li&gt;Lag Plots or Scatter Plots.&lt;/li&gt;
+  &lt;li&gt;Autocorrelation Plots.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;All the visualisation methods can be used to quickly glean information about
+the data&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Some linear time series forecasting methods assume a well-behaved
+distribution of observations (i.e. a bell curve or normal distribution)&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Comparing box and whisker plots by consistent intervals is a useful tool.
+Within an interval, it can help to spot outliers (dots above or below the
+whiskers). Across intervals, in this case years, we can look for multiple
+year trends, seasonality, and other structural information that could be
+modeled.&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;</content><author><name></name></author><category term="articles" /><category term="summary" /><category term="python" /><category term="forecasting" /></entry></feed>
