@@ -17,5 +17,5 @@ restart shell
 gem install bundler
 build install
 
-# Install Jekyll
-bundle exec jekyll serve
+# Install Jekyll and Run
+bundle exec jekyll serve --livereload
