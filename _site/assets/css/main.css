@@ -2051,7 +2051,7 @@ span + .entry-title { margin-top: 0; }
 .image-credit a { color: #6f6f6f; }
 
 /* main content block */
-.entry-content { float: left; display: block; margin-right: 2.3576515979%; width: 100%; /* nice link underlines */ }
+.entry-content { float: left; display: block; width: 100%; /* nice link underlines */ }
 .entry-content:last-child { margin-right: 0; }
 .entry-content p:first-child { margin-top: 0; }
 @media screen and (min-width: 62.5em) { .entry-content { float: left; display: block; margin-right: 2.3576515979%;}
