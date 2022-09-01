@@ -1,5 +1,5 @@
 @charset "UTF-8";
-/*  So Simple  Designer: Michael Rose Twitter: http://twitter.com/mmistakes 
+/*  So Simple  Designer: Michael Rose Twitter: http://twitter.com/mmistakes
 */
 body { margin-top: 24px; font-size: 16px; }
 
@@ -1410,7 +1410,7 @@ img.mfp-img { width: auto; max-width: 100%; height: auto; display: block; line-h
 a:focus { outline: thin dotted #333; outline: 5px auto -webkit-focus-ring-color; outline-offset: -2px; }
 
 /*  Vertical Rhythm https://github.com/sturobson/Sassifaction
- In this mixin you can specify the font size in PX and  it will calculate the REM based on your $doc-font-size  & $doc-line-height variables. 
+ In this mixin you can specify the font size in PX and  it will calculate the REM based on your $doc-font-size  & $doc-line-height variables.
  @include font-size(24);
  It will also create a bottom margin based on the  $doc-font-size & $doc-line-height variables unless you  specify that it shouldn't have one.
  @include font-size(24, no);
@@ -2054,7 +2054,7 @@ span + .entry-title { margin-top: 0; }
 .entry-content { float: left; display: block; margin-right: 2.3576515979%; width: 100%; /* nice link underlines */ }
 .entry-content:last-child { margin-right: 0; }
 .entry-content p:first-child { margin-top: 0; }
-@media screen and (min-width: 62.5em) { .entry-content { float: left; display: block; margin-right: 2.3576515979%; width: 78.6754892504%; }
+@media screen and (min-width: 62.5em) { .entry-content { float: left; display: block; margin-right: 2.3576515979%;}
   .entry-content:last-child { margin-right: 0; } }
 .entry-content p > a, .entry-content li > a { border-bottom: 1px dotted #a2a2a2; }
 .entry-content p > a:hover, .entry-content li > a:hover { border-bottom-style: solid; }
