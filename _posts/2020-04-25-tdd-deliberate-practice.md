@@ -9,6 +9,8 @@ share: true
 modified:
 ---
 
+Book [1]
+
 Test Driven Development has really helped me become a better programmer.  And
 there is no one better to learn it from from JB Rainsberger himself.  Here are
 some of my notes on two of my favourite topics, deliberate practice and TDD.

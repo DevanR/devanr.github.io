@@ -22,14 +22,15 @@ with you as parents is critical.
 * Expose your child to a broad vocabulary and a love of reading.
 
 Tips to expand your child's vocabulary
-- talk to them regularly
-- drop the baby talk
-- read books to them
-- label household items
-- share stories and ask questions
-- encourage them to write and read on their own
-- pay attention to their vocabulary and correct mistakes constructively
-- repeat words and meanings multiple times so they fully understand the
+
+* talk to them regularly
+* drop the baby talk
+* read books to them
+* label household items
+* share stories and ask questions
+* encourage them to write and read on their own
+* pay attention to their vocabulary and correct mistakes constructively
+* repeat words and meanings multiple times so they fully understand the
 
 * Be a positive role model about the importance of eductation
 
@@ -191,11 +192,11 @@ School reports are a starting point.
 
 5 questions to ask in parent-teacher interviews:
 
-- How has my child's education improved during the year?
-- Where should my child be now?
-- What does my child need to learn next?
-- Is my child engaged in class and enjoying the subject?
-- Is my child happy?
+* How has my child's education improved during the year?
+* Where should my child be now?
+* What does my child need to learn next?
+* Is my child engaged in class and enjoying the subject?
+* Is my child happy?
 
 Use the ACARA website work samples and learning progressionsto compare the standard.
 
@@ -218,9 +219,9 @@ It will be a gift for you and your child to have some common experiences, so try
 to let too many slip by.
 
 Three key factors to help your child choose elective subjects:
-- pursue subjects that reflect their strengths
-- choose subjects that will keep them interested
-- choose subjects that will keep them motivated
+* pursue subjects that reflect their strengths
+* choose subjects that will keep them interested
+* choose subjects that will keep them motivated
 
 #### 12. Manage your child's use of technology
 
@@ -248,5 +249,3 @@ Enjoy the experience of having a child at school.
 Remember that ultimately, we want our children to leave school happy with what
 they have achieved, have had every opportunity to learn to their fullest
 potential and with their well-being and resilience supported and strengthened.
-
-

@@ -17,6 +17,7 @@ the mechanism of how this can be achieved.
 ##### Patterns
 
 #### Option [1]
+
 React in its own "frontend" Django app: load a single HTML template and let React manage the frontend (difficulty: medium)
 
 ### Backend - Django
@@ -33,6 +34,7 @@ The approach here seems straight forward but limited. The examples here do not
 go into depth as to how data can be saved.
 
 #### Option [2]
+
 Django REST as a standalone API + React as a standalone SPA (difficulty: hard, it involves JWT for authentication)
 
 ### Backend - Django
@@ -60,7 +62,8 @@ Django REST as a standalone API + React as a standalone SPA (difficulty: hard, i
 
 - install CORS support as Django middleware to allow access to local React server
 
-#### Option 3.
+#### Option 3
+
 Mix and match: mini React apps inside Django templates (difficulty: simple, but not so maintainable in the long run)
 
 This raises two questions for me. Firstly, what would be the best way of
@@ -70,5 +73,3 @@ What are the tradeoffs?
 
 [1]: https://www.valentinog.com/blog/drf/
 [2]: https://www.digitalocean.com/community/tutorials/how-to-build-a-modern-web-application-to-manage-customer-information-with-django-and-react-on-ubuntu-18-04
-[3]: https://gist.github.com/fongandrew/f28245920a41788e084d77877e65f22f
-[4]: https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS

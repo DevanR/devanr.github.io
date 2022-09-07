@@ -4,7 +4,7 @@ var store = [{
         "tags": ["keyboard","diy"],
         "url": "http://localhost:4000/articles/2017/01/06/keyboard.html"
       },{
-        "title": "Notes on Learning (WIP)",
+        "title": "Notes on Learning",
         "excerpt":"Mastering Vim Read, learn and improve your life. The goal of knowledge is its application. In order to improve your life based on what you learn, you must be actionoriented. You have to take action. Only when you apply the new things you learn in real life, you really makea...","categories": ["articles"],
         "tags": ["learning","notes"],
         "url": "http://localhost:4000/articles/2019/03/05/how-to-learn.html"
@@ -14,18 +14,13 @@ var store = [{
         "tags": ["notes"],
         "url": "http://localhost:4000/articles/2019/03/11/how-the-economic-machine-works.html"
       },{
-        "title": "Notes on Negotiation (WIP)",
+        "title": "Notes on Negotiation",
         "excerpt":"Getting to Yes What is a good agreement? Fisher and Ury explain that a good agreement is one which is wise andefficient, and which improves the parties’ relationship. Wise agreementssatisfy the parties’ interests and are fair and lasting. What are the 4 principles of principled negotiation? separate the people from...","categories": ["articles"],
         "tags": ["notes","negotiation"],
         "url": "http://localhost:4000/articles/2019/03/28/negotiation.html"
       },{
-        "title": "Notes on Startups (WIP)",
-        "excerpt":"Getting Real Build less. Simplicity and focus.Build it for yourself to solve your own problem.Fix time and budget, flex scope. It’s better to make half a product than a half-assed product.Keep it small and managable so you can actually enjoy the process.Stay lean.All the cash, all the marketing, all the...","categories": ["articles"],
-        "tags": ["notes","startups"],
-        "url": "http://localhost:4000/articles/2019/03/28/startups.html"
-      },{
         "title": "Notes on Programming",
-        "excerpt":"Don’t Call Yourself a Programmer 1 90% of programming jobs are in creating Line of Business software: Software solves business problems. Software often solves business problemsdespite being soul-crushingly boring and of minimal technical complexity. Engineers are hired to create business value, not to program things: Producing beautiful software is not...","categories": ["articles"],
+        "excerpt":"Don’t Call Yourself a Programmer 1 90% of programming jobs are in creating Line of Business software Software solves business problems. Software often solves business problemsdespite being soul-crushingly boring and of minimal technical complexity. Engineers are hired to create business value, not to program things Producing beautiful software is not...","categories": ["articles"],
         "tags": ["notes","programming"],
         "url": "http://localhost:4000/articles/2019/04/02/dont-call-yourself-a-programmer.html"
       },{
@@ -49,8 +44,8 @@ var store = [{
         "tags": ["summary"],
         "url": "http://localhost:4000/articles/2019/12/28/how-to-get-the-best-out-of-school.html"
       },{
-        "title": "Book Summary: How to Live on Twenty-Four Hours a Day [1]",
-        "excerpt":"“The wish to accomplish something outside their formal programme is common toall men who in the course of evolution have risen past a certain level. “ After a certain amount of success, man often desires to become more. And in doingso, with limited resources, encounters sadness. The truth is that...","categories": ["articles"],
+        "title": "Book Summary: How to Live on Twenty-Four Hours a Day",
+        "excerpt":"Book 1 “The wish to accomplish something outside their formal programme is common toall men who in the course of evolution have risen past a certain level. “ After a certain amount of success, man often desires to become more. And in doingso, with limited resources, encounters sadness. The truth...","categories": ["articles"],
         "tags": ["summary","productivity"],
         "url": "http://localhost:4000/articles/2020/01/10/24-hours-a-day.html"
       },{
@@ -59,7 +54,7 @@ var store = [{
         "tags": ["django","react"],
         "url": "http://localhost:4000/articles/2020/04/12/django-react.html"
       },{
-        "title": "Book Summary: Time Series Forecasting with Python (WIP)",
+        "title": "Book Summary: Time Series Forecasting with Python",
         "excerpt":"I am interested in combining the benefits of Django and Reactin a single web application. Here are some notes on the topic.My goal is not to create a web application but to understandthe mechanism of how this can be achieved. Part 1 Python What are the libraries? Time Series forecasting...","categories": ["articles"],
         "tags": ["summary","python","forecasting"],
         "url": "http://localhost:4000/articles/2020/04/16/time-series-forecasting.html"
@@ -75,7 +70,7 @@ var store = [{
         "url": "http://localhost:4000/articles/2020/04/24/webrtc.html"
       },{
         "title": "Notes on Test-Driven Development as Pragmatic Deliberate Practice",
-        "excerpt":"Test Driven Development has really helped me become a better programmer. Andthere is no one better to learn it from from JB Rainsberger himself. Here aresome of my notes on two of my favourite topics, deliberate practice and TDD. Fix bugs test first. After reviewing the literature, I identified number...","categories": ["articles"],
+        "excerpt":"Book 1 Test Driven Development has really helped me become a better programmer. Andthere is no one better to learn it from from JB Rainsberger himself. Here aresome of my notes on two of my favourite topics, deliberate practice and TDD. Fix bugs test first. After reviewing the literature, I...","categories": ["articles"],
         "tags": ["tdd","deliberate-practice"],
         "url": "http://localhost:4000/articles/2020/04/25/tdd-deliberate-practice.html"
       },{
@@ -90,22 +85,22 @@ var store = [{
         "url": "http://localhost:4000/articles/2020/09/22/hello_startup_review.html"
       },{
         "title": "Detecting Duplicate Django Tests",
-        "excerpt":"Hello this is a test Insert some txt here. ","categories": ["articles"],
-        "tags": ["notes","django"],
+        "excerpt":"While improving the test coverage of a legacy Django code base, the question ofduplicate tests was raised. This particular code base moved towards usingend-to-end tests sometime in its past because the business logic became totangled to unit test. As a result, with each new feature, more and moreend-to-end tests were...","categories": ["articles"],
+        "tags": ["notes","django","tdd","script"],
         "url": "http://localhost:4000/articles/2022/09/01/duplicate_django_tests.html"
       },{
-        "title": "Thoughts on Legacy Code",
-        "excerpt":"","categories": ["articles"],
+        "title": "A Moment of Enlightenment",
+        "excerpt":"…I was describing my thoughts to a friend in another field about the“horrible” state of a codebase. And he remarked that every software engineerhe’d worked with always complained about the existing code base… It was at that moment that I realised that I was perpetuating the stereotypes Iwas trying solve....","categories": ["articles"],
         "tags": ["notes","legacy-code"],
         "url": "http://localhost:4000/articles/2022/09/01/realisation_about_legacy_code.html"
       },{
-        "title": "Presentation: Test Driven",
-        "excerpt":"I recently had the opportunity to give a presentation at a company Lunchand Learn. I chose a topic that was close to my heart. Since I discoveredTest Driven Development (TDD) as a junior engineer, its been the main tool I useto create value while developing. This Presentation touches on the...","categories": ["articles"],
+        "title": "A Presentation on Test Driven Development",
+        "excerpt":"I recently had the opportunity to give a presentation at a company Lunch andLearn. I chose a topic that was close to my heart. Since I discovered TestDriven Development (TDD) as a junior engineer, its been one of the the maintools I use to create value while developing. This Presentation...","categories": ["articles"],
         "tags": ["presentation","tdd"],
         "url": "http://localhost:4000/articles/2022/09/01/refactoring_presentation.html"
       },{
-        "title": "Experiment: Speeding up Django tests",
-        "excerpt":"","categories": ["articles"],
-        "tags": ["notes","test","experiment","django"],
-        "url": "http://localhost:4000/articles/2022/09/01/speeding_up_django_tests.html"
+        "title": "Grokking Codebases quickly",
+        "excerpt":"I recently I had to work with a large legacy codebase. It was especiallyconfusing as there was no documentation available. In order to get myself up tospeed as quickly as possible, I invested some time in finding some tools to aidme in understanding the architecture of the codebase. Here are...","categories": ["articles"],
+        "tags": ["notes","visualisation"],
+        "url": "http://localhost:4000/articles/2022/09/05/grokking_tools.html"
       }]

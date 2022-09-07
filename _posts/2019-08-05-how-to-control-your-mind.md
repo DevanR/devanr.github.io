@@ -20,7 +20,7 @@ To clear the barriers in one's subconcious, one has to think Holy
 thoughts continuous. So as to clear out or perhaps re-program the
 subconcious.
 
-#### Beware a trick of the Mind
+####  Beware a trick of the Mind
 
 "It is foolishness to worry about the future while allowing the
 devil to conquer the present."
@@ -33,7 +33,6 @@ outside this moment, that we should worry about it?
 
 Love God. But if you do not believe in God, than believe in
 yourself.
-
 
 #### Summary
 
@@ -116,6 +115,3 @@ through self-effort.
 
 Mind-control is valuable because it leads to the highest blessing —the
 illumined state of being,”
-
-
-

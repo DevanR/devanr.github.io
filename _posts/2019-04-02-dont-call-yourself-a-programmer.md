@@ -9,14 +9,14 @@ share: true
 modified:
 ---
 
-### Don't Call Yourself a Programmer [1]
+#### Don't Call Yourself a Programmer [1]
 
-##### 90% of programming jobs are in creating Line of Business software:
+##### 90% of programming jobs are in creating Line of Business software
 
 Software solves business problems.  Software often solves business problems
 despite being soul-crushingly boring and of minimal technical complexity.
 
-##### Engineers are hired to create business value, not to program things:
+##### Engineers are hired to create business value, not to program things
 
 Producing beautiful software is not a goal.  Solving complex technical problems
 is not a goal.  Writing bug-free code is not a goal.  Using sexy programming
@@ -30,31 +30,31 @@ description of a business, can usually identify where the Profit Center is.  If
 you want to work there, work for that.  If you can’t, either a) work elsewhere
 or b) engineer your transfer after joining the company
 
-##### Don’t call yourself a programmer:
+##### Don’t call yourself a programmer
 
 Instead, describe yourself by what you have accomplished for previously
 employers vis-a-vis increasing revenues or reducing costs.  If you have not had
 the opportunity to do this yet, describe things which suggest you have the
 ability to increase revenue or reduce costs, or ideas to do so.
 
-##### You are not defined by your chosen software stack:
+##### You are not defined by your chosen software stack
 
 A good engineer has a track record of — repeat after me — increasing revenue or
 decreasing costs.
 
-##### Co-workers and bosses are not usually your friends:
+##### Co-workers and bosses are not usually your friends
 
 You should be a good person to everyone you meet — it is the moral thing to do,
 and as a sidenote will really help your networking — but do not be under the
 delusion that everyone is your friend.
 
-##### You radically overestimate the average skill of the competition because of the crowd you hang around with:
+##### You radically overestimate the average skill of the competition because of the crowd you hang around with
 
 Key takeaway: you probably are good enough to work at that company you think
 you’re not good enough for.  They hire better mortals, but they still hire
 mortals.
 
-##### “Read ad. Send in resume. Go to job interview. Receive offer.” is the exception, not the typical case, for getting employment:
+##### “Read ad. Send in resume. Go to job interview. Receive offer.” is the exception, not the typical case, for getting employment
 
 There are many reasons why most hiring happens privately.  One is that publicly
 visible job offers get spammed by hundreds of resumes (particularly in this
@@ -63,7 +63,7 @@ other is that other companies are so bad at hiring that, if you don’t have
 close personal knowledge about the candidate, you might accidentally hire a
 non-FizzBuzzer.
 
-##### Networking: it isn’t just for TCP packets:
+##### Networking: it isn’t just for TCP packets
 
 Networking just means a) meeting people who at some point can do things for you
 (or vice versa) and b) making a favorable impression on them.
@@ -74,7 +74,7 @@ help someone but know someone who can, pass them to the appropriate person with
 a recommendation.  If you do this right, two people will be happy with you and
 favorably disposed to helping you out in the future.
 
-##### Academia is not like the real world:
+##### Academia is not like the real world
 
 If you’re reading the rest of this, you know that your resume isn’t the primary
 way to get job interviews, so don’t spend huge amount of efforts optimizing
@@ -123,7 +123,7 @@ of dollars per year for your entire career but engineers think that directed
 effort to study them is crazy when that could be applied to trivialities about
 a technology that briefly caught their fancy.
 
-##### Your most important professional skill is communication:
+##### Your most important professional skill is communication
 
 The dominant quality which gets you jobs is the ability to give people the
 perception that you will create value.  This is not necessarily coextensive
@@ -138,7 +138,7 @@ indexes on…”), take them out and try again.  You should be able to explain w
 you do to a bright 8 year old, the CFO of your company, or a programmer in a
 different specialty, at whatever the appropriate level of abstraction is.
 
-##### You will often be called to do Enterprise Sales and other stuff you got into engineering to avoid:
+##### You will often be called to do Enterprise Sales and other stuff you got into engineering to avoid
 
 When you have meetings with coworkers and are attempting to convince  them to
 implement your suggestions, you will also be doing Enterprise Sales.  If
@@ -150,7 +150,7 @@ understanding how to make a business case for a technological initiative.  It
 means knowing that sometimes you will make technological sacrifices in pursuit
 of business objectives and that this is the right call.
 
-##### Modesty is not a career-enhancing character trait:
+##### Modesty is not a career-enhancing character trait
 
 You are an engineer.  You work magic which makes people’s lives better.  If you
 were in charge of the database specifically on an important project involving
@@ -159,7 +159,7 @@ success of the project.  This is how the game is played.  If you feel poorly
 about it, you’re like a batter who feels poorly about stealing bases in
 baseball: you’re not morally superior, you’re just playing poorly.
 
-##### All business decisions are ultimately made by one or a handful of multi-cellular organisms closely related to chimpanzees, not by rules or by algorithms:
+##### All business decisions are ultimately made by one or a handful of multi-cellular organisms closely related to chimpanzees, not by rules or by algorithms
 
 People are people.  Social grooming is a really important skill.  People will
 often back suggestions by friends because they are friends, even when other
@@ -174,7 +174,7 @@ hilariously easy to hack by expedients such as dressing appropriately for the
 situation, maintaining a professional appearance, speaking in a confident tone
 of voice, etc.
 
-##### At the end of the day, your life happiness will not be dominated by your career.
+##### At the end of the day, your life happiness will not be dominated by your career
 
 Either talk to older people or trust the social scientists who have: family,
 faith, hobbies, etc etc generally swamp career achievements and money in terms
@@ -182,6 +182,5 @@ of things which actually produce happiness.  Optimize appropriately.  Your
 career is important, and right now it might seem like the most important thing
 in your life, but odds are that is not what you’ll believe forever.  Work to
 live, don’t live to work.
-
 
 [1]: https://www.kalzumeus.com/2011/10/28/dont-call-yourself-a-programmer/

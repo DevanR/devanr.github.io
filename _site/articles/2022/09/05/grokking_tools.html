@@ -5,13 +5,13 @@
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en"><!--<![endif]-->
 <head>
 <meta charset="utf-8">
-<title>Experiment: Speeding up Django tests &#8211; Devan</title>
+<title>Grokking Codebases quickly &#8211; Devan</title>
 <meta name="description" content="">
-<meta name="keywords" content="notes, test, experiment, django">
+<meta name="keywords" content="notes, visualisation">
 
 
 <!-- Twitter Cards -->
-<meta name="twitter:title" content="Experiment: Speeding up Django tests">
+<meta name="twitter:title" content="Grokking Codebases quickly">
 <meta name="twitter:description" content="">
 
 
@@ -22,16 +22,16 @@
 <!-- Open Graph -->
 <meta property="og:locale" content="">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Experiment: Speeding up Django tests">
+<meta property="og:title" content="Grokking Codebases quickly">
 <meta property="og:description" content="">
-<meta property="og:url" content="http://localhost:4000/articles/2022/09/01/speeding_up_django_tests.html">
+<meta property="og:url" content="http://localhost:4000/articles/2022/09/05/grokking_tools.html">
 <meta property="og:site_name" content="Devan">
 
 
 
 
 
-<link rel="canonical" href="http://localhost:4000/articles/2022/09/01/speeding_up_django_tests.html">
+<link rel="canonical" href="http://localhost:4000/articles/2022/09/05/grokking_tools.html">
 <link href="http://localhost:4000/feed.xml" type="application/atom+xml" rel="alternate" title="Devan Feed">
 
 <!-- https://t.co/dKP3o1e -->
@@ -116,10 +116,10 @@
     <div class="entry-wrapper">
       <header class="entry-header">
         <ul class="entry-tags">
-          <li><a href="http://localhost:4000/tags/#notes" title="Pages tagged notes">notes</a></li><li><a href="http://localhost:4000/tags/#test" title="Pages tagged test">test</a></li><li><a href="http://localhost:4000/tags/#experiment" title="Pages tagged experiment">experiment</a></li><li><a href="http://localhost:4000/tags/#django" title="Pages tagged django">django</a></li>
+          <li><a href="http://localhost:4000/tags/#notes" title="Pages tagged notes">notes</a></li><li><a href="http://localhost:4000/tags/#visualisation" title="Pages tagged visualisation">visualisation</a></li>
         </ul>
         
-          <h1 class="entry-title">Experiment: Speeding up Django tests</h1>
+          <h1 class="entry-title">Grokking Codebases quickly</h1>
         
       </header>
       <!--
@@ -127,30 +127,69 @@
         
         
         <span class="author vcard">By <span class="fn"></span></span>
-        <span class="entry-date date published"><time datetime="2022-09-01T00:00:00+08:00"><i class="fa fa-calendar-o"></i> September 01, 2022</time></span>
+        <span class="entry-date date published"><time datetime="2022-09-05T00:00:00+08:00"><i class="fa fa-calendar-o"></i> September 05, 2022</time></span>
         
         
         <span class="social-share-twitter">
-  <a href="https://twitter.com/intent/tweet?hashtags=notes,test,experiment,django&amp;text=Experiment:%20Speeding%20up%20Django%20tests&amp;url=http://localhost:4000/articles/2022/09/01/speeding_up_django_tests.html" title="Share on Twitter" itemprop="Twitter"><i class="fa fa-twitter-square"></i> Tweet</a>
+  <a href="https://twitter.com/intent/tweet?hashtags=notes,visualisation&amp;text=Grokking%20Codebases%20quickly&amp;url=http://localhost:4000/articles/2022/09/05/grokking_tools.html" title="Share on Twitter" itemprop="Twitter"><i class="fa fa-twitter-square"></i> Tweet</a>
 </span>
 <span class="social-share-facebook">
-  <a href="https://www.facebook.com/sharer/sharer.php?u=http://localhost:4000/articles/2022/09/01/speeding_up_django_tests.html" title="Share on Facebook" itemprop="Facebook"><i class="fa fa-facebook-square"></i> Like</a>
+  <a href="https://www.facebook.com/sharer/sharer.php?u=http://localhost:4000/articles/2022/09/05/grokking_tools.html" title="Share on Facebook" itemprop="Facebook"><i class="fa fa-facebook-square"></i> Like</a>
 </span>
 <span class="social-share-googleplus">
-  <a href="https://plus.google.com/share?url=http://localhost:4000/articles/2022/09/01/speeding_up_django_tests.html" title="Share on Google Plus" itemprop="GooglePlus"><i class="fa fa-google-plus-square"></i> +1</a>
+  <a href="https://plus.google.com/share?url=http://localhost:4000/articles/2022/09/05/grokking_tools.html" title="Share on Google Plus" itemprop="GooglePlus"><i class="fa fa-google-plus-square"></i> +1</a>
 </span>
 <!-- /.social-share -->
         
         </footer>
       <div class="entry-content">
-        
+        <p>I recently I had to work with a large legacy codebase. It was especially
+confusing as there was no documentation available. In order to get myself up to
+speed as quickly as possible, I invested some time in finding some tools to aid
+me in understanding the architecture of the codebase.</p>
+
+<p>Here are some tools I found which might be useful to you:</p>
+
+<ol>
+  <li>
+    <p><a href="https://gource.io/">gource</a></p>
+
+    <p>A really cool visualisation library that lets you generate a movie of all the
+ commits on a codebase in real-time. It’s not very scientific but I like that it
+ gives you an overall sense of the history of a project. It visualises the the
+ authors as well as the file types committed.</p>
+  </li>
+  <li>
+    <p><a href="https://github.com/cool-RR/PySnooper">PySnooper</a></p>
+
+    <p>A useful tool when working with a legacy codebase and you don’t have the ability
+ to load the entire beast into an IDE. Allows you to tactically insert a single
+ debug line and get feedback immediately.</p>
+  </li>
+  <li>
+    <p><a href="https://github.com/benfred/py-spy">py-spy</a></p>
+
+    <p>This tool works with a running process. You point it to the process PID and it
+ can generate <a href="https://github.com/brendangregg/FlameGraph">flamegraps</a> as well as
+ real-time top visualition. It is especially useful if you do not have access to
+ any source code and you’re trying to figure out what a process is doing.</p>
+  </li>
+  <li>
+    <p><a href="https://github.com/jlfwong/speedscope">Speedscope</a></p>
+
+    <p>This is tool is an alternative to flamegraphs. It’s an interactive, web-based
+ viewer for performance profiles. It allows to you to drill down into a process
+ to see where its spending its CPU cycles, RAM or time. I used it to profile
+ my Django tests to see if there was an opportunity to speed them up.</p>
+  </li>
+</ol>
 
         
       </div><!-- /.entry-content -->
     </div><!-- /.entry-wrapper -->
     <nav class="pagination" role="navigation">
       
-        <a href="http://localhost:4000/articles/2022/09/01/refactoring_presentation.html" class="btn" title="Presentation: Test Driven">Previous</a>
+        <a href="http://localhost:4000/articles/2022/09/01/refactoring_presentation.html" class="btn" title="A Presentation on Test Driven Development">Previous</a>
       
       
     </nav><!-- /.pagination -->

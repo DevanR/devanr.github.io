@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Notes on Learning (WIP)"
+title: "Notes on Learning"
 excerpt: ""
 categories: articles
 tags: [learning, notes]
@@ -48,11 +48,12 @@ The 5 principles to end forgetting:
    the more ingrained it will be when you finally remember it.
 5. Rewrite the past
 
-### How to Read a Book
+#### How to Read a Book
 
 Cultivate the habit of Analytical Reading
 
 ##### First Stage: Find out what the book is about
+
 1. Classify the book according to kind and subject matter
 2. State what the whole book is about with the utmost brevity
 3. Enumerate its major parts in their order and relation, and out
@@ -60,6 +61,7 @@ Cultivate the habit of Analytical Reading
 4. Define the problem or problems the author has tried to solve.
 
 ##### Second Stage: Interpreting the contents
+
 5. Come to terms with the author by interpreting his key words
 6. Grasp the authors leading propositions by dealing with his
    utmost sentences.
@@ -72,7 +74,8 @@ Cultivate the habit of Analytical Reading
 ##### Third Stage: Rules for Criticizing a book as a communication of knowledge
 
 ##### General Maxims of Intellectual Etiquette
-9.  Do not begin criticism until you have completed your outline and your
+
+9. Do not begin criticism until you have completed your outline and your
     interpretation of the book.
 10. Do not disagree disputatiously or contentiously
 11. Demonstrate that you recognize the difference between knowledge and
@@ -80,6 +83,7 @@ Cultivate the habit of Analytical Reading
     judgement you make.
 
 ##### Special criteria for Points for Criticism
+
 12. Show wherein the author is uninformed
 13. Show wherein the author is misinformed
 14. Show wherein the author is illogical
@@ -92,28 +96,30 @@ Cultivate the habit of Analytical Reading
 ### Deep Work
 
 Two core abilities for thriving in the New Economy:
-- the ability to quickly master hard things
-- the ability to produce at an elite level, in terms of both quality and speed
+
+* the ability to quickly master hard things
+* the ability to produce at an elite level, in terms of both quality and speed
 
 Method:
-- create a habit of deep work
-    - set aside a time and place
-    - decide how deep (morning/evening)
 
-- keep track of how and what you're working on (execute like a business)
-    - use metrics for accountability and progress
+* create a habit of deep work
+  * set aside a time and place
+  * decide how deep (morning/evening)
 
-- schedule down time
-    - take breaks of focus
-    - do not use the Internet for entertainment
+* keep track of how and what you're working on (execute like a business)
+  * use metrics for accountability and progress
 
-- embrace focusing
-    - quit social media
-    - meditate
-    - minimalism
-    - choose your tools wisely (net benefit in the long run)
+* schedule down time
+  * take breaks of focus
+  * do not use the Internet for entertainment
 
-- schedule every minute of your day
+* embrace focusing
+  * quit social media
+  * meditate
+  * minimalism
+  * choose your tools wisely (net benefit in the long run)
+
+* schedule every minute of your day
 
 ### Personal Thoughts
 
@@ -125,32 +131,32 @@ be transfigured into wisdom.
 
 The process:
 
-- Analytical Reading
+* Analytical Reading
 
-- Efficient Revision
-    - memory techniques: structure, sound, concept, personal combination
-    - pace: revise and stop
-    - method: spaced repetition
-    - mindset: challenge yourself
-    - belief: rewrite your memory
+* Efficient Revision
+  * memory techniques: structure, sound, concept, personal combination
+  * pace: revise and stop
+  * method: spaced repetition
+  * mindset: challenge yourself
+  * belief: rewrite your memory
 
-- Deliberate Practice
-    - metrics
-    - visualisation
+* Deliberate Practice
+  * metrics
+  * visualisation
 
 [Checklist]
 
-- what is to be practiced?
-    - determine metric
+* what is to be practiced?
+  * determine metric
 
-- what is to be learned to improve this metric?
-    - readings
+* what is to be learned to improve this metric?
+  * readings
 
-- what is the output of the reading?
-    - revision material
+* what is the output of the reading?
+  * revision material
 
-- what is the method of practice?
-    - training exercise
+* what is the method of practice?
+  * training exercise
 
-- determine a study plan that ties to metric
+* determine a study plan that ties to metric
   and allocate time to achieve target goal

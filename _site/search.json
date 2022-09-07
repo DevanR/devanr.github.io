@@ -2,15 +2,15 @@
 
   
     {
-      "title"			: "Experiment: Speeding up Django tests",
-      "link"			: "http://localhost:4000/articles/2022/09/01/speeding_up_django_tests.html",
+      "title"			: "Grokking Codebases quickly",
+      "link"			: "http://localhost:4000/articles/2022/09/05/grokking_tools.html",
       "excerpt"		: ""
     }
   
 
   
     ,{
-      "title"			: "Presentation: Test Driven",
+      "title"			: "A Presentation on Test Driven Development",
       "link"			: "http://localhost:4000/articles/2022/09/01/refactoring_presentation.html",
       "excerpt"		: ""
     }
@@ -18,7 +18,7 @@
 
   
     ,{
-      "title"			: "Thoughts on Legacy Code",
+      "title"			: "A Moment of Enlightenment",
       "link"			: "http://localhost:4000/articles/2022/09/01/realisation_about_legacy_code.html",
       "excerpt"		: ""
     }
@@ -74,7 +74,7 @@
 
   
     ,{
-      "title"			: "Book Summary: Time Series Forecasting with Python (WIP)",
+      "title"			: "Book Summary: Time Series Forecasting with Python",
       "link"			: "http://localhost:4000/articles/2020/04/16/time-series-forecasting.html",
       "excerpt"		: ""
     }
@@ -90,7 +90,7 @@
 
   
     ,{
-      "title"			: "Book Summary: How to Live on Twenty-Four Hours a Day [1]",
+      "title"			: "Book Summary: How to Live on Twenty-Four Hours a Day",
       "link"			: "http://localhost:4000/articles/2020/01/10/24-hours-a-day.html",
       "excerpt"		: ""
     }
@@ -138,15 +138,7 @@
 
   
     ,{
-      "title"			: "Notes on Startups (WIP)",
-      "link"			: "http://localhost:4000/articles/2019/03/28/startups.html",
-      "excerpt"		: ""
-    }
-  
-
-  
-    ,{
-      "title"			: "Notes on Negotiation (WIP)",
+      "title"			: "Notes on Negotiation",
       "link"			: "http://localhost:4000/articles/2019/03/28/negotiation.html",
       "excerpt"		: ""
     }
@@ -162,7 +154,7 @@
 
   
     ,{
-      "title"			: "Notes on Learning (WIP)",
+      "title"			: "Notes on Learning",
       "link"			: "http://localhost:4000/articles/2019/03/05/how-to-learn.html",
       "excerpt"		: ""
     }

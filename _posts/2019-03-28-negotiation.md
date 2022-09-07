@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Notes on Negotiation (WIP)"
+title: "Notes on Negotiation"
 excerpt: ""
 categories: articles
 tags: [notes, negotiation]
@@ -9,7 +9,7 @@ share: true
 modified:
 ---
 
-### Getting to Yes
+#### Getting to Yes
 
 ##### What is a good agreement?
 

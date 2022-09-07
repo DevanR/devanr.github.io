@@ -44,4 +44,3 @@ Writer
 Researcher
 Inventor
 Abstract Writer
-

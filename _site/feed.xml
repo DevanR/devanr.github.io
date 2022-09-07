@@ -1,12 +1,86 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.0">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2022-09-02T00:03:56+08:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Devan</title><subtitle>A repository of thoughts and notes</subtitle><entry><title type="html">Experiment: Speeding up Django tests</title><link href="http://localhost:4000/articles/2022/09/01/speeding_up_django_tests.html" rel="alternate" type="text/html" title="Experiment: Speeding up Django tests" /><published>2022-09-01T00:00:00+08:00</published><updated>2022-09-01T00:00:00+08:00</updated><id>http://localhost:4000/articles/2022/09/01/speeding_up_django_tests</id><content type="html" xml:base="http://localhost:4000/articles/2022/09/01/speeding_up_django_tests.html"></content><author><name></name></author><category term="articles" /><category term="notes" /><category term="test" /><category term="experiment" /><category term="django" /></entry><entry><title type="html">Thoughts on Legacy Code</title><link href="http://localhost:4000/articles/2022/09/01/realisation_about_legacy_code.html" rel="alternate" type="text/html" title="Thoughts on Legacy Code" /><published>2022-09-01T00:00:00+08:00</published><updated>2022-09-01T00:00:00+08:00</updated><id>http://localhost:4000/articles/2022/09/01/realisation_about_legacy_code</id><content type="html" xml:base="http://localhost:4000/articles/2022/09/01/realisation_about_legacy_code.html"></content><author><name></name></author><category term="articles" /><category term="notes" /><category term="legacy-code" /></entry><entry><title type="html">Detecting Duplicate Django Tests</title><link href="http://localhost:4000/articles/2022/09/01/duplicate_django_tests.html" rel="alternate" type="text/html" title="Detecting Duplicate Django Tests" /><published>2022-09-01T00:00:00+08:00</published><updated>2022-09-01T00:00:00+08:00</updated><id>http://localhost:4000/articles/2022/09/01/duplicate_django_tests</id><content type="html" xml:base="http://localhost:4000/articles/2022/09/01/duplicate_django_tests.html">&lt;h1 id=&quot;hello-this-is-a-test&quot;&gt;Hello this is a test&lt;/h1&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.0">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2022-09-07T22:22:50+08:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Devan</title><subtitle>A repository of thoughts and notes</subtitle><entry><title type="html">Grokking Codebases quickly</title><link href="http://localhost:4000/articles/2022/09/05/grokking_tools.html" rel="alternate" type="text/html" title="Grokking Codebases quickly" /><published>2022-09-05T00:00:00+08:00</published><updated>2022-09-05T00:00:00+08:00</updated><id>http://localhost:4000/articles/2022/09/05/grokking_tools</id><content type="html" xml:base="http://localhost:4000/articles/2022/09/05/grokking_tools.html">&lt;p&gt;I recently I had to work with a large legacy codebase. It was especially
+confusing as there was no documentation available. In order to get myself up to
+speed as quickly as possible, I invested some time in finding some tools to aid
+me in understanding the architecture of the codebase.&lt;/p&gt;
 
-&lt;p&gt;Insert some txt here.&lt;/p&gt;</content><author><name></name></author><category term="articles" /><category term="notes" /><category term="django" /></entry><entry><title type="html">Presentation: Test Driven</title><link href="http://localhost:4000/articles/2022/09/01/refactoring_presentation.html" rel="alternate" type="text/html" title="Presentation: Test Driven" /><published>2022-09-01T00:00:00+08:00</published><updated>2022-09-01T00:00:00+08:00</updated><id>http://localhost:4000/articles/2022/09/01/refactoring_presentation</id><content type="html" xml:base="http://localhost:4000/articles/2022/09/01/refactoring_presentation.html">&lt;p&gt;I recently had the opportunity to give a presentation at a company Lunch
-and Learn. I chose a topic that was close to my heart. Since I discovered
-Test Driven Development (TDD) as a junior engineer, its been the main tool I use
-to create value while developing.&lt;/p&gt;
+&lt;p&gt;Here are some tools I found which might be useful to you:&lt;/p&gt;
 
-&lt;p&gt;This Presentation touches on the “Why” of TDD. The muddly waters of tests and
-integrated tests. And finally, how we can go about refactoring legacy codebases.&lt;/p&gt;
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;a href=&quot;https://gource.io/&quot;&gt;gource&lt;/a&gt;&lt;/p&gt;
+
+    &lt;p&gt;A really cool visualisation library that lets you generate a movie of all the
+ commits on a codebase in real-time. It’s not very scientific but I like that it
+ gives you an overall sense of the history of a project. It visualises the the
+ authors as well as the file types committed.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;a href=&quot;https://github.com/cool-RR/PySnooper&quot;&gt;PySnooper&lt;/a&gt;&lt;/p&gt;
+
+    &lt;p&gt;A useful tool when working with a legacy codebase and you don’t have the ability
+ to load the entire beast into an IDE. Allows you to tactically insert a single
+ debug line and get feedback immediately.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;a href=&quot;https://github.com/benfred/py-spy&quot;&gt;py-spy&lt;/a&gt;&lt;/p&gt;
+
+    &lt;p&gt;This tool works with a running process. You point it to the process PID and it
+ can generate &lt;a href=&quot;https://github.com/brendangregg/FlameGraph&quot;&gt;flamegraps&lt;/a&gt; as well as
+ real-time top visualition. It is especially useful if you do not have access to
+ any source code and you’re trying to figure out what a process is doing.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;a href=&quot;https://github.com/jlfwong/speedscope&quot;&gt;Speedscope&lt;/a&gt;&lt;/p&gt;
+
+    &lt;p&gt;This is tool is an alternative to flamegraphs. It’s an interactive, web-based
+ viewer for performance profiles. It allows to you to drill down into a process
+ to see where its spending its CPU cycles, RAM or time. I used it to profile
+ my Django tests to see if there was an opportunity to speed them up.&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;</content><author><name></name></author><category term="articles" /><category term="notes" /><category term="visualisation" /></entry><entry><title type="html">A Moment of Enlightenment</title><link href="http://localhost:4000/articles/2022/09/01/realisation_about_legacy_code.html" rel="alternate" type="text/html" title="A Moment of Enlightenment" /><published>2022-09-01T00:00:00+08:00</published><updated>2022-09-01T00:00:00+08:00</updated><id>http://localhost:4000/articles/2022/09/01/realisation_about_legacy_code</id><content type="html" xml:base="http://localhost:4000/articles/2022/09/01/realisation_about_legacy_code.html">&lt;p&gt;…I was describing my thoughts to a friend in another field about the
+“horrible” state of a codebase. And he remarked that every software engineer
+he’d worked with always complained about the existing code base…&lt;/p&gt;
+
+&lt;p&gt;It was at that moment that I realised that I was perpetuating the stereotypes I
+was trying solve.&lt;/p&gt;</content><author><name></name></author><category term="articles" /><category term="notes" /><category term="legacy-code" /></entry><entry><title type="html">Detecting Duplicate Django Tests</title><link href="http://localhost:4000/articles/2022/09/01/duplicate_django_tests.html" rel="alternate" type="text/html" title="Detecting Duplicate Django Tests" /><published>2022-09-01T00:00:00+08:00</published><updated>2022-09-01T00:00:00+08:00</updated><id>http://localhost:4000/articles/2022/09/01/duplicate_django_tests</id><content type="html" xml:base="http://localhost:4000/articles/2022/09/01/duplicate_django_tests.html">&lt;p&gt;While improving the test coverage of a legacy Django code base, the question of
+duplicate tests was raised. This particular code base moved towards using
+end-to-end tests sometime in its past because the business logic became to
+tangled to unit test.  As a result, with each new feature, more and more
+end-to-end tests were piled on.&lt;/p&gt;
+
+&lt;p&gt;As part of an initial survey, the question was raised as to how many of our
+tests were testing duplicated parts of the code base. And whether we could
+eliminate any duplicate tests to speed up our runs.&lt;/p&gt;
+
+&lt;p&gt;To find out, I conducted an experiment to see what was the minimum number of
+test I could run to keep the same level of coverage.&lt;/p&gt;
+
+&lt;p&gt;I first ran the entire test suite with coverage and made sure to enable dynamic
+contexts. This creates an sqlite database which I could then mine. The database
+provides the total number of tests as well as the lines tested by each test.
+Also, we know the overall percentage of coverage as provided by the coverage
+report.&lt;/p&gt;
+
+&lt;p&gt;The interesting bit, is how to select the minimum number of tests to get the
+same percentage of coverage. Turns out, this is known as the set cover problem.
+After going down the rabbit-hole if P vs NP algorithms, I eventually settled on
+a &lt;a href=&quot;http://www.martinbroadhurst.com/greedy-set-cover-in-python.html&quot;&gt;greedy approach&lt;/a&gt; for
+best results.&lt;/p&gt;
+
+&lt;p&gt;After writing a python script to extract the set of tests. I could then re-run
+coverage with that set of tests to verify that the percentage of coverage is the
+same.&lt;/p&gt;
+
+&lt;p&gt;One interesting finding is was that with this particular code-base, I could
+achieve the same percentage of coverage with one quarter of the number of tests.&lt;/p&gt;
+
+&lt;p&gt;You can download my python script &lt;a href=&quot;/assets/script/duplicate_tests.py&quot;&gt;here&lt;/a&gt;.&lt;/p&gt;</content><author><name></name></author><category term="articles" /><category term="notes" /><category term="django" /><category term="tdd" /><category term="script" /></entry><entry><title type="html">A Presentation on Test Driven Development</title><link href="http://localhost:4000/articles/2022/09/01/refactoring_presentation.html" rel="alternate" type="text/html" title="A Presentation on Test Driven Development" /><published>2022-09-01T00:00:00+08:00</published><updated>2022-09-01T00:00:00+08:00</updated><id>http://localhost:4000/articles/2022/09/01/refactoring_presentation</id><content type="html" xml:base="http://localhost:4000/articles/2022/09/01/refactoring_presentation.html">&lt;p&gt;I recently had the opportunity to give a presentation at a company Lunch and
+Learn. I chose a topic that was close to my heart. Since I discovered Test
+Driven Development (TDD) as a junior engineer, its been one of the the main
+tools I use to create value while developing.&lt;/p&gt;
+
+&lt;p&gt;This Presentation touches on the “Why” of TDD. The muddy waters of tests and
+integrated tests. And finally, how we can attempt to refactoy legacy codebases.&lt;/p&gt;
 
 &lt;p&gt;You can download a PDF of the slides &lt;a href=&quot;/assets/pdf/tdd.pdf&quot;&gt;here&lt;/a&gt;.&lt;/p&gt;</content><author><name></name></author><category term="articles" /><category term="presentation" /><category term="tdd" /></entry><entry><title type="html">Book Review: Hello Startup</title><link href="http://localhost:4000/articles/2020/09/22/hello_startup_review.html" rel="alternate" type="text/html" title="Book Review: Hello Startup" /><published>2020-09-22T00:00:00+08:00</published><updated>2020-09-22T00:00:00+08:00</updated><id>http://localhost:4000/articles/2020/09/22/hello_startup_review</id><content type="html" xml:base="http://localhost:4000/articles/2020/09/22/hello_startup_review.html">&lt;p&gt;I recently finished a wonderful book on the technical decisions of building a
 startup. I personally found the bits on picking a tech stach most interesting.&lt;/p&gt;
@@ -80,7 +154,9 @@ you read to find out what works best for you.&lt;/p&gt;
 
 &lt;h4 id=&quot;summary&quot;&gt;Summary&lt;/h4&gt;
 
-&lt;p&gt;Know what you want and fail your way to success.&lt;/p&gt;</content><author><name></name></author><category term="articles" /><category term="notes" /><category term="wip" /></entry><entry><title type="html">Notes on Test-Driven Development as Pragmatic Deliberate Practice</title><link href="http://localhost:4000/articles/2020/04/25/tdd-deliberate-practice.html" rel="alternate" type="text/html" title="Notes on Test-Driven Development as Pragmatic Deliberate Practice" /><published>2020-04-25T00:00:00+08:00</published><updated>2020-04-25T00:00:00+08:00</updated><id>http://localhost:4000/articles/2020/04/25/tdd-deliberate-practice</id><content type="html" xml:base="http://localhost:4000/articles/2020/04/25/tdd-deliberate-practice.html">&lt;p&gt;Test Driven Development has really helped me become a better programmer.  And
+&lt;p&gt;Know what you want and fail your way to success.&lt;/p&gt;</content><author><name></name></author><category term="articles" /><category term="notes" /><category term="wip" /></entry><entry><title type="html">Notes on Test-Driven Development as Pragmatic Deliberate Practice</title><link href="http://localhost:4000/articles/2020/04/25/tdd-deliberate-practice.html" rel="alternate" type="text/html" title="Notes on Test-Driven Development as Pragmatic Deliberate Practice" /><published>2020-04-25T00:00:00+08:00</published><updated>2020-04-25T00:00:00+08:00</updated><id>http://localhost:4000/articles/2020/04/25/tdd-deliberate-practice</id><content type="html" xml:base="http://localhost:4000/articles/2020/04/25/tdd-deliberate-practice.html">&lt;p&gt;Book &lt;a href=&quot;https://blog.jbrains.ca/permalink/test-driven-development-as-pragmatic-deliberate-practice&quot;&gt;1&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Test Driven Development has really helped me become a better programmer.  And
 there is no one better to learn it from from JB Rainsberger himself.  Here are
 some of my notes on two of my favourite topics, deliberate practice and TDD.&lt;/p&gt;
 
@@ -188,7 +264,7 @@ best value, ie, being the most valuable player.&lt;/p&gt;
 Writer
 Researcher
 Inventor
-Abstract Writer&lt;/p&gt;</content><author><name></name></author><category term="articles" /><category term="review" /><category term="self-improvement" /></entry><entry><title type="html">Book Summary: Time Series Forecasting with Python (WIP)</title><link href="http://localhost:4000/articles/2020/04/16/time-series-forecasting.html" rel="alternate" type="text/html" title="Book Summary: Time Series Forecasting with Python (WIP)" /><published>2020-04-16T00:00:00+08:00</published><updated>2020-04-16T00:00:00+08:00</updated><id>http://localhost:4000/articles/2020/04/16/time-series-forecasting</id><content type="html" xml:base="http://localhost:4000/articles/2020/04/16/time-series-forecasting.html">&lt;p&gt;I am interested in combining the benefits of Django and React
+Abstract Writer&lt;/p&gt;</content><author><name></name></author><category term="articles" /><category term="review" /><category term="self-improvement" /></entry><entry><title type="html">Book Summary: Time Series Forecasting with Python</title><link href="http://localhost:4000/articles/2020/04/16/time-series-forecasting.html" rel="alternate" type="text/html" title="Book Summary: Time Series Forecasting with Python" /><published>2020-04-16T00:00:00+08:00</published><updated>2020-04-16T00:00:00+08:00</updated><id>http://localhost:4000/articles/2020/04/16/time-series-forecasting</id><content type="html" xml:base="http://localhost:4000/articles/2020/04/16/time-series-forecasting.html">&lt;p&gt;I am interested in combining the benefits of Django and React
 in a single web application. Here are some notes on the topic.
 My goal is not to create a web application but to understand
 the mechanism of how this can be achieved.&lt;/p&gt;

@@ -43,6 +43,7 @@ An Economy consists of all the transactions in all of its Markets.
 Total Spending/ Total Quantity (sold) = Price
 
 The Central Bank is important for the Flow of Credit, which it manipulates with
+
 - interest rates
 - printing money
 
@@ -67,6 +68,7 @@ And spending is what drives the economy. One persons spending is another
 persons income.
 
 A credit worthy borrower has two things:
+
 - the ability to repay
 - collateral if he cant
 
@@ -80,6 +82,7 @@ Debt is a big driver in economic swings because it allows us to consumer more wh
 cant afford and it and less when we have to pay it back.
 
 Debt cycles:
+
 - 5 to 8 years
 - 75 to 100 years
 
@@ -109,6 +112,7 @@ because of existing debt burden. Lenders dont feel safe lending, because lenders
 pay back. The Economy is no longer credit worthy.
 
 Solution to decreasing debt burden in a deleveraing
+
 - cut spending (austerity)
 - reduce debt (defaults, restructuring)
 - redistribute wealth (taxes)
@@ -126,12 +130,11 @@ Depression -> 2-3 years
 Reflation -> 7-10 years
 
 Three Rules of Thumb
+
 1. dont have debt rise faster than income, because your debt burdens will eventually crush you
 2. dont have income rise faster than productivity, because you will eventually become uncompetitive
 3. do all that you can to raise your productivity, because in the long run, thats what matters most.
 
 #### Thoughts
+
 This is the secret of what to learn...whatever increases your productivity!
-
-
-

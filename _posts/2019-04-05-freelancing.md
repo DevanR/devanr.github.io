@@ -38,33 +38,31 @@ Your clients won’t realize they’ll need maintenance on their project unless 
 tell them. Include maintenance as part of every proposal, lest the client
 spends their whole budget on building the first version.
 
-
 An incomplete list of red flags:
 
-- If a potential client tells you how something should be implemented, they
+* If a potential client tells you how something should be implemented, they
   don’t want you to think too much and don’t value your expertise.
 
-- If a client previously posted their projects to Fiverr or UpWork, it’s a
+* If a client previously posted their projects to Fiverr or UpWork, it’s a
   signal they don’t value expertise.
 
-- If a client won’t listen to your advice because something is not your
+* If a client won’t listen to your advice because something is not your
   speciality, they probably see you as an implementer, not a partner. You
   probably sold yourself short and/or the client doesn’t value you like they
   should.
 
-- If a client tells you how long a project should take you to finish, they
+* If a client tells you how long a project should take you to finish, they
   think they know an awful lot about your field.
 
-- If a potential client can’t explain why they chose you to talk to (i.e. for
+* If a potential client can’t explain why they chose you to talk to (i.e. for
   your expertise, because of an article they read, because of a referral, etc),
   they’re probably shopping around and you’re bidding against other
   contractors. This isn’t the worst thing in the world, but you’ll have minimal
   leverage.
 
-- If a client starts asking for detailed breakdowns of your time spent when
+* If a client starts asking for detailed breakdowns of your time spent when
   they haven’t asked in the past, you’re probably being viewed as too expensive
   and should brace for an end or change to the relationship.
-
 
 Your first interactions with anyone will set the tone for the rest of the
 relationship. If you crush the first emails, phone calls, or meetings, your
@@ -254,6 +252,7 @@ Strategy
 Transition from Opencraft to Cosultant
 
 Steps
+
 1. Choose your ideal client
 2. Choose your Niche
 3. Build a website and blog

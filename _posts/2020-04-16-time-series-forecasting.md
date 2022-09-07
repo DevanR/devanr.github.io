@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Book Summary: Time Series Forecasting with Python (WIP)"
+title: "Book Summary: Time Series Forecasting with Python"
 excerpt: ""
 categories: articles
 tags: [summary, python, forecasting]
@@ -19,7 +19,6 @@ the mechanism of how this can be achieved.
 #### Python
 
 What are the libraries?
-
 
 #### Time Series forecasting defined
 
@@ -77,6 +76,3 @@ What are the libraries?
   whiskers). Across intervals, in this case years, we can look for multiple
   year trends, seasonality, and other structural information that could be
   modeled.
-
-[1]: https://www.valentinog.com/blog/drf/
-
