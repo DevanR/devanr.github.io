@@ -1,4 +1,88 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.0">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2022-09-07T22:22:50+08:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Devan</title><subtitle>A repository of thoughts and notes</subtitle><entry><title type="html">Grokking Codebases quickly</title><link href="http://localhost:4000/articles/2022/09/05/grokking_tools.html" rel="alternate" type="text/html" title="Grokking Codebases quickly" /><published>2022-09-05T00:00:00+08:00</published><updated>2022-09-05T00:00:00+08:00</updated><id>http://localhost:4000/articles/2022/09/05/grokking_tools</id><content type="html" xml:base="http://localhost:4000/articles/2022/09/05/grokking_tools.html">&lt;p&gt;I recently I had to work with a large legacy codebase. It was especially
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.0">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2024-01-18T07:55:40+08:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Devan</title><subtitle>A repository of thoughts and notes</subtitle><entry><title type="html">Understanding Django’s Unit Test Process with Multiple Databases</title><link href="http://localhost:4000/articles/2024/01/18/django-test-flow.html" rel="alternate" type="text/html" title="Understanding Django’s Unit Test Process with Multiple Databases" /><published>2024-01-18T00:00:00+08:00</published><updated>2024-01-18T00:00:00+08:00</updated><id>http://localhost:4000/articles/2024/01/18/django-test-flow</id><content type="html" xml:base="http://localhost:4000/articles/2024/01/18/django-test-flow.html">&lt;p&gt;Django’s process for running unit tests, especially when multiple databases are
+involved, is both intricate and fascinating. In this post, we’ll break down the
+process step-by-step, from the moment you run &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;python manage.py test&lt;/code&gt;.&lt;/p&gt;
+
+&lt;h2 id=&quot;command-execution&quot;&gt;Command Execution&lt;/h2&gt;
+
+&lt;p&gt;When you execute &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;python manage.py test&lt;/code&gt;, Django’s &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;manage.py&lt;/code&gt; script first
+locates your project’s settings and initializes the Django environment. It then
+locates the test command and executes it.&lt;/p&gt;
+
+&lt;h2 id=&quot;test-discovery&quot;&gt;Test Discovery&lt;/h2&gt;
+
+&lt;p&gt;Django’s built-in test discovery mechanism automatically searches for tests. By
+default, it looks for files named &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;test*.py&lt;/code&gt; in your project directories,
+adhering to Python’s standard &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;unittest&lt;/code&gt; discovery rules.&lt;/p&gt;
+
+&lt;h2 id=&quot;database-selection&quot;&gt;Database Selection&lt;/h2&gt;
+
+&lt;p&gt;For a standard Django setup, tests use the default database. However, if your
+application employs multiple databases, you have control over which databases
+are used for each test:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;By default, tests target the default database.&lt;/li&gt;
+  &lt;li&gt;Use the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;databases&lt;/code&gt; attribute in the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;TestCase&lt;/code&gt; class to specify different databases for your tests.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;test-database-creation&quot;&gt;Test Database Creation&lt;/h2&gt;
+
+&lt;p&gt;Django checks whether a test database needs to be created. This behavior can be
+customized:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;A separate test database is created by default.&lt;/li&gt;
+  &lt;li&gt;Tests that don’t require a database can use &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;SimpleTestCase&lt;/code&gt; or &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;TransactionTestCase&lt;/code&gt; with &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;databases=[]&lt;/code&gt;.&lt;/li&gt;
+  &lt;li&gt;For multiple databases, Django creates a test database for each, typically prefixed with &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;test_&lt;/code&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;migrations&quot;&gt;Migrations&lt;/h2&gt;
+
+&lt;p&gt;Migrations are applied to ensure the test database schema matches your
+development environment. The &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;--keepdb&lt;/code&gt; flag can be used to retain the test
+database between runs, speeding up the process.&lt;/p&gt;
+
+&lt;h2 id=&quot;test-execution&quot;&gt;Test Execution&lt;/h2&gt;
+
+&lt;p&gt;Django uses the test runner defined in your settings (default:
+&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;django.test.runner.DiscoverRunner&lt;/code&gt;) to execute tests. Each test is run in
+isolation within a database transaction, maintaining test independence.&lt;/p&gt;
+
+&lt;h2 id=&quot;test-database-destruction&quot;&gt;Test Database Destruction&lt;/h2&gt;
+
+&lt;p&gt;Post-testing, Django destroys the test databases unless the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;--keepdb&lt;/code&gt; flag is
+used. This ensures a fresh start for subsequent test runs.&lt;/p&gt;
+
+&lt;h2 id=&quot;test-results&quot;&gt;Test Results&lt;/h2&gt;
+
+&lt;p&gt;The results, including the number of tests, assertions, failures, and errors,
+are displayed after the tests are complete.&lt;/p&gt;
+
+&lt;p&gt;Key Takeaway: In projects with multiple databases, it’s crucial to correctly
+specify the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;databases&lt;/code&gt; attribute in your &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;TestCase&lt;/code&gt; classes. This ensures
+proper setup and usage of the necessary databases for your tests.&lt;/p&gt;
+
+&lt;p&gt;Understanding and configuring this process is vital for effective testing in
+complex Django projects.&lt;/p&gt;
+
+&lt;h2 id=&quot;best-practices-for-multiple-database-applications&quot;&gt;Best Practices for Multiple Database Applications&lt;/h2&gt;
+
+&lt;p&gt;When managing tests in applications that support multiple databases, it’s
+generally advantageous to encourage modules to primarily interact with a single
+database wherever feasible. This approach simplifies the testing process and
+enhances maintainability.&lt;/p&gt;
+
+&lt;p&gt;Additionally, it’s important to be aware of the role of the Database Router’s
+&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;allow_migration&lt;/code&gt; method. This method plays a critical role during the
+migration phase, particularly when creating test databases. In scenarios
+involving secondary databases with unmanaged models, a notable consideration
+arises: you must manually create the schema and tables for these models. This
+step is crucial for ensuring that your tests execute correctly and interact as
+expected with these unmanaged database components.&lt;/p&gt;
+
+&lt;p&gt;Implementing these best practices can significantly streamline the testing
+process in complex Django environments, ensuring more robust and reliable test
+outcomes.&lt;/p&gt;</content><author><name></name></author><category term="articles" /><category term="presentation" /><category term="tdd" /></entry><entry><title type="html">Grokking Codebases quickly</title><link href="http://localhost:4000/articles/2022/09/05/grokking_tools.html" rel="alternate" type="text/html" title="Grokking Codebases quickly" /><published>2022-09-05T00:00:00+08:00</published><updated>2022-09-05T00:00:00+08:00</updated><id>http://localhost:4000/articles/2022/09/05/grokking_tools</id><content type="html" xml:base="http://localhost:4000/articles/2022/09/05/grokking_tools.html">&lt;p&gt;I recently I had to work with a large legacy codebase. It was especially
 confusing as there was no documentation available. In order to get myself up to
 speed as quickly as possible, I invested some time in finding some tools to aid
 me in understanding the architecture of the codebase.&lt;/p&gt;
@@ -37,12 +121,7 @@ me in understanding the architecture of the codebase.&lt;/p&gt;
  to see where its spending its CPU cycles, RAM or time. I used it to profile
  my Django tests to see if there was an opportunity to speed them up.&lt;/p&gt;
   &lt;/li&gt;
-&lt;/ol&gt;</content><author><name></name></author><category term="articles" /><category term="notes" /><category term="visualisation" /></entry><entry><title type="html">A Moment of Enlightenment</title><link href="http://localhost:4000/articles/2022/09/01/realisation_about_legacy_code.html" rel="alternate" type="text/html" title="A Moment of Enlightenment" /><published>2022-09-01T00:00:00+08:00</published><updated>2022-09-01T00:00:00+08:00</updated><id>http://localhost:4000/articles/2022/09/01/realisation_about_legacy_code</id><content type="html" xml:base="http://localhost:4000/articles/2022/09/01/realisation_about_legacy_code.html">&lt;p&gt;…I was describing my thoughts to a friend in another field about the
-“horrible” state of a codebase. And he remarked that every software engineer
-he’d worked with always complained about the existing code base…&lt;/p&gt;
-
-&lt;p&gt;It was at that moment that I realised that I was perpetuating the stereotypes I
-was trying solve.&lt;/p&gt;</content><author><name></name></author><category term="articles" /><category term="notes" /><category term="legacy-code" /></entry><entry><title type="html">Detecting Duplicate Django Tests</title><link href="http://localhost:4000/articles/2022/09/01/duplicate_django_tests.html" rel="alternate" type="text/html" title="Detecting Duplicate Django Tests" /><published>2022-09-01T00:00:00+08:00</published><updated>2022-09-01T00:00:00+08:00</updated><id>http://localhost:4000/articles/2022/09/01/duplicate_django_tests</id><content type="html" xml:base="http://localhost:4000/articles/2022/09/01/duplicate_django_tests.html">&lt;p&gt;While improving the test coverage of a legacy Django code base, the question of
+&lt;/ol&gt;</content><author><name></name></author><category term="articles" /><category term="notes" /><category term="visualisation" /></entry><entry><title type="html">Detecting Duplicate Django Tests</title><link href="http://localhost:4000/articles/2022/09/01/duplicate_django_tests.html" rel="alternate" type="text/html" title="Detecting Duplicate Django Tests" /><published>2022-09-01T00:00:00+08:00</published><updated>2022-09-01T00:00:00+08:00</updated><id>http://localhost:4000/articles/2022/09/01/duplicate_django_tests</id><content type="html" xml:base="http://localhost:4000/articles/2022/09/01/duplicate_django_tests.html">&lt;p&gt;While improving the test coverage of a legacy Django code base, the question of
 duplicate tests was raised. This particular code base moved towards using
 end-to-end tests sometime in its past because the business logic became to
 tangled to unit test.  As a result, with each new feature, more and more
@@ -82,7 +161,12 @@ tools I use to create value while developing.&lt;/p&gt;
 &lt;p&gt;This Presentation touches on the “Why” of TDD. The muddy waters of tests and
 integrated tests. And finally, how we can attempt to refactoy legacy codebases.&lt;/p&gt;
 
-&lt;p&gt;You can download a PDF of the slides &lt;a href=&quot;/assets/pdf/tdd.pdf&quot;&gt;here&lt;/a&gt;.&lt;/p&gt;</content><author><name></name></author><category term="articles" /><category term="presentation" /><category term="tdd" /></entry><entry><title type="html">Book Review: Hello Startup</title><link href="http://localhost:4000/articles/2020/09/22/hello_startup_review.html" rel="alternate" type="text/html" title="Book Review: Hello Startup" /><published>2020-09-22T00:00:00+08:00</published><updated>2020-09-22T00:00:00+08:00</updated><id>http://localhost:4000/articles/2020/09/22/hello_startup_review</id><content type="html" xml:base="http://localhost:4000/articles/2020/09/22/hello_startup_review.html">&lt;p&gt;I recently finished a wonderful book on the technical decisions of building a
+&lt;p&gt;You can download a PDF of the slides &lt;a href=&quot;/assets/pdf/tdd.pdf&quot;&gt;here&lt;/a&gt;.&lt;/p&gt;</content><author><name></name></author><category term="articles" /><category term="presentation" /><category term="tdd" /></entry><entry><title type="html">A Moment of Enlightenment</title><link href="http://localhost:4000/articles/2022/09/01/realisation_about_legacy_code.html" rel="alternate" type="text/html" title="A Moment of Enlightenment" /><published>2022-09-01T00:00:00+08:00</published><updated>2022-09-01T00:00:00+08:00</updated><id>http://localhost:4000/articles/2022/09/01/realisation_about_legacy_code</id><content type="html" xml:base="http://localhost:4000/articles/2022/09/01/realisation_about_legacy_code.html">&lt;p&gt;…I was describing my thoughts to a friend in another field about the
+“horrible” state of a codebase. And he remarked that every software engineer
+he’d worked with always complained about the existing code base…&lt;/p&gt;
+
+&lt;p&gt;It was at that moment that I realised that I was perpetuating the stereotypes I
+was trying solve.&lt;/p&gt;</content><author><name></name></author><category term="articles" /><category term="notes" /><category term="legacy-code" /></entry><entry><title type="html">Book Review: Hello Startup</title><link href="http://localhost:4000/articles/2020/09/22/hello_startup_review.html" rel="alternate" type="text/html" title="Book Review: Hello Startup" /><published>2020-09-22T00:00:00+08:00</published><updated>2020-09-22T00:00:00+08:00</updated><id>http://localhost:4000/articles/2020/09/22/hello_startup_review</id><content type="html" xml:base="http://localhost:4000/articles/2020/09/22/hello_startup_review.html">&lt;p&gt;I recently finished a wonderful book on the technical decisions of building a
 startup. I personally found the bits on picking a tech stach most interesting.&lt;/p&gt;
 
 &lt;h4 id=&quot;picking-a-tech-stack&quot;&gt;Picking a Tech Stack&lt;/h4&gt;
@@ -106,7 +190,7 @@ libraries for a few special cases.&lt;/p&gt;
 &lt;p&gt;Django is for CRUD.
 Node.js is for realtime applications.&lt;/p&gt;
 
-&lt;p&gt;Consider splitting the web app by language and purpose.&lt;/p&gt;</content><author><name></name></author><category term="articles" /><category term="notes" /><category term="startup" /></entry><entry><title type="html">Ideal Setup (WIP)</title><link href="http://localhost:4000/articles/2020/04/28/nindo.html" rel="alternate" type="text/html" title="Ideal Setup (WIP)" /><published>2020-04-28T00:00:00+08:00</published><updated>2020-04-28T00:00:00+08:00</updated><id>http://localhost:4000/articles/2020/04/28/nindo</id><content type="html" xml:base="http://localhost:4000/articles/2020/04/28/nindo.html">&lt;p&gt;Here is my current collection of useful tools and models.  This is to serve a
+&lt;p&gt;Consider splitting the web app by language and purpose.&lt;/p&gt;</content><author><name></name></author><category term="articles" /><category term="notes" /><category term="startup" /></entry><entry><title type="html">Ideal Setup</title><link href="http://localhost:4000/articles/2020/04/28/nindo.html" rel="alternate" type="text/html" title="Ideal Setup" /><published>2020-04-28T00:00:00+08:00</published><updated>2020-04-28T00:00:00+08:00</updated><id>http://localhost:4000/articles/2020/04/28/nindo</id><content type="html" xml:base="http://localhost:4000/articles/2020/04/28/nindo.html">&lt;p&gt;Here is my current collection of useful tools and models.  This is to serve a
 reminder and guide to myself and possibly a guide to others.&lt;/p&gt;
 
 &lt;h4 id=&quot;body&quot;&gt;Body&lt;/h4&gt;
@@ -154,7 +238,7 @@ you read to find out what works best for you.&lt;/p&gt;
 
 &lt;h4 id=&quot;summary&quot;&gt;Summary&lt;/h4&gt;
 
-&lt;p&gt;Know what you want and fail your way to success.&lt;/p&gt;</content><author><name></name></author><category term="articles" /><category term="notes" /><category term="wip" /></entry><entry><title type="html">Notes on Test-Driven Development as Pragmatic Deliberate Practice</title><link href="http://localhost:4000/articles/2020/04/25/tdd-deliberate-practice.html" rel="alternate" type="text/html" title="Notes on Test-Driven Development as Pragmatic Deliberate Practice" /><published>2020-04-25T00:00:00+08:00</published><updated>2020-04-25T00:00:00+08:00</updated><id>http://localhost:4000/articles/2020/04/25/tdd-deliberate-practice</id><content type="html" xml:base="http://localhost:4000/articles/2020/04/25/tdd-deliberate-practice.html">&lt;p&gt;Book &lt;a href=&quot;https://blog.jbrains.ca/permalink/test-driven-development-as-pragmatic-deliberate-practice&quot;&gt;1&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Know what you want and fail your way to success.&lt;/p&gt;</content><author><name></name></author><category term="articles" /><category term="notes" /></entry><entry><title type="html">Notes on Test-Driven Development as Pragmatic Deliberate Practice</title><link href="http://localhost:4000/articles/2020/04/25/tdd-deliberate-practice.html" rel="alternate" type="text/html" title="Notes on Test-Driven Development as Pragmatic Deliberate Practice" /><published>2020-04-25T00:00:00+08:00</published><updated>2020-04-25T00:00:00+08:00</updated><id>http://localhost:4000/articles/2020/04/25/tdd-deliberate-practice</id><content type="html" xml:base="http://localhost:4000/articles/2020/04/25/tdd-deliberate-practice.html">&lt;p&gt;Book &lt;a href=&quot;https://blog.jbrains.ca/permalink/test-driven-development-as-pragmatic-deliberate-practice&quot;&gt;1&lt;/a&gt;&lt;/p&gt;
 
 &lt;p&gt;Test Driven Development has really helped me become a better programmer.  And
 there is no one better to learn it from from JB Rainsberger himself.  Here are
@@ -264,86 +348,4 @@ best value, ie, being the most valuable player.&lt;/p&gt;
 Writer
 Researcher
 Inventor
-Abstract Writer&lt;/p&gt;</content><author><name></name></author><category term="articles" /><category term="review" /><category term="self-improvement" /></entry><entry><title type="html">Book Summary: Time Series Forecasting with Python</title><link href="http://localhost:4000/articles/2020/04/16/time-series-forecasting.html" rel="alternate" type="text/html" title="Book Summary: Time Series Forecasting with Python" /><published>2020-04-16T00:00:00+08:00</published><updated>2020-04-16T00:00:00+08:00</updated><id>http://localhost:4000/articles/2020/04/16/time-series-forecasting</id><content type="html" xml:base="http://localhost:4000/articles/2020/04/16/time-series-forecasting.html">&lt;p&gt;I am interested in combining the benefits of Django and React
-in a single web application. Here are some notes on the topic.
-My goal is not to create a web application but to understand
-the mechanism of how this can be achieved.&lt;/p&gt;
-
-&lt;h5 id=&quot;part-1&quot;&gt;Part 1&lt;/h5&gt;
-
-&lt;h4 id=&quot;python&quot;&gt;Python&lt;/h4&gt;
-
-&lt;p&gt;What are the libraries?&lt;/p&gt;
-
-&lt;h4 id=&quot;time-series-forecasting-defined&quot;&gt;Time Series forecasting defined&lt;/h4&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;nomenclature&lt;/li&gt;
-  &lt;li&gt;definitions&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h4 id=&quot;forecasting-as-a-supervised-learning-problem&quot;&gt;Forecasting as a Supervised Learning problem&lt;/h4&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;classification&lt;/li&gt;
-  &lt;li&gt;regression&lt;/li&gt;
-  &lt;li&gt;sliding window (reframe)&lt;/li&gt;
-  &lt;li&gt;univariate time series&lt;/li&gt;
-  &lt;li&gt;multi variate time series&lt;/li&gt;
-  &lt;li&gt;one step forecast&lt;/li&gt;
-  &lt;li&gt;multi step forecast&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h4 id=&quot;time-series-forecasting-defined-1&quot;&gt;Time Series forecasting defined&lt;/h4&gt;
-
-&lt;h5 id=&quot;part-2&quot;&gt;Part 2&lt;/h5&gt;
-
-&lt;h4 id=&quot;loading-data&quot;&gt;Loading Data&lt;/h4&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;read_csv()&lt;/li&gt;
-  &lt;li&gt;Pandas series&lt;/li&gt;
-  &lt;li&gt;series.head()&lt;/li&gt;
-  &lt;li&gt;series.tail()&lt;/li&gt;
-  &lt;li&gt;series.size&lt;/li&gt;
-  &lt;li&gt;series[time_index]&lt;/li&gt;
-  &lt;li&gt;series.describe()&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h4 id=&quot;basic-feature-engineering&quot;&gt;Basic Feature Engineering&lt;/h4&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;change the timeseries into something that can be digested by a supervised learning model&lt;/li&gt;
-  &lt;li&gt;in essence we select the best features&lt;/li&gt;
-  &lt;li&gt;we test by checking the results of all our features&lt;/li&gt;
-  &lt;li&gt;honestly, feels like spray and pray&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h4 id=&quot;data-visualization&quot;&gt;Data Visualization&lt;/h4&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;Line Plots.&lt;/li&gt;
-  &lt;li&gt;Histograms and Density Plots.&lt;/li&gt;
-  &lt;li&gt;Box and Whisker Plots.&lt;/li&gt;
-  &lt;li&gt;Heat Maps.&lt;/li&gt;
-  &lt;li&gt;Lag Plots or Scatter Plots.&lt;/li&gt;
-  &lt;li&gt;Autocorrelation Plots.&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;
-    &lt;p&gt;All the visualisation methods can be used to quickly glean information about
-the data&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;Some linear time series forecasting methods assume a well-behaved
-distribution of observations (i.e. a bell curve or normal distribution)&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;Comparing box and whisker plots by consistent intervals is a useful tool.
-Within an interval, it can help to spot outliers (dots above or below the
-whiskers). Across intervals, in this case years, we can look for multiple
-year trends, seasonality, and other structural information that could be
-modeled.&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;</content><author><name></name></author><category term="articles" /><category term="summary" /><category term="python" /><category term="forecasting" /></entry></feed>
+Abstract Writer&lt;/p&gt;</content><author><name></name></author><category term="articles" /><category term="review" /><category term="self-improvement" /></entry></feed>

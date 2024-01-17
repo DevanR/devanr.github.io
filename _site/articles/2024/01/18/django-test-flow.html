@@ -1,0 +1,279 @@
+<!doctype html>
+<!--[if lt IE 7]><html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if (IE 7)&!(IEMobile)]><html class="no-js lt-ie9 lt-ie8" lang="en"><![endif]-->
+<!--[if (IE 8)&!(IEMobile)]><html class="no-js lt-ie9" lang="en"><![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"><!--<![endif]-->
+<head>
+<meta charset="utf-8">
+<title>Understanding Django's Unit Test Process with Multiple Databases &#8211; Devan</title>
+<meta name="description" content="">
+<meta name="keywords" content="presentation, tdd">
+
+
+<!-- Twitter Cards -->
+<meta name="twitter:title" content="Understanding Django's Unit Test Process with Multiple Databases">
+<meta name="twitter:description" content="">
+
+
+
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://localhost:4000/images/site-logo.png">
+
+<!-- Open Graph -->
+<meta property="og:locale" content="">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Understanding Django's Unit Test Process with Multiple Databases">
+<meta property="og:description" content="">
+<meta property="og:url" content="http://localhost:4000/articles/2024/01/18/django-test-flow.html">
+<meta property="og:site_name" content="Devan">
+
+
+
+
+
+<link rel="canonical" href="http://localhost:4000/articles/2024/01/18/django-test-flow.html">
+<link href="http://localhost:4000/feed.xml" type="application/atom+xml" rel="alternate" title="Devan Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="http://localhost:4000/assets/css/main.css">
+<!-- Webfonts -->
+<script src="https://use.edgefonts.net/source-sans-pro:n2,i2,n3,i3,n4,i4,n6,i6,n7,i7,n9,i9;source-code-pro:n4,n7;volkhov.js"></script>
+
+<meta http-equiv="cleartype" content="on">
+
+<!-- HTML5 Shiv and Media Query Support -->
+<!--[if lt IE 9]>
+  <script src="http://localhost:4000/assets/js/vendor/html5shiv.min.js"></script>
+  <script src="http://localhost:4000/assets/js/vendor/respond.min.js"></script>
+<![endif]-->
+
+<!-- Modernizr -->
+<script src="http://localhost:4000/assets/js/vendor/modernizr-2.7.1.custom.min.js"></script>
+
+
+
+<!-- Icons -->
+<!-- 16x16 -->
+<link rel="shortcut icon" href="http://localhost:4000/favicon.ico">
+<!-- 32x32 -->
+<link rel="shortcut icon" href="http://localhost:4000/favicon.png">
+<!-- 57x57 (precomposed) for iPhone 3GS, pre-2011 iPod Touch and older Android devices -->
+<link rel="apple-touch-icon-precomposed" href="http://localhost:4000/images/apple-touch-icon-precomposed.png">
+<!-- 72x72 (precomposed) for 1st generation iPad, iPad 2 and iPad mini -->
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="http://localhost:4000/images/apple-touch-icon-72x72-precomposed.png">
+<!-- 114x114 (precomposed) for iPhone 4, 4S, 5 and post-2011 iPod Touch -->
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="http://localhost:4000/images/apple-touch-icon-114x114-precomposed.png">
+<!-- 144x144 (precomposed) for iPad 3rd and 4th generation -->
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://localhost:4000/images/apple-touch-icon-144x144-precomposed.png">
+
+</head>
+
+<body id="post">
+
+<div class="navigation-wrapper">
+	<nav role="navigation" id="site-nav" class="animated drop">
+	    <ul>
+      
+		    
+		    <li><a href="http://localhost:4000/about/" >About</a></li>
+		  
+		    
+		    <li><a href="http://localhost:4000/articles/" >Articles</a></li>
+		  
+		    
+		    <li><a href="http://localhost:4000/publications/" >Publications</a></li>
+		  
+		    
+		    <li><a href="http://localhost:4000/search/" >Search</a></li>
+		  
+	    </ul>
+	</nav>
+</div><!-- /.navigation-wrapper -->
+
+<!--[if lt IE 9]><div class="upgrade"><strong><a href="http://whatbrowser.org/">Your browser is quite old!</strong> Why not upgrade to a different browser to better enjoy this site?</a></div><![endif]-->
+
+<header class="masthead">
+	<div class="wrap">
+      
+  		<a href="http://localhost:4000/" class="site-logo" rel="home" title="Devan"><img src="http://localhost:4000/images/site-logo.png" width="200" height="200" alt="Devan logo" class="animated fadeInDown"></a>
+      
+      <h1 class="site-title animated fadeIn"><a href="http://localhost:4000/">Devan</a></h1>
+		<h2 class="site-description animated fadeIn" itemprop="description">A repository of thoughts and notes</h2>
+	</div>
+</header><!-- /.masthead -->
+
+<div class="js-menu-screen menu-screen"></div>
+
+
+<div id="main" role="main">
+  <article class="hentry">
+    
+    <div class="entry-wrapper">
+      <header class="entry-header">
+        <ul class="entry-tags">
+          <li><a href="http://localhost:4000/tags/#presentation" title="Pages tagged presentation">presentation</a></li><li><a href="http://localhost:4000/tags/#tdd" title="Pages tagged tdd">tdd</a></li>
+        </ul>
+        
+          <h1 class="entry-title">Understanding Django's Unit Test Process with Multiple Databases</h1>
+        
+      </header>
+      <!--
+        <footer class="entry-meta">
+        
+        
+        <span class="author vcard">By <span class="fn"></span></span>
+        <span class="entry-date date published"><time datetime="2024-01-18T00:00:00+08:00"><i class="fa fa-calendar-o"></i> January 18, 2024</time></span>
+        
+        
+        <span class="social-share-twitter">
+  <a href="https://twitter.com/intent/tweet?hashtags=presentation,tdd&amp;text=Understanding%20Django&#39;s%20Unit%20Test%20Process%20with%20Multiple%20Databases&amp;url=http://localhost:4000/articles/2024/01/18/django-test-flow.html" title="Share on Twitter" itemprop="Twitter"><i class="fa fa-twitter-square"></i> Tweet</a>
+</span>
+<span class="social-share-facebook">
+  <a href="https://www.facebook.com/sharer/sharer.php?u=http://localhost:4000/articles/2024/01/18/django-test-flow.html" title="Share on Facebook" itemprop="Facebook"><i class="fa fa-facebook-square"></i> Like</a>
+</span>
+<span class="social-share-googleplus">
+  <a href="https://plus.google.com/share?url=http://localhost:4000/articles/2024/01/18/django-test-flow.html" title="Share on Google Plus" itemprop="GooglePlus"><i class="fa fa-google-plus-square"></i> +1</a>
+</span>
+<!-- /.social-share -->
+        
+        </footer>
+      <div class="entry-content">
+        <p>Django’s process for running unit tests, especially when multiple databases are
+involved, is both intricate and fascinating. In this post, we’ll break down the
+process step-by-step, from the moment you run <code class="language-plaintext highlighter-rouge">python manage.py test</code>.</p>
+
+<h2 id="command-execution">Command Execution</h2>
+
+<p>When you execute <code class="language-plaintext highlighter-rouge">python manage.py test</code>, Django’s <code class="language-plaintext highlighter-rouge">manage.py</code> script first
+locates your project’s settings and initializes the Django environment. It then
+locates the test command and executes it.</p>
+
+<h2 id="test-discovery">Test Discovery</h2>
+
+<p>Django’s built-in test discovery mechanism automatically searches for tests. By
+default, it looks for files named <code class="language-plaintext highlighter-rouge">test*.py</code> in your project directories,
+adhering to Python’s standard <code class="language-plaintext highlighter-rouge">unittest</code> discovery rules.</p>
+
+<h2 id="database-selection">Database Selection</h2>
+
+<p>For a standard Django setup, tests use the default database. However, if your
+application employs multiple databases, you have control over which databases
+are used for each test:</p>
+
+<ul>
+  <li>By default, tests target the default database.</li>
+  <li>Use the <code class="language-plaintext highlighter-rouge">databases</code> attribute in the <code class="language-plaintext highlighter-rouge">TestCase</code> class to specify different databases for your tests.</li>
+</ul>
+
+<h2 id="test-database-creation">Test Database Creation</h2>
+
+<p>Django checks whether a test database needs to be created. This behavior can be
+customized:</p>
+
+<ul>
+  <li>A separate test database is created by default.</li>
+  <li>Tests that don’t require a database can use <code class="language-plaintext highlighter-rouge">SimpleTestCase</code> or <code class="language-plaintext highlighter-rouge">TransactionTestCase</code> with <code class="language-plaintext highlighter-rouge">databases=[]</code>.</li>
+  <li>For multiple databases, Django creates a test database for each, typically prefixed with <code class="language-plaintext highlighter-rouge">test_</code>.</li>
+</ul>
+
+<h2 id="migrations">Migrations</h2>
+
+<p>Migrations are applied to ensure the test database schema matches your
+development environment. The <code class="language-plaintext highlighter-rouge">--keepdb</code> flag can be used to retain the test
+database between runs, speeding up the process.</p>
+
+<h2 id="test-execution">Test Execution</h2>
+
+<p>Django uses the test runner defined in your settings (default:
+<code class="language-plaintext highlighter-rouge">django.test.runner.DiscoverRunner</code>) to execute tests. Each test is run in
+isolation within a database transaction, maintaining test independence.</p>
+
+<h2 id="test-database-destruction">Test Database Destruction</h2>
+
+<p>Post-testing, Django destroys the test databases unless the <code class="language-plaintext highlighter-rouge">--keepdb</code> flag is
+used. This ensures a fresh start for subsequent test runs.</p>
+
+<h2 id="test-results">Test Results</h2>
+
+<p>The results, including the number of tests, assertions, failures, and errors,
+are displayed after the tests are complete.</p>
+
+<p>Key Takeaway: In projects with multiple databases, it’s crucial to correctly
+specify the <code class="language-plaintext highlighter-rouge">databases</code> attribute in your <code class="language-plaintext highlighter-rouge">TestCase</code> classes. This ensures
+proper setup and usage of the necessary databases for your tests.</p>
+
+<p>Understanding and configuring this process is vital for effective testing in
+complex Django projects.</p>
+
+<h2 id="best-practices-for-multiple-database-applications">Best Practices for Multiple Database Applications</h2>
+
+<p>When managing tests in applications that support multiple databases, it’s
+generally advantageous to encourage modules to primarily interact with a single
+database wherever feasible. This approach simplifies the testing process and
+enhances maintainability.</p>
+
+<p>Additionally, it’s important to be aware of the role of the Database Router’s
+<code class="language-plaintext highlighter-rouge">allow_migration</code> method. This method plays a critical role during the
+migration phase, particularly when creating test databases. In scenarios
+involving secondary databases with unmanaged models, a notable consideration
+arises: you must manually create the schema and tables for these models. This
+step is crucial for ensuring that your tests execute correctly and interact as
+expected with these unmanaged database components.</p>
+
+<p>Implementing these best practices can significantly streamline the testing
+process in complex Django environments, ensuring more robust and reliable test
+outcomes.</p>
+
+        
+      </div><!-- /.entry-content -->
+    </div><!-- /.entry-wrapper -->
+    <nav class="pagination" role="navigation">
+      
+        <a href="http://localhost:4000/articles/2022/09/05/grokking_tools.html" class="btn" title="Grokking Codebases quickly">Previous</a>
+      
+      
+    </nav><!-- /.pagination -->
+  </article>
+</div><!-- /#main -->
+
+<div class="footer-wrapper">
+  <footer role="contentinfo" class="entry-wrapper">
+    
+
+<span>&copy; 2024 . Powered by <a href="http://jekyllrb.com" rel="nofollow">Jekyll</a> using the <a href="https://mademistakes.com/work/so-simple-jekyll-theme/" rel="nofollow">So Simple Theme</a>.</span>
+<div class="social-icons">
+	
+	
+	
+	
+	
+	
+	
+	
+	
+  
+	
+  <a href="http://localhost:4000/feed.xml" title="Atom/RSS feed"><i class="fa fa-rss-square fa-2x"></i></a>
+</div><!-- /.social-icons -->
+
+  </footer>
+</div><!-- /.footer-wrapper -->
+
+<script type="text/javascript">
+  var BASE_URL = 'http://localhost:4000';
+</script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="http://localhost:4000/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
+<script src="http://localhost:4000/assets/js/scripts.min.js"></script>
+
+
+
+
+</body>
+</html>

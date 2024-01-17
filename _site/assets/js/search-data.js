@@ -74,9 +74,9 @@ var store = [{
         "tags": ["tdd","deliberate-practice"],
         "url": "http://localhost:4000/articles/2020/04/25/tdd-deliberate-practice.html"
       },{
-        "title": "Ideal Setup (WIP)",
+        "title": "Ideal Setup",
         "excerpt":"Here is my current collection of useful tools and models. This is to serve areminder and guide to myself and possibly a guide to others. Body The objective here is to maximise energy levels. Minimal sugar Stay hydrated Stretch/Yoga breaks Daily cardioMind The Objective here manage your daily state. Being...","categories": ["articles"],
-        "tags": ["notes","wip"],
+        "tags": ["notes"],
         "url": "http://localhost:4000/articles/2020/04/28/nindo.html"
       },{
         "title": "Book Review: Hello Startup",
@@ -103,4 +103,9 @@ var store = [{
         "excerpt":"I recently I had to work with a large legacy codebase. It was especiallyconfusing as there was no documentation available. In order to get myself up tospeed as quickly as possible, I invested some time in finding some tools to aidme in understanding the architecture of the codebase. Here are...","categories": ["articles"],
         "tags": ["notes","visualisation"],
         "url": "http://localhost:4000/articles/2022/09/05/grokking_tools.html"
+      },{
+        "title": "Understanding Django's Unit Test Process with Multiple Databases",
+        "excerpt":"Django’s process for running unit tests, especially when multiple databases areinvolved, is both intricate and fascinating. In this post, we’ll break down theprocess step-by-step, from the moment you run python manage.py test. Command Execution When you execute python manage.py test, Django’s manage.py script firstlocates your project’s settings and initializes the...","categories": ["articles"],
+        "tags": ["presentation","tdd"],
+        "url": "http://localhost:4000/articles/2024/01/18/django-test-flow.html"
       }]
