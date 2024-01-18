@@ -1,4 +1,89 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.0">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2024-01-18T07:55:40+08:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Devan</title><subtitle>A repository of thoughts and notes</subtitle><entry><title type="html">Understanding Django’s Unit Test Process with Multiple Databases</title><link href="http://localhost:4000/articles/2024/01/18/django-test-flow.html" rel="alternate" type="text/html" title="Understanding Django’s Unit Test Process with Multiple Databases" /><published>2024-01-18T00:00:00+08:00</published><updated>2024-01-18T00:00:00+08:00</updated><id>http://localhost:4000/articles/2024/01/18/django-test-flow</id><content type="html" xml:base="http://localhost:4000/articles/2024/01/18/django-test-flow.html">&lt;p&gt;Django’s process for running unit tests, especially when multiple databases are
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.0">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2024-01-18T08:16:08+08:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Devan</title><subtitle>A repository of thoughts and notes</subtitle><entry><title type="html">Django Login: Embracing Third-Party Solutions</title><link href="http://localhost:4000/articles/2024/01/18/social-logins.html" rel="alternate" type="text/html" title="Django Login: Embracing Third-Party Solutions" /><published>2024-01-18T00:00:00+08:00</published><updated>2024-01-18T00:00:00+08:00</updated><id>http://localhost:4000/articles/2024/01/18/social-logins</id><content type="html" xml:base="http://localhost:4000/articles/2024/01/18/social-logins.html">&lt;p&gt;The landscape of authentication has evolved drastically, and in 2023, leveraging
+third-party tools like Auth0, SuperTokens, and AWS Cognito can save significant
+time and resources while ensuring robust security. Let’s expand our discussion
+on Django authentication to include these tools and address why custom-building
+login pages might be a thing of the past.&lt;/p&gt;
+
+&lt;h2 id=&quot;the-shift-to-third-party-authentication-services&quot;&gt;The Shift to Third-Party Authentication Services&lt;/h2&gt;
+
+&lt;p&gt;Building a login system from scratch can be resource-intensive and prone to
+security risks. This is where services like Auth0, SuperTokens, and AWS Cognito
+come into play, offering comprehensive authentication solutions.&lt;/p&gt;
+
+&lt;h3 id=&quot;key-advantages&quot;&gt;Key Advantages&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;Robust Security:&lt;/strong&gt; These services are dedicated to maintaining high-security standards, constantly updated to tackle emerging threats.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Comprehensive Features:&lt;/strong&gt; They cover a broad spectrum of authentication needs including social login, password recovery, email verification, and 2FA.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Scalability:&lt;/strong&gt; Easily scalable to accommodate growing user bases without additional overhead.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Rapid Integration:&lt;/strong&gt; Reduce development time with easy-to-integrate SDKs and APIs.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;auth0-versatile-authentication-for-modern-applications&quot;&gt;Auth0: Versatile Authentication for Modern Applications&lt;/h2&gt;
+
+&lt;p&gt;Auth0 offers a flexible, drop-in solution that can be integrated with Django,
+providing a variety of authentication and authorization services.&lt;/p&gt;
+
+&lt;h3 id=&quot;key-features&quot;&gt;Key Features&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;Universal Login:&lt;/strong&gt; A single login solution that works across different platforms and devices.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Customizable Flows:&lt;/strong&gt; Tailor authentication and authorization flows to fit your application’s needs.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Extensive Documentation:&lt;/strong&gt; Comprehensive guides and SDKs for seamless integration with Django.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;supertokens-open-source-and-highly-customizable&quot;&gt;SuperTokens: Open Source and Highly Customizable&lt;/h2&gt;
+
+&lt;p&gt;SuperTokens is an open-source alternative, offering both self-hosted and managed
+solutions, giving developers control over their user data.&lt;/p&gt;
+
+&lt;h3 id=&quot;key-features-1&quot;&gt;Key Features&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;Data Privacy:&lt;/strong&gt; Keep user data within your infrastructure if needed.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Customizable UI:&lt;/strong&gt; Modify the look and feel of your login pages to match your brand.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Community Support:&lt;/strong&gt; Benefit from community-driven development and support.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;aws-cognito-secure-user-directory-service&quot;&gt;AWS Cognito: Secure User Directory Service&lt;/h2&gt;
+
+&lt;p&gt;AWS Cognito is a scalable user directory service that integrates well with other
+AWS services, ideal for applications hosted on AWS.&lt;/p&gt;
+
+&lt;h3 id=&quot;key-features-2&quot;&gt;Key Features&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;AWS Integration:&lt;/strong&gt; Seamlessly integrates with other AWS services like S3, Lambda, and more.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Federated Identities:&lt;/strong&gt; Allows users to sign in through social identity providers like Google, Facebook, or Amazon.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Adaptive Authentication:&lt;/strong&gt; Uses machine learning to offer risk-based adaptive authentication.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;integrating-third-party-services-with-django&quot;&gt;Integrating Third-Party Services with Django&lt;/h2&gt;
+
+&lt;p&gt;While Django’s built-in authentication system is powerful, integrating these
+third-party services can greatly enhance your application’s capabilities.&lt;/p&gt;
+
+&lt;h3 id=&quot;integration-considerations&quot;&gt;Integration Considerations&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;SDKs/APIs Compatibility:&lt;/strong&gt; Ensure compatibility with Django versions and project architecture.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Customization Needs:&lt;/strong&gt; Assess the level of customization required for authentication flows and UI.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Cost and Scalability:&lt;/strong&gt; Consider the cost implications and scalability options of each service.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;conclusion-a-new-era-of-authentication-in-django&quot;&gt;Conclusion: A New Era of Authentication in Django&lt;/h2&gt;
+
+&lt;p&gt;The paradigm shift towards third-party authentication services like Auth0,
+SuperTokens, and AWS Cognito represents a significant advancement in how we
+handle user authentication. By integrating these services with Django,
+developers can achieve a secure, efficient, and user-friendly authentication
+experience, freeing up valuable time to focus on core application features.&lt;/p&gt;
+
+&lt;p&gt;Remember, the choice between using Django’s built-in system and these
+third-party services depends on your specific project requirements, expertise,
+and resources. Whichever path you choose, keeping abreast of the latest
+developments in authentication technologies will always be key to maintaining
+secure and efficient login systems.&lt;/p&gt;</content><author><name></name></author><category term="articles" /><category term="survey" /><category term="django" /></entry><entry><title type="html">Understanding Django’s Unit Test Process with Multiple Databases</title><link href="http://localhost:4000/articles/2024/01/18/django-test-flow.html" rel="alternate" type="text/html" title="Understanding Django’s Unit Test Process with Multiple Databases" /><published>2024-01-18T00:00:00+08:00</published><updated>2024-01-18T00:00:00+08:00</updated><id>http://localhost:4000/articles/2024/01/18/django-test-flow</id><content type="html" xml:base="http://localhost:4000/articles/2024/01/18/django-test-flow.html">&lt;p&gt;Django’s process for running unit tests, especially when multiple databases are
 involved, is both intricate and fascinating. In this post, we’ll break down the
 process step-by-step, from the moment you run &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;python manage.py test&lt;/code&gt;.&lt;/p&gt;
 
@@ -121,7 +206,12 @@ me in understanding the architecture of the codebase.&lt;/p&gt;
  to see where its spending its CPU cycles, RAM or time. I used it to profile
  my Django tests to see if there was an opportunity to speed them up.&lt;/p&gt;
   &lt;/li&gt;
-&lt;/ol&gt;</content><author><name></name></author><category term="articles" /><category term="notes" /><category term="visualisation" /></entry><entry><title type="html">Detecting Duplicate Django Tests</title><link href="http://localhost:4000/articles/2022/09/01/duplicate_django_tests.html" rel="alternate" type="text/html" title="Detecting Duplicate Django Tests" /><published>2022-09-01T00:00:00+08:00</published><updated>2022-09-01T00:00:00+08:00</updated><id>http://localhost:4000/articles/2022/09/01/duplicate_django_tests</id><content type="html" xml:base="http://localhost:4000/articles/2022/09/01/duplicate_django_tests.html">&lt;p&gt;While improving the test coverage of a legacy Django code base, the question of
+&lt;/ol&gt;</content><author><name></name></author><category term="articles" /><category term="notes" /><category term="visualisation" /></entry><entry><title type="html">A Moment of Enlightenment</title><link href="http://localhost:4000/articles/2022/09/01/realisation_about_legacy_code.html" rel="alternate" type="text/html" title="A Moment of Enlightenment" /><published>2022-09-01T00:00:00+08:00</published><updated>2022-09-01T00:00:00+08:00</updated><id>http://localhost:4000/articles/2022/09/01/realisation_about_legacy_code</id><content type="html" xml:base="http://localhost:4000/articles/2022/09/01/realisation_about_legacy_code.html">&lt;p&gt;…I was describing my thoughts to a friend in another field about the
+“horrible” state of a codebase. And he remarked that every software engineer
+he’d worked with always complained about the existing code base…&lt;/p&gt;
+
+&lt;p&gt;It was at that moment that I realised that I was perpetuating the stereotypes I
+was trying solve.&lt;/p&gt;</content><author><name></name></author><category term="articles" /><category term="notes" /><category term="legacy-code" /></entry><entry><title type="html">Detecting Duplicate Django Tests</title><link href="http://localhost:4000/articles/2022/09/01/duplicate_django_tests.html" rel="alternate" type="text/html" title="Detecting Duplicate Django Tests" /><published>2022-09-01T00:00:00+08:00</published><updated>2022-09-01T00:00:00+08:00</updated><id>http://localhost:4000/articles/2022/09/01/duplicate_django_tests</id><content type="html" xml:base="http://localhost:4000/articles/2022/09/01/duplicate_django_tests.html">&lt;p&gt;While improving the test coverage of a legacy Django code base, the question of
 duplicate tests was raised. This particular code base moved towards using
 end-to-end tests sometime in its past because the business logic became to
 tangled to unit test.  As a result, with each new feature, more and more
@@ -161,12 +251,7 @@ tools I use to create value while developing.&lt;/p&gt;
 &lt;p&gt;This Presentation touches on the “Why” of TDD. The muddy waters of tests and
 integrated tests. And finally, how we can attempt to refactoy legacy codebases.&lt;/p&gt;
 
-&lt;p&gt;You can download a PDF of the slides &lt;a href=&quot;/assets/pdf/tdd.pdf&quot;&gt;here&lt;/a&gt;.&lt;/p&gt;</content><author><name></name></author><category term="articles" /><category term="presentation" /><category term="tdd" /></entry><entry><title type="html">A Moment of Enlightenment</title><link href="http://localhost:4000/articles/2022/09/01/realisation_about_legacy_code.html" rel="alternate" type="text/html" title="A Moment of Enlightenment" /><published>2022-09-01T00:00:00+08:00</published><updated>2022-09-01T00:00:00+08:00</updated><id>http://localhost:4000/articles/2022/09/01/realisation_about_legacy_code</id><content type="html" xml:base="http://localhost:4000/articles/2022/09/01/realisation_about_legacy_code.html">&lt;p&gt;…I was describing my thoughts to a friend in another field about the
-“horrible” state of a codebase. And he remarked that every software engineer
-he’d worked with always complained about the existing code base…&lt;/p&gt;
-
-&lt;p&gt;It was at that moment that I realised that I was perpetuating the stereotypes I
-was trying solve.&lt;/p&gt;</content><author><name></name></author><category term="articles" /><category term="notes" /><category term="legacy-code" /></entry><entry><title type="html">Book Review: Hello Startup</title><link href="http://localhost:4000/articles/2020/09/22/hello_startup_review.html" rel="alternate" type="text/html" title="Book Review: Hello Startup" /><published>2020-09-22T00:00:00+08:00</published><updated>2020-09-22T00:00:00+08:00</updated><id>http://localhost:4000/articles/2020/09/22/hello_startup_review</id><content type="html" xml:base="http://localhost:4000/articles/2020/09/22/hello_startup_review.html">&lt;p&gt;I recently finished a wonderful book on the technical decisions of building a
+&lt;p&gt;You can download a PDF of the slides &lt;a href=&quot;/assets/pdf/tdd.pdf&quot;&gt;here&lt;/a&gt;.&lt;/p&gt;</content><author><name></name></author><category term="articles" /><category term="presentation" /><category term="tdd" /></entry><entry><title type="html">Book Review: Hello Startup</title><link href="http://localhost:4000/articles/2020/09/22/hello_startup_review.html" rel="alternate" type="text/html" title="Book Review: Hello Startup" /><published>2020-09-22T00:00:00+08:00</published><updated>2020-09-22T00:00:00+08:00</updated><id>http://localhost:4000/articles/2020/09/22/hello_startup_review</id><content type="html" xml:base="http://localhost:4000/articles/2020/09/22/hello_startup_review.html">&lt;p&gt;I recently finished a wonderful book on the technical decisions of building a
 startup. I personally found the bits on picking a tech stach most interesting.&lt;/p&gt;
 
 &lt;h4 id=&quot;picking-a-tech-stack&quot;&gt;Picking a Tech Stack&lt;/h4&gt;
@@ -314,38 +399,4 @@ my explorations.&lt;/p&gt;
 
 &lt;ul&gt;
   &lt;li&gt;&lt;a href=&quot;https://github.com/aiortc/aioquic&quot;&gt;aioquic&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;</content><author><name></name></author><category term="articles" /><category term="webrtc" /></entry><entry><title type="html">Book Review: Refuse to Choose</title><link href="http://localhost:4000/articles/2020/04/18/refuse-to-choose.html" rel="alternate" type="text/html" title="Book Review: Refuse to Choose" /><published>2020-04-18T00:00:00+08:00</published><updated>2020-04-18T00:00:00+08:00</updated><id>http://localhost:4000/articles/2020/04/18/refuse-to-choose</id><content type="html" xml:base="http://localhost:4000/articles/2020/04/18/refuse-to-choose.html">&lt;h5 id=&quot;what-scanner-are-you&quot;&gt;What Scanner Are You?&lt;/h5&gt;
-
-&lt;p&gt;This book was recommended in a post on HackerNews. As someone who has
-always been fascinated with multiple subjects, it’s always seemed like
-a curse. Always finding new things to learn and experiment but never
-having sufficient time to do to. The premise of this book, is that,
-that are other people out there like me, and the term coined here is
-“Scanner”. Discovering this term made this book worth it for me.&lt;/p&gt;
-
-&lt;h5 id=&quot;notes&quot;&gt;Notes&lt;/h5&gt;
-
-&lt;p&gt;Embrace the joys of learning, however long or brief that they may be.
-Give yourself completely to the process and trust your own instincts.
-Commit to everything that interests you.&lt;/p&gt;
-
-&lt;p&gt;Actively analyse what interests you and investigate that interest with
-short projects. Use the feedback from these projects to decide whether
-to invest for time. Action and feedback, rinse and repeat.&lt;/p&gt;
-
-&lt;p&gt;Start small, start now. Start everything, don’t worry about finishing.&lt;/p&gt;
-
-&lt;p&gt;I’m care primarily about my surroundings and the people I work with.
-Happiness is more important than success for me. I’ve learned that
-the most important career question is, “Will this make me happy?”.&lt;/p&gt;
-
-&lt;p&gt;And whatever position I’m in, I’m the happiest when I’m providing the
-best value, ie, being the most valuable player.&lt;/p&gt;
-
-&lt;h3 id=&quot;potential-careers&quot;&gt;Potential Careers&lt;/h3&gt;
-
-&lt;p&gt;Troubleshooter
-Writer
-Researcher
-Inventor
-Abstract Writer&lt;/p&gt;</content><author><name></name></author><category term="articles" /><category term="review" /><category term="self-improvement" /></entry></feed>
+&lt;/ul&gt;</content><author><name></name></author><category term="articles" /><category term="webrtc" /></entry></feed>

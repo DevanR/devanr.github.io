@@ -108,4 +108,9 @@ var store = [{
         "excerpt":"Django’s process for running unit tests, especially when multiple databases areinvolved, is both intricate and fascinating. In this post, we’ll break down theprocess step-by-step, from the moment you run python manage.py test. Command Execution When you execute python manage.py test, Django’s manage.py script firstlocates your project’s settings and initializes the...","categories": ["articles"],
         "tags": ["presentation","tdd"],
         "url": "http://localhost:4000/articles/2024/01/18/django-test-flow.html"
+      },{
+        "title": "Django Login: Embracing Third-Party Solutions",
+        "excerpt":"The landscape of authentication has evolved drastically, and in 2023, leveragingthird-party tools like Auth0, SuperTokens, and AWS Cognito can save significanttime and resources while ensuring robust security. Let’s expand our discussionon Django authentication to include these tools and address why custom-buildinglogin pages might be a thing of the past. The...","categories": ["articles"],
+        "tags": ["survey","django"],
+        "url": "http://localhost:4000/articles/2024/01/18/social-logins.html"
       }]
