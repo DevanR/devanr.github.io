@@ -478,7 +478,6 @@ Find hobbies that make you rich, fit and creative
 I would change that slightly. I would say one that makes you money, one that
 makes you fit, and one that makes you smarter.
 
-
 - startups
 - strength training/yoga
 - music
