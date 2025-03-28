@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.0">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2025-03-28T20:50:10+08:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Devan</title><subtitle>A repository of thoughts and notes</subtitle><entry><title type="html">Setting Up a ProxMox Server with Immich and a Removable SATA Drive</title><link href="http://localhost:4000/articles/2025/03/28/immich-proxmox.html" rel="alternate" type="text/html" title="Setting Up a ProxMox Server with Immich and a Removable SATA Drive" /><published>2025-03-28T00:00:00+08:00</published><updated>2025-03-28T00:00:00+08:00</updated><id>http://localhost:4000/articles/2025/03/28/immich-proxmox</id><content type="html" xml:base="http://localhost:4000/articles/2025/03/28/immich-proxmox.html">&lt;h1 id=&quot;setting-up-a-proxmox-server-with-immich-and-a-removable-sata-drive&quot;&gt;Setting Up a ProxMox Server with Immich and a Removable SATA Drive&lt;/h1&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.0">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2025-03-28T21:17:18+08:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Devan</title><subtitle>A repository of thoughts and notes</subtitle><entry><title type="html">Setting Up a ProxMox Server with Immich and a Removable SATA Drive</title><link href="http://localhost:4000/articles/2025/03/28/immich-proxmox.html" rel="alternate" type="text/html" title="Setting Up a ProxMox Server with Immich and a Removable SATA Drive" /><published>2025-03-28T00:00:00+08:00</published><updated>2025-03-28T00:00:00+08:00</updated><id>http://localhost:4000/articles/2025/03/28/immich-proxmox</id><content type="html" xml:base="http://localhost:4000/articles/2025/03/28/immich-proxmox.html">&lt;h1 id=&quot;setting-up-a-proxmox-server-with-immich-and-a-removable-sata-drive&quot;&gt;Setting Up a ProxMox Server with Immich and a Removable SATA Drive&lt;/h1&gt;
 
 &lt;p&gt;In this guide, I’ll walk through the complete process of setting up a Dell PowerEdge R410 as a ProxMox server with a removable SATA drive for a self-hosted Immich photo and video backup solution. This setup allows me to easily remove and back up the media disk whenever needed.&lt;/p&gt;
 
@@ -138,7 +138,7 @@ Expert &lt;span class=&quot;nb&quot;&gt;command&lt;/span&gt; &lt;span class=&quo
 
 &lt;h3 id=&quot;creating-a-new-partition-and-filesystem&quot;&gt;Creating a New Partition and Filesystem&lt;/h3&gt;
 
-&lt;p&gt;Since I wanted to use this as a fresh disk for Immich, I created a new partition table and formatted it with exFAT for good cross-platform compatibility:&lt;/p&gt;
+&lt;p&gt;Since I wanted to use this as a fresh disk for Immich, I created a new partition table and formatted it with ext4:&lt;/p&gt;
 
 &lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# Create a new empty GPT partition table&lt;/span&gt;
 gdisk /dev/sdb
@@ -148,11 +148,11 @@ gdisk /dev/sdb
 &lt;span class=&quot;c&quot;&gt;# Type '0700' for basic data partition&lt;/span&gt;
 &lt;span class=&quot;c&quot;&gt;# Type 'w' to write changes&lt;/span&gt;
 
-&lt;span class=&quot;c&quot;&gt;# Format with exFAT&lt;/span&gt;
-apt-get update
-apt-get &lt;span class=&quot;nb&quot;&gt;install &lt;/span&gt;exfat-fuse exfat-utils
-mkfs.exfat /dev/sdb1
+&lt;span class=&quot;c&quot;&gt;# Format with ext4 (not exFAT as initially planned)&lt;/span&gt;
+mkfs.ext4 /dev/sdb
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;I initially planned to use exFAT for better cross-platform compatibility, but ultimately went with ext4 as it’s the native Linux filesystem with better performance, journaling for improved data integrity, and is fully supported by default in Linux systems.&lt;/p&gt;
 
 &lt;h2 id=&quot;part-3-adding-the-disk-to-proxmox&quot;&gt;Part 3: Adding the Disk to ProxMox&lt;/h2&gt;
 
@@ -221,7 +221,7 @@ qm &lt;span class=&quot;nb&quot;&gt;set &lt;/span&gt;100 &lt;span class=&quot;nt
 
 &lt;p&gt;To ensure the disk is mounted automatically on boot, I added it to &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/etc/fstab&lt;/code&gt;:&lt;/p&gt;
 
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;/dev/sdb /mnt/immich-media exfat defaults,nofail 0 0&quot;&lt;/span&gt; | &lt;span class=&quot;nb&quot;&gt;sudo tee&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-a&lt;/span&gt; /etc/fstab
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;/dev/sdb /mnt/immich-media ext4 defaults,nofail 0 0&quot;&lt;/span&gt; | &lt;span class=&quot;nb&quot;&gt;sudo tee&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-a&lt;/span&gt; /etc/fstab
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;p&gt;The &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;nofail&lt;/code&gt; option ensures the system boots normally even if the disk is not present.&lt;/p&gt;
@@ -232,18 +232,16 @@ qm &lt;span class=&quot;nb&quot;&gt;set &lt;/span&gt;100 &lt;span class=&quot;nt
 
 &lt;h3 id=&quot;configuring-docker-compose-for-the-external-disk&quot;&gt;Configuring Docker Compose for the External Disk&lt;/h3&gt;
 
-&lt;p&gt;I edited the docker-compose.yml file to add the external media volume:&lt;/p&gt;
+&lt;p&gt;For the Immich setup, I decided to keep the default upload location while still making the external disk available to the container. I edited the docker-compose.yml file to add the external media volume:&lt;/p&gt;
 
 &lt;div class=&quot;language-yaml highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;na&quot;&gt;volumes&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
   &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;${UPLOAD_LOCATION}:/usr/src/app/upload&lt;/span&gt;
-  &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;${EXTERNAL_LOCATION}:/usr/src/app/external&lt;/span&gt;
+  &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;/mnt/immich-media:/usr/src/app/external-media&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;p&gt;Alternatively, I could have simply modified the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;.env&lt;/code&gt; file to change the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;UPLOAD_LOCATION&lt;/code&gt; variable:&lt;/p&gt;
+&lt;p&gt;This approach maintains the default &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/usr/src/app/upload&lt;/code&gt; path for the primary library storage while making the external disk available as an additional location. This provides more flexibility for managing media content and allows the default library structure to remain intact.&lt;/p&gt;
 
-&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;UPLOAD_LOCATION=/mnt/immich-media
-EXTERNAL_LOCATION=/mnt/immich-media
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;I could have alternatively modified the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;.env&lt;/code&gt; file to change the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;UPLOAD_LOCATION&lt;/code&gt; variable, but I found keeping the default structure more maintainable.&lt;/p&gt;
 
 &lt;h3 id=&quot;setting-up-auto-start-for-docker-compose&quot;&gt;Setting Up Auto-Start for Docker Compose&lt;/h3&gt;
 

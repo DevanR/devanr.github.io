@@ -139,7 +139,7 @@ This relocated the backup data structures to the end of the disk. After verifica
 
 ### Creating a New Partition and Filesystem
 
-Since I wanted to use this as a fresh disk for Immich, I created a new partition table and formatted it with exFAT for good cross-platform compatibility:
+Since I wanted to use this as a fresh disk for Immich, I created a new partition table and formatted it with ext4:
 
 ```bash
 # Create a new empty GPT partition table
@@ -150,11 +150,11 @@ gdisk /dev/sdb
 # Type '0700' for basic data partition
 # Type 'w' to write changes
 
-# Format with exFAT
-apt-get update
-apt-get install exfat-fuse exfat-utils
-mkfs.exfat /dev/sdb1
+# Format with ext4 (not exFAT as initially planned)
+mkfs.ext4 /dev/sdb
 ```
+
+I initially planned to use exFAT for better cross-platform compatibility, but ultimately went with ext4 as it's the native Linux filesystem with better performance, journaling for improved data integrity, and is fully supported by default in Linux systems.
 
 ## Part 3: Adding the Disk to ProxMox
 
@@ -228,7 +228,7 @@ df -h | grep immich-media
 To ensure the disk is mounted automatically on boot, I added it to `/etc/fstab`:
 
 ```bash
-echo "/dev/sdb /mnt/immich-media exfat defaults,nofail 0 0" | sudo tee -a /etc/fstab
+echo "/dev/sdb /mnt/immich-media ext4 defaults,nofail 0 0" | sudo tee -a /etc/fstab
 ```
 
 The `nofail` option ensures the system boots normally even if the disk is not present.
@@ -239,20 +239,17 @@ I installed Immich using the official Docker Compose setup, then modified it to 
 
 ### Configuring Docker Compose for the External Disk
 
-I edited the docker-compose.yml file to add the external media volume:
+For the Immich setup, I decided to keep the default upload location while still making the external disk available to the container. I edited the docker-compose.yml file to add the external media volume:
 
 ```yaml
 volumes:
   - ${UPLOAD_LOCATION}:/usr/src/app/upload
-  - ${EXTERNAL_LOCATION}:/usr/src/app/external
+  - /mnt/immich-media:/usr/src/app/external-media
 ```
 
-Alternatively, I could have simply modified the `.env` file to change the `UPLOAD_LOCATION` variable:
+This approach maintains the default `/usr/src/app/upload` path for the primary library storage while making the external disk available as an additional location. This provides more flexibility for managing media content and allows the default library structure to remain intact.
 
-```
-UPLOAD_LOCATION=/mnt/immich-media
-EXTERNAL_LOCATION=/mnt/immich-media
-```
+I could have alternatively modified the `.env` file to change the `UPLOAD_LOCATION` variable, but I found keeping the default structure more maintainable.
 
 ### Setting Up Auto-Start for Docker Compose
 

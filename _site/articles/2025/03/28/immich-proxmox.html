@@ -283,7 +283,7 @@ Expert <span class="nb">command</span> <span class="o">(</span>? <span class="k"
 
 <h3 id="creating-a-new-partition-and-filesystem">Creating a New Partition and Filesystem</h3>
 
-<p>Since I wanted to use this as a fresh disk for Immich, I created a new partition table and formatted it with exFAT for good cross-platform compatibility:</p>
+<p>Since I wanted to use this as a fresh disk for Immich, I created a new partition table and formatted it with ext4:</p>
 
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Create a new empty GPT partition table</span>
 gdisk /dev/sdb
@@ -293,11 +293,11 @@ gdisk /dev/sdb
 <span class="c"># Type '0700' for basic data partition</span>
 <span class="c"># Type 'w' to write changes</span>
 
-<span class="c"># Format with exFAT</span>
-apt-get update
-apt-get <span class="nb">install </span>exfat-fuse exfat-utils
-mkfs.exfat /dev/sdb1
+<span class="c"># Format with ext4 (not exFAT as initially planned)</span>
+mkfs.ext4 /dev/sdb
 </code></pre></div></div>
+
+<p>I initially planned to use exFAT for better cross-platform compatibility, but ultimately went with ext4 as it’s the native Linux filesystem with better performance, journaling for improved data integrity, and is fully supported by default in Linux systems.</p>
 
 <h2 id="part-3-adding-the-disk-to-proxmox">Part 3: Adding the Disk to ProxMox</h2>
 
@@ -366,7 +366,7 @@ qm <span class="nb">set </span>100 <span class="nt">-scsi1</span> /dev/sdb1
 
 <p>To ensure the disk is mounted automatically on boot, I added it to <code class="language-plaintext highlighter-rouge">/etc/fstab</code>:</p>
 
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">echo</span> <span class="s2">"/dev/sdb /mnt/immich-media exfat defaults,nofail 0 0"</span> | <span class="nb">sudo tee</span> <span class="nt">-a</span> /etc/fstab
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">echo</span> <span class="s2">"/dev/sdb /mnt/immich-media ext4 defaults,nofail 0 0"</span> | <span class="nb">sudo tee</span> <span class="nt">-a</span> /etc/fstab
 </code></pre></div></div>
 
 <p>The <code class="language-plaintext highlighter-rouge">nofail</code> option ensures the system boots normally even if the disk is not present.</p>
@@ -377,18 +377,16 @@ qm <span class="nb">set </span>100 <span class="nt">-scsi1</span> /dev/sdb1
 
 <h3 id="configuring-docker-compose-for-the-external-disk">Configuring Docker Compose for the External Disk</h3>
 
-<p>I edited the docker-compose.yml file to add the external media volume:</p>
+<p>For the Immich setup, I decided to keep the default upload location while still making the external disk available to the container. I edited the docker-compose.yml file to add the external media volume:</p>
 
 <div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">volumes</span><span class="pi">:</span>
   <span class="pi">-</span> <span class="s">${UPLOAD_LOCATION}:/usr/src/app/upload</span>
-  <span class="pi">-</span> <span class="s">${EXTERNAL_LOCATION}:/usr/src/app/external</span>
+  <span class="pi">-</span> <span class="s">/mnt/immich-media:/usr/src/app/external-media</span>
 </code></pre></div></div>
 
-<p>Alternatively, I could have simply modified the <code class="language-plaintext highlighter-rouge">.env</code> file to change the <code class="language-plaintext highlighter-rouge">UPLOAD_LOCATION</code> variable:</p>
+<p>This approach maintains the default <code class="language-plaintext highlighter-rouge">/usr/src/app/upload</code> path for the primary library storage while making the external disk available as an additional location. This provides more flexibility for managing media content and allows the default library structure to remain intact.</p>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>UPLOAD_LOCATION=/mnt/immich-media
-EXTERNAL_LOCATION=/mnt/immich-media
-</code></pre></div></div>
+<p>I could have alternatively modified the <code class="language-plaintext highlighter-rouge">.env</code> file to change the <code class="language-plaintext highlighter-rouge">UPLOAD_LOCATION</code> variable, but I found keeping the default structure more maintainable.</p>
 
 <h3 id="setting-up-auto-start-for-docker-compose">Setting Up Auto-Start for Docker Compose</h3>
 
