@@ -1,4 +1,418 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.0">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2024-01-18T08:26:25+08:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Devan</title><subtitle>A repository of thoughts and notes</subtitle><entry><title type="html">Django Login: Embracing Third-Party Solutions</title><link href="http://localhost:4000/articles/2024/01/18/social-logins.html" rel="alternate" type="text/html" title="Django Login: Embracing Third-Party Solutions" /><published>2024-01-18T00:00:00+08:00</published><updated>2024-01-18T00:00:00+08:00</updated><id>http://localhost:4000/articles/2024/01/18/social-logins</id><content type="html" xml:base="http://localhost:4000/articles/2024/01/18/social-logins.html">&lt;p&gt;The landscape of authentication has evolved drastically, and in 2023, leveraging
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.0">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2025-03-28T20:50:10+08:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Devan</title><subtitle>A repository of thoughts and notes</subtitle><entry><title type="html">Setting Up a ProxMox Server with Immich and a Removable SATA Drive</title><link href="http://localhost:4000/articles/2025/03/28/immich-proxmox.html" rel="alternate" type="text/html" title="Setting Up a ProxMox Server with Immich and a Removable SATA Drive" /><published>2025-03-28T00:00:00+08:00</published><updated>2025-03-28T00:00:00+08:00</updated><id>http://localhost:4000/articles/2025/03/28/immich-proxmox</id><content type="html" xml:base="http://localhost:4000/articles/2025/03/28/immich-proxmox.html">&lt;h1 id=&quot;setting-up-a-proxmox-server-with-immich-and-a-removable-sata-drive&quot;&gt;Setting Up a ProxMox Server with Immich and a Removable SATA Drive&lt;/h1&gt;
+
+&lt;p&gt;In this guide, I’ll walk through the complete process of setting up a Dell PowerEdge R410 as a ProxMox server with a removable SATA drive for a self-hosted Immich photo and video backup solution. This setup allows me to easily remove and back up the media disk whenever needed.&lt;/p&gt;
+
+&lt;h2 id=&quot;project-overview&quot;&gt;Project Overview&lt;/h2&gt;
+
+&lt;p&gt;Here’s what we set out to accomplish:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Set up and configure a used Dell PowerEdge R410 as a ProxMox virtualization server&lt;/li&gt;
+  &lt;li&gt;Configure the first 3 SAS disks as RAID-0 for ProxMox OS and VM storage&lt;/li&gt;
+  &lt;li&gt;Configure the 4th SATA disk as an external media disk to be used by Immich&lt;/li&gt;
+  &lt;li&gt;Install and configure an Ubuntu Server VM to run Immich&lt;/li&gt;
+  &lt;li&gt;Make the media disk removable for easy backup&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&quot;hardware-setup&quot;&gt;Hardware Setup&lt;/h2&gt;
+
+&lt;h3 id=&quot;server-configuration&quot;&gt;Server Configuration&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;Dell PowerEdge R410&lt;/li&gt;
+  &lt;li&gt;3x SAS drives in RAID-0 for the main system&lt;/li&gt;
+  &lt;li&gt;1x SATA 4TB drive as a removable media disk&lt;/li&gt;
+  &lt;li&gt;PERC H700 RAID controller&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;part-1-initial-proxmox-setup&quot;&gt;Part 1: Initial ProxMox Setup&lt;/h2&gt;
+
+&lt;h3 id=&quot;preparing-the-installation-media-with-ventoy&quot;&gt;Preparing the Installation Media with Ventoy&lt;/h3&gt;
+
+&lt;p&gt;I used Ventoy to create the bootable USB drive for ProxMox installation. Ventoy is an open-source tool that allows you to create a bootable USB drive where you can simply copy multiple ISO files to the drive and boot from any of them without needing to reformat the drive each time.&lt;/p&gt;
+
+&lt;p&gt;Here’s how I set it up:&lt;/p&gt;
+&lt;ol&gt;
+  &lt;li&gt;Download and install Ventoy on a USB drive:
+    &lt;ul&gt;
+      &lt;li&gt;Use VirtualBox and boot into a Linux live environment&lt;/li&gt;
+      &lt;li&gt;Connect USB drive and install Ventoy to it&lt;/li&gt;
+      &lt;li&gt;Download the ProxMox ISO and copy it to the Ventoy USB drive&lt;/li&gt;
+      &lt;li&gt;Ventoy automatically creates a boot menu with all ISOs on the drive&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Boot the server with the USB drive and prepare the RAID configuration:
+    &lt;ul&gt;
+      &lt;li&gt;Press &lt;strong&gt;CTRL+R&lt;/strong&gt; during boot to access the RAID configuration utility&lt;/li&gt;
+      &lt;li&gt;Use &lt;strong&gt;F10&lt;/strong&gt; to configure BIOS settings as needed&lt;/li&gt;
+      &lt;li&gt;Create a new Virtual Disk (VD) for the 3 SAS disks (RAID-0)&lt;/li&gt;
+      &lt;li&gt;Create a new Virtual Disk (VD) for the 4th media disk (RAID-0)&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;&lt;strong&gt;Important:&lt;/strong&gt; Wait for the new VD to be fully initialized before attempting OS installation!&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h3 id=&quot;installation-gotchas&quot;&gt;Installation Gotchas&lt;/h3&gt;
+
+&lt;p&gt;I encountered several issues during installation:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;Tip:&lt;/strong&gt; You might need to remove the 4th disk for the installation to work properly&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Alternative approach:&lt;/strong&gt; If installation fails, remove the 4th drive during installation of ProxMox, then set up ProxMox with the VM. After that, reboot the machine with the 4th disk attached and create a new VD for it.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;I installed ProxMox on the RAID-0 array of the three SAS disks. After the basic installation, I had to deal with repository configuration.&lt;/p&gt;
+
+&lt;h3 id=&quot;fixing-enterprise-repository-issues&quot;&gt;Fixing Enterprise Repository Issues&lt;/h3&gt;
+
+&lt;p&gt;After installation, I needed to switch from the enterprise repositories to the free community repositories:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Edit the enterprise repository file:
+    &lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;nano /etc/apt/sources.list.d/pve-enterprise.list
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Comment out the enterprise repository by adding a # at the beginning of the line:
+    &lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# deb https://enterprise.proxmox.com/debian/pve bookworm pve-enterprise&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Add the no-subscription repository:
+    &lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;deb http://download.proxmox.com/debian/pve bookworm pve-no-subscription&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; /etc/apt/sources.list.d/pve-no-subscription.list
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Similarly for Ceph, edit its repository file:
+    &lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;nano /etc/apt/sources.list.d/ceph.list
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Comment out the enterprise repository and add the no-subscription one:
+    &lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# deb https://enterprise.proxmox.com/debian/ceph-quincy bookworm enterprise&lt;/span&gt;
+deb http://download.proxmox.com/debian/ceph-quincy bookworm no-subscription
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Update the package lists:
+    &lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;apt update
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;This allowed me to receive updates without requiring a subscription.&lt;/p&gt;
+
+&lt;h2 id=&quot;part-2-configuring-the-sata-disk&quot;&gt;Part 2: Configuring the SATA Disk&lt;/h2&gt;
+
+&lt;p&gt;Initially, the 4th SATA disk wasn’t being detected properly. After some troubleshooting, I discovered it was showing up as a “Foreign Configuration” in the PERC H700 RAID controller.&lt;/p&gt;
+
+&lt;h3 id=&quot;resolving-foreign-configuration&quot;&gt;Resolving Foreign Configuration&lt;/h3&gt;
+
+&lt;p&gt;To resolve this, I accessed the PERC H700 BIOS during system boot by pressing Ctrl+R and found the disk listed as a foreign configuration. Since I wanted to use it as a standalone disk rather than part of an existing array, I cleared the foreign configuration:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;In the PERC H700 BIOS, selected “Foreign Config” &amp;gt; “Clear”&lt;/li&gt;
+  &lt;li&gt;This made the disk available as an unconfigured good disk&lt;/li&gt;
+  &lt;li&gt;Created a new single-disk RAID-0 virtual disk with that physical disk&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h3 id=&quot;repairing-the-gpt-partition-table&quot;&gt;Repairing the GPT Partition Table&lt;/h3&gt;
+
+&lt;p&gt;After adding the disk to ProxMox, I discovered the disk had a corrupted GPT partition table. I used &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;gdisk&lt;/code&gt; to fix it:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;gdisk &lt;span class=&quot;nt&quot;&gt;-l&lt;/span&gt; /dev/sdb
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;This showed several problems with the GPT partition table:&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Caution: Found protective or hybrid MBR and corrupt GPT. Using GPT, but disk
+verification and recovery are STRONGLY recommended.
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;I entered recovery mode and accessed the expert menu to fix the issues:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# In gdisk&lt;/span&gt;
+Command &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;? &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;help&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;: r
+Recovery/transformation &lt;span class=&quot;nb&quot;&gt;command&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;? &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;help&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;: x
+Expert &lt;span class=&quot;nb&quot;&gt;command&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;? &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;help&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;: e
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;This relocated the backup data structures to the end of the disk. After verification, I wrote the changes with the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;w&lt;/code&gt; command.&lt;/p&gt;
+
+&lt;h3 id=&quot;creating-a-new-partition-and-filesystem&quot;&gt;Creating a New Partition and Filesystem&lt;/h3&gt;
+
+&lt;p&gt;Since I wanted to use this as a fresh disk for Immich, I created a new partition table and formatted it with exFAT for good cross-platform compatibility:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# Create a new empty GPT partition table&lt;/span&gt;
+gdisk /dev/sdb
+&lt;span class=&quot;c&quot;&gt;# Type 'o' for new table&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# Type 'n' for new partition&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# Accept defaults for first and last sectors&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# Type '0700' for basic data partition&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# Type 'w' to write changes&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# Format with exFAT&lt;/span&gt;
+apt-get update
+apt-get &lt;span class=&quot;nb&quot;&gt;install &lt;/span&gt;exfat-fuse exfat-utils
+mkfs.exfat /dev/sdb1
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;part-3-adding-the-disk-to-proxmox&quot;&gt;Part 3: Adding the Disk to ProxMox&lt;/h2&gt;
+
+&lt;p&gt;Once the disk was prepared, I needed to make it accessible to ProxMox:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# Check the UUID of the disk&lt;/span&gt;
+blkid /dev/sdb1
+&lt;span class=&quot;c&quot;&gt;# Output: UUID=&quot;E7E6-D94B&quot; BLOCK_SIZE=&quot;512&quot; TYPE=&quot;exfat&quot; PTTYPE=&quot;dos&quot; PARTLABEL=&quot;Microsoft basic data&quot; PARTUUID=&quot;88025e98-0e04-49da-b48d-0ad992798361&quot;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;part-4-setting-up-the-ubuntu-vm-for-immich&quot;&gt;Part 4: Setting Up the Ubuntu VM for Immich&lt;/h2&gt;
+
+&lt;p&gt;I created an Ubuntu Server VM in ProxMox with the following specifications:&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;4GB RAM&lt;/li&gt;
+  &lt;li&gt;6 CPU cores&lt;/li&gt;
+  &lt;li&gt;80GB main disk&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;attaching-the-media-disk-to-the-vm&quot;&gt;Attaching the Media Disk to the VM&lt;/h3&gt;
+
+&lt;p&gt;I used the command line to attach the formatted disk to the VM:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# Get the VM ID&lt;/span&gt;
+qm list
+&lt;span class=&quot;c&quot;&gt;# Output showed VM ID 100 for Immich VM&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# Attach the disk to the VM&lt;/span&gt;
+qm &lt;span class=&quot;nb&quot;&gt;set &lt;/span&gt;100 &lt;span class=&quot;nt&quot;&gt;-scsi1&lt;/span&gt; /dev/sdb1
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;You can verify the disk was added to the VM configuration:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;qm config 100
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;The output should show something like:&lt;/p&gt;
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;scsi1: /dev/sdb1,size=4000224099840
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;part-5-configuring-the-vm-to-use-the-external-disk&quot;&gt;Part 5: Configuring the VM to Use the External Disk&lt;/h2&gt;
+
+&lt;p&gt;After starting the VM, I needed to mount the disk and make it available to Immich.&lt;/p&gt;
+
+&lt;h3 id=&quot;installing-exfat-support-in-the-vm&quot;&gt;Installing exFAT Support in the VM&lt;/h3&gt;
+
+&lt;p&gt;First, I installed exFAT support in the Ubuntu VM:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;apt update
+&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;apt &lt;span class=&quot;nb&quot;&gt;install &lt;/span&gt;exfat-fuse exfat-utils
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;creating-a-mount-point-and-mounting-the-disk&quot;&gt;Creating a Mount Point and Mounting the Disk&lt;/h3&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# Create mount point&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;sudo mkdir&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt; /mnt/immich-media
+
+&lt;span class=&quot;c&quot;&gt;# Mount the disk&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;mount /dev/sdb /mnt/immich-media
+
+&lt;span class=&quot;c&quot;&gt;# Verify the mount&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;df&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-h&lt;/span&gt; | &lt;span class=&quot;nb&quot;&gt;grep &lt;/span&gt;immich-media
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;making-the-mount-persistent&quot;&gt;Making the Mount Persistent&lt;/h3&gt;
+
+&lt;p&gt;To ensure the disk is mounted automatically on boot, I added it to &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/etc/fstab&lt;/code&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;/dev/sdb /mnt/immich-media exfat defaults,nofail 0 0&quot;&lt;/span&gt; | &lt;span class=&quot;nb&quot;&gt;sudo tee&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-a&lt;/span&gt; /etc/fstab
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;The &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;nofail&lt;/code&gt; option ensures the system boots normally even if the disk is not present.&lt;/p&gt;
+
+&lt;h2 id=&quot;part-6-setting-up-immich-with-docker-compose&quot;&gt;Part 6: Setting Up Immich with Docker Compose&lt;/h2&gt;
+
+&lt;p&gt;I installed Immich using the official Docker Compose setup, then modified it to use the external disk.&lt;/p&gt;
+
+&lt;h3 id=&quot;configuring-docker-compose-for-the-external-disk&quot;&gt;Configuring Docker Compose for the External Disk&lt;/h3&gt;
+
+&lt;p&gt;I edited the docker-compose.yml file to add the external media volume:&lt;/p&gt;
+
+&lt;div class=&quot;language-yaml highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;na&quot;&gt;volumes&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+  &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;${UPLOAD_LOCATION}:/usr/src/app/upload&lt;/span&gt;
+  &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;${EXTERNAL_LOCATION}:/usr/src/app/external&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Alternatively, I could have simply modified the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;.env&lt;/code&gt; file to change the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;UPLOAD_LOCATION&lt;/code&gt; variable:&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;UPLOAD_LOCATION=/mnt/immich-media
+EXTERNAL_LOCATION=/mnt/immich-media
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;setting-up-auto-start-for-docker-compose&quot;&gt;Setting Up Auto-Start for Docker Compose&lt;/h3&gt;
+
+&lt;p&gt;Since Docker was installed via Snap on my system, I created a systemd service to ensure Immich starts automatically on boot:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;nano /etc/systemd/system/immich.service
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;With the following content:&lt;/p&gt;
+
+&lt;div class=&quot;language-ini highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nn&quot;&gt;[Unit]&lt;/span&gt;
+&lt;span class=&quot;py&quot;&gt;Description&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;Immich Docker Compose Application&lt;/span&gt;
+&lt;span class=&quot;py&quot;&gt;After&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;snapd.service network-online.target&lt;/span&gt;
+&lt;span class=&quot;py&quot;&gt;Wants&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;network-online.target&lt;/span&gt;
+
+&lt;span class=&quot;nn&quot;&gt;[Service]&lt;/span&gt;
+&lt;span class=&quot;py&quot;&gt;Type&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;simple&lt;/span&gt;
+&lt;span class=&quot;py&quot;&gt;User&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;root&lt;/span&gt;
+&lt;span class=&quot;py&quot;&gt;WorkingDirectory&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;/path/to/your/immich/directory&lt;/span&gt;
+&lt;span class=&quot;py&quot;&gt;ExecStartPre&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;/bin/bash -c 'if ! mountpoint -q /mnt/immich-media; then mount /mnt/immich-media; fi'&lt;/span&gt;
+&lt;span class=&quot;py&quot;&gt;ExecStart&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;/snap/bin/docker-compose up&lt;/span&gt;
+&lt;span class=&quot;py&quot;&gt;ExecStop&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;/snap/bin/docker-compose down&lt;/span&gt;
+&lt;span class=&quot;py&quot;&gt;Restart&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;on-failure&lt;/span&gt;
+&lt;span class=&quot;py&quot;&gt;RestartSec&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;10&lt;/span&gt;
+
+&lt;span class=&quot;nn&quot;&gt;[Install]&lt;/span&gt;
+&lt;span class=&quot;py&quot;&gt;WantedBy&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;multi-user.target&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Then enabled and started the service:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;systemctl daemon-reload
+&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;systemctl &lt;span class=&quot;nb&quot;&gt;enable &lt;/span&gt;immich.service
+&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;systemctl start immich.service
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;part-7-configuring-immich-to-use-the-external-media&quot;&gt;Part 7: Configuring Immich to Use the External Media&lt;/h2&gt;
+
+&lt;p&gt;Finally, I configured Immich through its web interface to use the external media directory:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Logged into the Immich web interface&lt;/li&gt;
+  &lt;li&gt;Went to Administration → Library Settings&lt;/li&gt;
+  &lt;li&gt;Configured the external media path as the primary upload destination&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h2&gt;
+
+&lt;p&gt;This setup provides a flexible solution for a self-hosted photo and video backup system using Immich on ProxMox. The key advantage is the ability to remove the media disk for offline backups while maintaining a clean separation between the system and media storage.&lt;/p&gt;
+
+&lt;p&gt;When I need to back up my media or add content from another system:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Shut down the Immich containers&lt;/li&gt;
+  &lt;li&gt;Unmount the disk: &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;sudo umount /mnt/immich-media&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;Shut down the VM&lt;/li&gt;
+  &lt;li&gt;Detach the disk from the VM in ProxMox&lt;/li&gt;
+  &lt;li&gt;Physically remove the disk from the server&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;To reconnect:&lt;/p&gt;
+&lt;ol&gt;
+  &lt;li&gt;Physically install the disk&lt;/li&gt;
+  &lt;li&gt;Reattach it to the VM in ProxMox&lt;/li&gt;
+  &lt;li&gt;Start the VM, and the disk will be automatically mounted&lt;/li&gt;
+  &lt;li&gt;The Immich service will start automatically&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;This modular approach offers both the convenience of a self-hosted solution with the practical ability to physically secure or transport the actual media data when needed.&lt;/p&gt;
+
+&lt;h2 id=&quot;troubleshooting-tips&quot;&gt;Troubleshooting Tips&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;If the disk doesn’t mount automatically after a reboot, check &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/etc/fstab&lt;/code&gt; and ensure the entry is correct&lt;/li&gt;
+  &lt;li&gt;If Docker containers don’t start automatically, check the systemd service status with &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;systemctl status immich.service&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;If you need to repair the disk’s filesystem after unexpected removal, you might need to use &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;fsck.exfat /dev/sdb1&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;future-improvements&quot;&gt;Future Improvements&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Implement a more robust backup solution like rsync to an additional backup disk&lt;/li&gt;
+  &lt;li&gt;Set up email notifications when the disk space reaches a certain threshold&lt;/li&gt;
+  &lt;li&gt;Add monitoring for the health of the RAID arrays and the media disk&lt;/li&gt;
+&lt;/ul&gt;</content><author><name></name></author><category term="articles" /><category term="dell" /><category term="poweredge" /><category term="r410" /><category term="raid" /><category term="proxmox" /><category term="immich" /><category term="docker" /></entry><entry><title type="html">Understanding Django’s Unit Test Process with Multiple Databases</title><link href="http://localhost:4000/articles/2024/01/18/django-test-flow.html" rel="alternate" type="text/html" title="Understanding Django’s Unit Test Process with Multiple Databases" /><published>2024-01-18T00:00:00+08:00</published><updated>2024-01-18T00:00:00+08:00</updated><id>http://localhost:4000/articles/2024/01/18/django-test-flow</id><content type="html" xml:base="http://localhost:4000/articles/2024/01/18/django-test-flow.html">&lt;p&gt;Django’s process for running unit tests, especially when multiple databases are
+involved, is both intricate and fascinating. In this post, we’ll break down the
+process step-by-step, from the moment you run &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;python manage.py test&lt;/code&gt;.&lt;/p&gt;
+
+&lt;h2 id=&quot;command-execution&quot;&gt;Command Execution&lt;/h2&gt;
+
+&lt;p&gt;When you execute &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;python manage.py test&lt;/code&gt;, Django’s &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;manage.py&lt;/code&gt; script first
+locates your project’s settings and initializes the Django environment. It then
+locates the test command and executes it.&lt;/p&gt;
+
+&lt;h2 id=&quot;test-discovery&quot;&gt;Test Discovery&lt;/h2&gt;
+
+&lt;p&gt;Django’s built-in test discovery mechanism automatically searches for tests. By
+default, it looks for files named &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;test*.py&lt;/code&gt; in your project directories,
+adhering to Python’s standard &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;unittest&lt;/code&gt; discovery rules.&lt;/p&gt;
+
+&lt;h2 id=&quot;database-selection&quot;&gt;Database Selection&lt;/h2&gt;
+
+&lt;p&gt;For a standard Django setup, tests use the default database. However, if your
+application employs multiple databases, you have control over which databases
+are used for each test:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;By default, tests target the default database.&lt;/li&gt;
+  &lt;li&gt;Use the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;databases&lt;/code&gt; attribute in the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;TestCase&lt;/code&gt; class to specify different databases for your tests.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;test-database-creation&quot;&gt;Test Database Creation&lt;/h2&gt;
+
+&lt;p&gt;Django checks whether a test database needs to be created. This behavior can be
+customized:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;A separate test database is created by default.&lt;/li&gt;
+  &lt;li&gt;Tests that don’t require a database can use &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;SimpleTestCase&lt;/code&gt; or &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;TransactionTestCase&lt;/code&gt; with &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;databases=[]&lt;/code&gt;.&lt;/li&gt;
+  &lt;li&gt;For multiple databases, Django creates a test database for each, typically prefixed with &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;test_&lt;/code&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;migrations&quot;&gt;Migrations&lt;/h2&gt;
+
+&lt;p&gt;Migrations are applied to ensure the test database schema matches your
+development environment. The &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;--keepdb&lt;/code&gt; flag can be used to retain the test
+database between runs, speeding up the process.&lt;/p&gt;
+
+&lt;h2 id=&quot;test-execution&quot;&gt;Test Execution&lt;/h2&gt;
+
+&lt;p&gt;Django uses the test runner defined in your settings (default:
+&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;django.test.runner.DiscoverRunner&lt;/code&gt;) to execute tests. Each test is run in
+isolation within a database transaction, maintaining test independence.&lt;/p&gt;
+
+&lt;h2 id=&quot;test-database-destruction&quot;&gt;Test Database Destruction&lt;/h2&gt;
+
+&lt;p&gt;Post-testing, Django destroys the test databases unless the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;--keepdb&lt;/code&gt; flag is
+used. This ensures a fresh start for subsequent test runs.&lt;/p&gt;
+
+&lt;h2 id=&quot;test-results&quot;&gt;Test Results&lt;/h2&gt;
+
+&lt;p&gt;The results, including the number of tests, assertions, failures, and errors,
+are displayed after the tests are complete.&lt;/p&gt;
+
+&lt;p&gt;Key Takeaway: In projects with multiple databases, it’s crucial to correctly
+specify the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;databases&lt;/code&gt; attribute in your &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;TestCase&lt;/code&gt; classes. This ensures
+proper setup and usage of the necessary databases for your tests.&lt;/p&gt;
+
+&lt;p&gt;Understanding and configuring this process is vital for effective testing in
+complex Django projects.&lt;/p&gt;
+
+&lt;h2 id=&quot;best-practices-for-multiple-database-applications&quot;&gt;Best Practices for Multiple Database Applications&lt;/h2&gt;
+
+&lt;p&gt;When managing tests in applications that support multiple databases, it’s
+generally advantageous to encourage modules to primarily interact with a single
+database wherever feasible. This approach simplifies the testing process and
+enhances maintainability.&lt;/p&gt;
+
+&lt;p&gt;Additionally, it’s important to be aware of the role of the Database Router’s
+&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;allow_migration&lt;/code&gt; method. This method plays a critical role during the
+migration phase, particularly when creating test databases. In scenarios
+involving secondary databases with unmanaged models, a notable consideration
+arises: you must manually create the schema and tables for these models. This
+step is crucial for ensuring that your tests execute correctly and interact as
+expected with these unmanaged database components.&lt;/p&gt;
+
+&lt;p&gt;Implementing these best practices can significantly streamline the testing
+process in complex Django environments, ensuring more robust and reliable test
+outcomes.&lt;/p&gt;</content><author><name></name></author><category term="articles" /><category term="presentation" /><category term="tdd" /></entry><entry><title type="html">Django Login: Embracing Third-Party Solutions</title><link href="http://localhost:4000/articles/2024/01/18/social-logins.html" rel="alternate" type="text/html" title="Django Login: Embracing Third-Party Solutions" /><published>2024-01-18T00:00:00+08:00</published><updated>2024-01-18T00:00:00+08:00</updated><id>http://localhost:4000/articles/2024/01/18/social-logins</id><content type="html" xml:base="http://localhost:4000/articles/2024/01/18/social-logins.html">&lt;p&gt;The landscape of authentication has evolved drastically, and in 2023, leveraging
 third-party tools like Auth0, SuperTokens, and AWS Cognito can save significant
 time and resources while ensuring robust security. Let’s expand our discussion
 on Django authentication to include these tools and address why custom-building
@@ -83,91 +497,7 @@ experience, freeing up valuable time to focus on core application features.&lt;/
 third-party services depends on your specific project requirements, expertise,
 and resources. Whichever path you choose, keeping abreast of the latest
 developments in authentication technologies will always be key to maintaining
-secure and efficient login systems.&lt;/p&gt;</content><author><name></name></author><category term="articles" /><category term="survey" /><category term="django" /></entry><entry><title type="html">Understanding Django’s Unit Test Process with Multiple Databases</title><link href="http://localhost:4000/articles/2024/01/18/django-test-flow.html" rel="alternate" type="text/html" title="Understanding Django’s Unit Test Process with Multiple Databases" /><published>2024-01-18T00:00:00+08:00</published><updated>2024-01-18T00:00:00+08:00</updated><id>http://localhost:4000/articles/2024/01/18/django-test-flow</id><content type="html" xml:base="http://localhost:4000/articles/2024/01/18/django-test-flow.html">&lt;p&gt;Django’s process for running unit tests, especially when multiple databases are
-involved, is both intricate and fascinating. In this post, we’ll break down the
-process step-by-step, from the moment you run &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;python manage.py test&lt;/code&gt;.&lt;/p&gt;
-
-&lt;h2 id=&quot;command-execution&quot;&gt;Command Execution&lt;/h2&gt;
-
-&lt;p&gt;When you execute &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;python manage.py test&lt;/code&gt;, Django’s &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;manage.py&lt;/code&gt; script first
-locates your project’s settings and initializes the Django environment. It then
-locates the test command and executes it.&lt;/p&gt;
-
-&lt;h2 id=&quot;test-discovery&quot;&gt;Test Discovery&lt;/h2&gt;
-
-&lt;p&gt;Django’s built-in test discovery mechanism automatically searches for tests. By
-default, it looks for files named &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;test*.py&lt;/code&gt; in your project directories,
-adhering to Python’s standard &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;unittest&lt;/code&gt; discovery rules.&lt;/p&gt;
-
-&lt;h2 id=&quot;database-selection&quot;&gt;Database Selection&lt;/h2&gt;
-
-&lt;p&gt;For a standard Django setup, tests use the default database. However, if your
-application employs multiple databases, you have control over which databases
-are used for each test:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;By default, tests target the default database.&lt;/li&gt;
-  &lt;li&gt;Use the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;databases&lt;/code&gt; attribute in the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;TestCase&lt;/code&gt; class to specify different databases for your tests.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&quot;test-database-creation&quot;&gt;Test Database Creation&lt;/h2&gt;
-
-&lt;p&gt;Django checks whether a test database needs to be created. This behavior can be
-customized:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;A separate test database is created by default.&lt;/li&gt;
-  &lt;li&gt;Tests that don’t require a database can use &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;SimpleTestCase&lt;/code&gt; or &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;TransactionTestCase&lt;/code&gt; with &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;databases=[]&lt;/code&gt;.&lt;/li&gt;
-  &lt;li&gt;For multiple databases, Django creates a test database for each, typically prefixed with &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;test_&lt;/code&gt;.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&quot;migrations&quot;&gt;Migrations&lt;/h2&gt;
-
-&lt;p&gt;Migrations are applied to ensure the test database schema matches your
-development environment. The &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;--keepdb&lt;/code&gt; flag can be used to retain the test
-database between runs, speeding up the process.&lt;/p&gt;
-
-&lt;h2 id=&quot;test-execution&quot;&gt;Test Execution&lt;/h2&gt;
-
-&lt;p&gt;Django uses the test runner defined in your settings (default:
-&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;django.test.runner.DiscoverRunner&lt;/code&gt;) to execute tests. Each test is run in
-isolation within a database transaction, maintaining test independence.&lt;/p&gt;
-
-&lt;h2 id=&quot;test-database-destruction&quot;&gt;Test Database Destruction&lt;/h2&gt;
-
-&lt;p&gt;Post-testing, Django destroys the test databases unless the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;--keepdb&lt;/code&gt; flag is
-used. This ensures a fresh start for subsequent test runs.&lt;/p&gt;
-
-&lt;h2 id=&quot;test-results&quot;&gt;Test Results&lt;/h2&gt;
-
-&lt;p&gt;The results, including the number of tests, assertions, failures, and errors,
-are displayed after the tests are complete.&lt;/p&gt;
-
-&lt;p&gt;Key Takeaway: In projects with multiple databases, it’s crucial to correctly
-specify the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;databases&lt;/code&gt; attribute in your &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;TestCase&lt;/code&gt; classes. This ensures
-proper setup and usage of the necessary databases for your tests.&lt;/p&gt;
-
-&lt;p&gt;Understanding and configuring this process is vital for effective testing in
-complex Django projects.&lt;/p&gt;
-
-&lt;h2 id=&quot;best-practices-for-multiple-database-applications&quot;&gt;Best Practices for Multiple Database Applications&lt;/h2&gt;
-
-&lt;p&gt;When managing tests in applications that support multiple databases, it’s
-generally advantageous to encourage modules to primarily interact with a single
-database wherever feasible. This approach simplifies the testing process and
-enhances maintainability.&lt;/p&gt;
-
-&lt;p&gt;Additionally, it’s important to be aware of the role of the Database Router’s
-&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;allow_migration&lt;/code&gt; method. This method plays a critical role during the
-migration phase, particularly when creating test databases. In scenarios
-involving secondary databases with unmanaged models, a notable consideration
-arises: you must manually create the schema and tables for these models. This
-step is crucial for ensuring that your tests execute correctly and interact as
-expected with these unmanaged database components.&lt;/p&gt;
-
-&lt;p&gt;Implementing these best practices can significantly streamline the testing
-process in complex Django environments, ensuring more robust and reliable test
-outcomes.&lt;/p&gt;</content><author><name></name></author><category term="articles" /><category term="presentation" /><category term="tdd" /></entry><entry><title type="html">Grokking Codebases quickly</title><link href="http://localhost:4000/articles/2022/09/05/grokking_tools.html" rel="alternate" type="text/html" title="Grokking Codebases quickly" /><published>2022-09-05T00:00:00+08:00</published><updated>2022-09-05T00:00:00+08:00</updated><id>http://localhost:4000/articles/2022/09/05/grokking_tools</id><content type="html" xml:base="http://localhost:4000/articles/2022/09/05/grokking_tools.html">&lt;p&gt;I recently I had to work with a large legacy codebase. It was especially
+secure and efficient login systems.&lt;/p&gt;</content><author><name></name></author><category term="articles" /><category term="survey" /><category term="django" /></entry><entry><title type="html">Grokking Codebases quickly</title><link href="http://localhost:4000/articles/2022/09/05/grokking_tools.html" rel="alternate" type="text/html" title="Grokking Codebases quickly" /><published>2022-09-05T00:00:00+08:00</published><updated>2022-09-05T00:00:00+08:00</updated><id>http://localhost:4000/articles/2022/09/05/grokking_tools</id><content type="html" xml:base="http://localhost:4000/articles/2022/09/05/grokking_tools.html">&lt;p&gt;I recently I had to work with a large legacy codebase. It was especially
 confusing as there was no documentation available. In order to get myself up to
 speed as quickly as possible, I invested some time in finding some tools to aid
 me in understanding the architecture of the codebase.&lt;/p&gt;
@@ -363,40 +693,4 @@ some of my notes on two of my favourite topics, deliberate practice and TDD.&lt;
 &lt;h5 id=&quot;thoughts&quot;&gt;Thoughts&lt;/h5&gt;
 
 &lt;p&gt;I think it boils down to having the discipline to invest in the time and
-opportunity to practice.&lt;/p&gt;</content><author><name></name></author><category term="articles" /><category term="tdd" /><category term="deliberate-practice" /></entry><entry><title type="html">Learning about WebRTC</title><link href="http://localhost:4000/articles/2020/04/24/webrtc.html" rel="alternate" type="text/html" title="Learning about WebRTC" /><published>2020-04-24T00:00:00+08:00</published><updated>2020-04-24T00:00:00+08:00</updated><id>http://localhost:4000/articles/2020/04/24/webrtc</id><content type="html" xml:base="http://localhost:4000/articles/2020/04/24/webrtc.html">&lt;p&gt;I was reading about the of people were facing with Zoom recently.  Given the
-rise of COVID-19 and the need to work remotely, remote conferencing software
-seems to very much in demand.  This got me thinking about the technologies
-involved. This post is about me going down the rabbit hole and is a summary of
-my explorations.&lt;/p&gt;
-
-&lt;p&gt;Rediscovering WebRTC [1]&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;a href=&quot;https://webrtc.org/&quot;&gt;WebRTC&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;WebSockets vs WebRTC [2]&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;a href=&quot;https://bloggeek.me/webrtc-vs-websockets/&quot;&gt;Websockets vs WebRTC&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;Python implementation of WebRTC [3] [4]&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;a href=&quot;https://github.com/aiortc/aiortc&quot;&gt;aiortc&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://www.youtube.com/watch?v=uKwB6r3upMU&quot;&gt;FOSSDEM Talk&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;HTTP3 [5] [6]&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;a href=&quot;https://http3-explained.haxx.se/en/why-quic&quot;&gt;QUIC&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://github.com/facebookincubator/mvfst&quot;&gt;mvfst&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;Python implementation of QUIC [7]&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;a href=&quot;https://github.com/aiortc/aioquic&quot;&gt;aioquic&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;</content><author><name></name></author><category term="articles" /><category term="webrtc" /></entry></feed>
+opportunity to practice.&lt;/p&gt;</content><author><name></name></author><category term="articles" /><category term="tdd" /><category term="deliberate-practice" /></entry></feed>

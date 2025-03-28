@@ -1,0 +1,331 @@
+<h1 id="setting-up-a-proxmox-server-with-immich-and-a-removable-sata-drive">Setting Up a ProxMox Server with Immich and a Removable SATA Drive</h1>
+
+<p>In this guide, I’ll walk through the complete process of setting up a Dell PowerEdge R410 as a ProxMox server with a removable SATA drive for a self-hosted Immich photo and video backup solution. This setup allows me to easily remove and back up the media disk whenever needed.</p>
+
+<h2 id="project-overview">Project Overview</h2>
+
+<p>Here’s what we set out to accomplish:</p>
+
+<ol>
+  <li>Set up and configure a used Dell PowerEdge R410 as a ProxMox virtualization server</li>
+  <li>Configure the first 3 SAS disks as RAID-0 for ProxMox OS and VM storage</li>
+  <li>Configure the 4th SATA disk as an external media disk to be used by Immich</li>
+  <li>Install and configure an Ubuntu Server VM to run Immich</li>
+  <li>Make the media disk removable for easy backup</li>
+</ol>
+
+<h2 id="hardware-setup">Hardware Setup</h2>
+
+<h3 id="server-configuration">Server Configuration</h3>
+<ul>
+  <li>Dell PowerEdge R410</li>
+  <li>3x SAS drives in RAID-0 for the main system</li>
+  <li>1x SATA 4TB drive as a removable media disk</li>
+  <li>PERC H700 RAID controller</li>
+</ul>
+
+<h2 id="part-1-initial-proxmox-setup">Part 1: Initial ProxMox Setup</h2>
+
+<h3 id="preparing-the-installation-media-with-ventoy">Preparing the Installation Media with Ventoy</h3>
+
+<p>I used Ventoy to create the bootable USB drive for ProxMox installation. Ventoy is an open-source tool that allows you to create a bootable USB drive where you can simply copy multiple ISO files to the drive and boot from any of them without needing to reformat the drive each time.</p>
+
+<p>Here’s how I set it up:</p>
+<ol>
+  <li>Download and install Ventoy on a USB drive:
+    <ul>
+      <li>Use VirtualBox and boot into a Linux live environment</li>
+      <li>Connect USB drive and install Ventoy to it</li>
+      <li>Download the ProxMox ISO and copy it to the Ventoy USB drive</li>
+      <li>Ventoy automatically creates a boot menu with all ISOs on the drive</li>
+    </ul>
+  </li>
+  <li>Boot the server with the USB drive and prepare the RAID configuration:
+    <ul>
+      <li>Press <strong>CTRL+R</strong> during boot to access the RAID configuration utility</li>
+      <li>Use <strong>F10</strong> to configure BIOS settings as needed</li>
+      <li>Create a new Virtual Disk (VD) for the 3 SAS disks (RAID-0)</li>
+      <li>Create a new Virtual Disk (VD) for the 4th media disk (RAID-0)</li>
+    </ul>
+  </li>
+</ol>
+
+<blockquote>
+  <p><strong>Important:</strong> Wait for the new VD to be fully initialized before attempting OS installation!</p>
+</blockquote>
+
+<h3 id="installation-gotchas">Installation Gotchas</h3>
+
+<p>I encountered several issues during installation:</p>
+
+<ul>
+  <li><strong>Tip:</strong> You might need to remove the 4th disk for the installation to work properly</li>
+  <li><strong>Alternative approach:</strong> If installation fails, remove the 4th drive during installation of ProxMox, then set up ProxMox with the VM. After that, reboot the machine with the 4th disk attached and create a new VD for it.</li>
+</ul>
+
+<p>I installed ProxMox on the RAID-0 array of the three SAS disks. After the basic installation, I had to deal with repository configuration.</p>
+
+<h3 id="fixing-enterprise-repository-issues">Fixing Enterprise Repository Issues</h3>
+
+<p>After installation, I needed to switch from the enterprise repositories to the free community repositories:</p>
+
+<ol>
+  <li>Edit the enterprise repository file:
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>nano /etc/apt/sources.list.d/pve-enterprise.list
+</code></pre></div>    </div>
+  </li>
+  <li>Comment out the enterprise repository by adding a # at the beginning of the line:
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># deb https://enterprise.proxmox.com/debian/pve bookworm pve-enterprise</span>
+</code></pre></div>    </div>
+  </li>
+  <li>Add the no-subscription repository:
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">echo</span> <span class="s2">"deb http://download.proxmox.com/debian/pve bookworm pve-no-subscription"</span> <span class="o">&gt;</span> /etc/apt/sources.list.d/pve-no-subscription.list
+</code></pre></div>    </div>
+  </li>
+  <li>Similarly for Ceph, edit its repository file:
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>nano /etc/apt/sources.list.d/ceph.list
+</code></pre></div>    </div>
+  </li>
+  <li>Comment out the enterprise repository and add the no-subscription one:
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># deb https://enterprise.proxmox.com/debian/ceph-quincy bookworm enterprise</span>
+deb http://download.proxmox.com/debian/ceph-quincy bookworm no-subscription
+</code></pre></div>    </div>
+  </li>
+  <li>Update the package lists:
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>apt update
+</code></pre></div>    </div>
+  </li>
+</ol>
+
+<p>This allowed me to receive updates without requiring a subscription.</p>
+
+<h2 id="part-2-configuring-the-sata-disk">Part 2: Configuring the SATA Disk</h2>
+
+<p>Initially, the 4th SATA disk wasn’t being detected properly. After some troubleshooting, I discovered it was showing up as a “Foreign Configuration” in the PERC H700 RAID controller.</p>
+
+<h3 id="resolving-foreign-configuration">Resolving Foreign Configuration</h3>
+
+<p>To resolve this, I accessed the PERC H700 BIOS during system boot by pressing Ctrl+R and found the disk listed as a foreign configuration. Since I wanted to use it as a standalone disk rather than part of an existing array, I cleared the foreign configuration:</p>
+
+<ol>
+  <li>In the PERC H700 BIOS, selected “Foreign Config” &gt; “Clear”</li>
+  <li>This made the disk available as an unconfigured good disk</li>
+  <li>Created a new single-disk RAID-0 virtual disk with that physical disk</li>
+</ol>
+
+<h3 id="repairing-the-gpt-partition-table">Repairing the GPT Partition Table</h3>
+
+<p>After adding the disk to ProxMox, I discovered the disk had a corrupted GPT partition table. I used <code class="language-plaintext highlighter-rouge">gdisk</code> to fix it:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>gdisk <span class="nt">-l</span> /dev/sdb
+</code></pre></div></div>
+
+<p>This showed several problems with the GPT partition table:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Caution: Found protective or hybrid MBR and corrupt GPT. Using GPT, but disk
+verification and recovery are STRONGLY recommended.
+</code></pre></div></div>
+
+<p>I entered recovery mode and accessed the expert menu to fix the issues:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># In gdisk</span>
+Command <span class="o">(</span>? <span class="k">for </span><span class="nb">help</span><span class="o">)</span>: r
+Recovery/transformation <span class="nb">command</span> <span class="o">(</span>? <span class="k">for </span><span class="nb">help</span><span class="o">)</span>: x
+Expert <span class="nb">command</span> <span class="o">(</span>? <span class="k">for </span><span class="nb">help</span><span class="o">)</span>: e
+</code></pre></div></div>
+
+<p>This relocated the backup data structures to the end of the disk. After verification, I wrote the changes with the <code class="language-plaintext highlighter-rouge">w</code> command.</p>
+
+<h3 id="creating-a-new-partition-and-filesystem">Creating a New Partition and Filesystem</h3>
+
+<p>Since I wanted to use this as a fresh disk for Immich, I created a new partition table and formatted it with exFAT for good cross-platform compatibility:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Create a new empty GPT partition table</span>
+gdisk /dev/sdb
+<span class="c"># Type 'o' for new table</span>
+<span class="c"># Type 'n' for new partition</span>
+<span class="c"># Accept defaults for first and last sectors</span>
+<span class="c"># Type '0700' for basic data partition</span>
+<span class="c"># Type 'w' to write changes</span>
+
+<span class="c"># Format with exFAT</span>
+apt-get update
+apt-get <span class="nb">install </span>exfat-fuse exfat-utils
+mkfs.exfat /dev/sdb1
+</code></pre></div></div>
+
+<h2 id="part-3-adding-the-disk-to-proxmox">Part 3: Adding the Disk to ProxMox</h2>
+
+<p>Once the disk was prepared, I needed to make it accessible to ProxMox:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Check the UUID of the disk</span>
+blkid /dev/sdb1
+<span class="c"># Output: UUID="E7E6-D94B" BLOCK_SIZE="512" TYPE="exfat" PTTYPE="dos" PARTLABEL="Microsoft basic data" PARTUUID="88025e98-0e04-49da-b48d-0ad992798361"</span>
+</code></pre></div></div>
+
+<h2 id="part-4-setting-up-the-ubuntu-vm-for-immich">Part 4: Setting Up the Ubuntu VM for Immich</h2>
+
+<p>I created an Ubuntu Server VM in ProxMox with the following specifications:</p>
+<ul>
+  <li>4GB RAM</li>
+  <li>6 CPU cores</li>
+  <li>80GB main disk</li>
+</ul>
+
+<h3 id="attaching-the-media-disk-to-the-vm">Attaching the Media Disk to the VM</h3>
+
+<p>I used the command line to attach the formatted disk to the VM:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Get the VM ID</span>
+qm list
+<span class="c"># Output showed VM ID 100 for Immich VM</span>
+
+<span class="c"># Attach the disk to the VM</span>
+qm <span class="nb">set </span>100 <span class="nt">-scsi1</span> /dev/sdb1
+</code></pre></div></div>
+
+<p>You can verify the disk was added to the VM configuration:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>qm config 100
+</code></pre></div></div>
+
+<p>The output should show something like:</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>scsi1: /dev/sdb1,size=4000224099840
+</code></pre></div></div>
+
+<h2 id="part-5-configuring-the-vm-to-use-the-external-disk">Part 5: Configuring the VM to Use the External Disk</h2>
+
+<p>After starting the VM, I needed to mount the disk and make it available to Immich.</p>
+
+<h3 id="installing-exfat-support-in-the-vm">Installing exFAT Support in the VM</h3>
+
+<p>First, I installed exFAT support in the Ubuntu VM:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>apt update
+<span class="nb">sudo </span>apt <span class="nb">install </span>exfat-fuse exfat-utils
+</code></pre></div></div>
+
+<h3 id="creating-a-mount-point-and-mounting-the-disk">Creating a Mount Point and Mounting the Disk</h3>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Create mount point</span>
+<span class="nb">sudo mkdir</span> <span class="nt">-p</span> /mnt/immich-media
+
+<span class="c"># Mount the disk</span>
+<span class="nb">sudo </span>mount /dev/sdb /mnt/immich-media
+
+<span class="c"># Verify the mount</span>
+<span class="nb">df</span> <span class="nt">-h</span> | <span class="nb">grep </span>immich-media
+</code></pre></div></div>
+
+<h3 id="making-the-mount-persistent">Making the Mount Persistent</h3>
+
+<p>To ensure the disk is mounted automatically on boot, I added it to <code class="language-plaintext highlighter-rouge">/etc/fstab</code>:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">echo</span> <span class="s2">"/dev/sdb /mnt/immich-media exfat defaults,nofail 0 0"</span> | <span class="nb">sudo tee</span> <span class="nt">-a</span> /etc/fstab
+</code></pre></div></div>
+
+<p>The <code class="language-plaintext highlighter-rouge">nofail</code> option ensures the system boots normally even if the disk is not present.</p>
+
+<h2 id="part-6-setting-up-immich-with-docker-compose">Part 6: Setting Up Immich with Docker Compose</h2>
+
+<p>I installed Immich using the official Docker Compose setup, then modified it to use the external disk.</p>
+
+<h3 id="configuring-docker-compose-for-the-external-disk">Configuring Docker Compose for the External Disk</h3>
+
+<p>I edited the docker-compose.yml file to add the external media volume:</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">volumes</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="s">${UPLOAD_LOCATION}:/usr/src/app/upload</span>
+  <span class="pi">-</span> <span class="s">${EXTERNAL_LOCATION}:/usr/src/app/external</span>
+</code></pre></div></div>
+
+<p>Alternatively, I could have simply modified the <code class="language-plaintext highlighter-rouge">.env</code> file to change the <code class="language-plaintext highlighter-rouge">UPLOAD_LOCATION</code> variable:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>UPLOAD_LOCATION=/mnt/immich-media
+EXTERNAL_LOCATION=/mnt/immich-media
+</code></pre></div></div>
+
+<h3 id="setting-up-auto-start-for-docker-compose">Setting Up Auto-Start for Docker Compose</h3>
+
+<p>Since Docker was installed via Snap on my system, I created a systemd service to ensure Immich starts automatically on boot:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>nano /etc/systemd/system/immich.service
+</code></pre></div></div>
+
+<p>With the following content:</p>
+
+<div class="language-ini highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nn">[Unit]</span>
+<span class="py">Description</span><span class="p">=</span><span class="s">Immich Docker Compose Application</span>
+<span class="py">After</span><span class="p">=</span><span class="s">snapd.service network-online.target</span>
+<span class="py">Wants</span><span class="p">=</span><span class="s">network-online.target</span>
+
+<span class="nn">[Service]</span>
+<span class="py">Type</span><span class="p">=</span><span class="s">simple</span>
+<span class="py">User</span><span class="p">=</span><span class="s">root</span>
+<span class="py">WorkingDirectory</span><span class="p">=</span><span class="s">/path/to/your/immich/directory</span>
+<span class="py">ExecStartPre</span><span class="p">=</span><span class="s">/bin/bash -c 'if ! mountpoint -q /mnt/immich-media; then mount /mnt/immich-media; fi'</span>
+<span class="py">ExecStart</span><span class="p">=</span><span class="s">/snap/bin/docker-compose up</span>
+<span class="py">ExecStop</span><span class="p">=</span><span class="s">/snap/bin/docker-compose down</span>
+<span class="py">Restart</span><span class="p">=</span><span class="s">on-failure</span>
+<span class="py">RestartSec</span><span class="p">=</span><span class="s">10</span>
+
+<span class="nn">[Install]</span>
+<span class="py">WantedBy</span><span class="p">=</span><span class="s">multi-user.target</span>
+</code></pre></div></div>
+
+<p>Then enabled and started the service:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>systemctl daemon-reload
+<span class="nb">sudo </span>systemctl <span class="nb">enable </span>immich.service
+<span class="nb">sudo </span>systemctl start immich.service
+</code></pre></div></div>
+
+<h2 id="part-7-configuring-immich-to-use-the-external-media">Part 7: Configuring Immich to Use the External Media</h2>
+
+<p>Finally, I configured Immich through its web interface to use the external media directory:</p>
+
+<ol>
+  <li>Logged into the Immich web interface</li>
+  <li>Went to Administration → Library Settings</li>
+  <li>Configured the external media path as the primary upload destination</li>
+</ol>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>This setup provides a flexible solution for a self-hosted photo and video backup system using Immich on ProxMox. The key advantage is the ability to remove the media disk for offline backups while maintaining a clean separation between the system and media storage.</p>
+
+<p>When I need to back up my media or add content from another system:</p>
+
+<ol>
+  <li>Shut down the Immich containers</li>
+  <li>Unmount the disk: <code class="language-plaintext highlighter-rouge">sudo umount /mnt/immich-media</code></li>
+  <li>Shut down the VM</li>
+  <li>Detach the disk from the VM in ProxMox</li>
+  <li>Physically remove the disk from the server</li>
+</ol>
+
+<p>To reconnect:</p>
+<ol>
+  <li>Physically install the disk</li>
+  <li>Reattach it to the VM in ProxMox</li>
+  <li>Start the VM, and the disk will be automatically mounted</li>
+  <li>The Immich service will start automatically</li>
+</ol>
+
+<p>This modular approach offers both the convenience of a self-hosted solution with the practical ability to physically secure or transport the actual media data when needed.</p>
+
+<h2 id="troubleshooting-tips">Troubleshooting Tips</h2>
+
+<ul>
+  <li>If the disk doesn’t mount automatically after a reboot, check <code class="language-plaintext highlighter-rouge">/etc/fstab</code> and ensure the entry is correct</li>
+  <li>If Docker containers don’t start automatically, check the systemd service status with <code class="language-plaintext highlighter-rouge">systemctl status immich.service</code></li>
+  <li>If you need to repair the disk’s filesystem after unexpected removal, you might need to use <code class="language-plaintext highlighter-rouge">fsck.exfat /dev/sdb1</code></li>
+</ul>
+
+<h2 id="future-improvements">Future Improvements</h2>
+
+<ul>
+  <li>Implement a more robust backup solution like rsync to an additional backup disk</li>
+  <li>Set up email notifications when the disk space reaches a certain threshold</li>
+  <li>Add monitoring for the health of the RAID arrays and the media disk</li>
+</ul>

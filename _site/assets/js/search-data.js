@@ -113,4 +113,9 @@ var store = [{
         "excerpt":"The landscape of authentication has evolved drastically, and in 2023, leveragingthird-party tools like Auth0, SuperTokens, and AWS Cognito can save significanttime and resources while ensuring robust security. Let’s expand our discussionon Django authentication to include these tools and address why custom-buildinglogin pages might be a thing of the past. The...","categories": ["articles"],
         "tags": ["survey","django"],
         "url": "http://localhost:4000/articles/2024/01/18/social-logins.html"
+      },{
+        "title": "Setting Up a ProxMox Server with Immich and a Removable SATA Drive",
+        "excerpt":"Setting Up a ProxMox Server with Immich and a Removable SATA Drive In this guide, I’ll walk through the complete process of setting up a Dell PowerEdge R410 as a ProxMox server with a removable SATA drive for a self-hosted Immich photo and video backup solution. This setup allows me...","categories": ["articles"],
+        "tags": ["dell","poweredge","r410","raid","proxmox","immich","docker"],
+        "url": "http://localhost:4000/articles/2025/03/28/immich-proxmox.html"
       }]

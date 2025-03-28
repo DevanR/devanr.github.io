@@ -1,0 +1,74 @@
+<p>I am interested in combining the benefits of Django and React
+in a single web application. Here are some notes on the topic.
+My goal is not to create a web application but to understand
+the mechanism of how this can be achieved.</p>
+
+<h5 id="patterns">Patterns</h5>
+
+<h4 id="option-1">Option <a href="https://www.valentinog.com/blog/drf/">1</a></h4>
+
+<p>React in its own “frontend” Django app: load a single HTML template and let React manage the frontend (difficulty: medium)</p>
+
+<h3 id="backend---django">Backend - Django</h3>
+
+<ul>
+  <li>create a frontend app</li>
+  <li>serve a view with a Html template that contains the React App</li>
+</ul>
+
+<h3 id="frontend---react">Frontend - React</h3>
+
+<ul>
+  <li>create a React component that is loaded from the Html template</li>
+  <li>React component fetches data via Django API/URL</li>
+</ul>
+
+<p>The approach here seems straight forward but limited. The examples here do not
+go into depth as to how data can be saved.</p>
+
+<h4 id="option-2">Option <a href="https://www.digitalocean.com/community/tutorials/how-to-build-a-modern-web-application-to-manage-customer-information-with-django-and-react-on-ubuntu-18-04">2</a></h4>
+
+<p>Django REST as a standalone API + React as a standalone SPA (difficulty: hard, it involves JWT for authentication)</p>
+
+<h3 id="backend---django-1">Backend - Django</h3>
+
+<ul>
+  <li>create a django project</li>
+  <li>whitelist local React server for CORS</li>
+  <li>create model migrations and corresponding data migrations</li>
+</ul>
+
+<h3 id="frontend---react-1">Frontend - React</h3>
+
+<ul>
+  <li>create React project within Django project</li>
+  <li>install a HTTP client to consume API (e.g. axios)</li>
+  <li>create Service.js file to contain axios functions</li>
+  <li>create custom component that instantiates API Service.js</li>
+  <li>bind service to component, so that it can be called in Html</li>
+</ul>
+
+<h3 id="rest-api---django-restframework">REST API - django-restframework</h3>
+
+<ul>
+  <li>create API endpoints in urls.py</li>
+  <li>create API methods in views.py (with @api_view decorator)</li>
+  <li>re-use in-built HTTP responses</li>
+  <li>create model serializers to convert Python objects into JSON for React consumption</li>
+</ul>
+
+<h3 id="cross-origin-resource-sharing-cors">Cross Origin Resource Sharing (CORS)</h3>
+
+<ul>
+  <li>install CORS support as Django middleware to allow access to local React server</li>
+</ul>
+
+<h4 id="option-3">Option 3</h4>
+
+<p>Mix and match: mini React apps inside Django templates (difficulty: simple, but not so maintainable in the long run)</p>
+
+<p>This raises two questions for me. Firstly, what would be the best way of
+handling sessions with this setup?  Secondly, what is the advantage of having a
+Python backend in the first place?  Would it be better to use Node instead?
+What are the tradeoffs?</p>
+

@@ -2,6 +2,14 @@
 
   
     {
+      "title"			: "Setting Up a ProxMox Server with Immich and a Removable SATA Drive",
+      "link"			: "http://localhost:4000/articles/2025/03/28/immich-proxmox.html",
+      "excerpt"		: ""
+    }
+  
+
+  
+    ,{
       "title"			: "Django Login: Embracing Third-Party Solutions",
       "link"			: "http://localhost:4000/articles/2024/01/18/social-logins.html",
       "excerpt"		: ""

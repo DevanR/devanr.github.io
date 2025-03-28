@@ -1,0 +1,83 @@
+<p>I am interested in combining the benefits of Django and React
+in a single web application. Here are some notes on the topic.
+My goal is not to create a web application but to understand
+the mechanism of how this can be achieved.</p>
+
+<h5 id="part-1">Part 1</h5>
+
+<h4 id="python">Python</h4>
+
+<p>What are the libraries?</p>
+
+<h4 id="time-series-forecasting-defined">Time Series forecasting defined</h4>
+
+<ul>
+  <li>nomenclature</li>
+  <li>definitions</li>
+</ul>
+
+<h4 id="forecasting-as-a-supervised-learning-problem">Forecasting as a Supervised Learning problem</h4>
+
+<ul>
+  <li>classification</li>
+  <li>regression</li>
+  <li>sliding window (reframe)</li>
+  <li>univariate time series</li>
+  <li>multi variate time series</li>
+  <li>one step forecast</li>
+  <li>multi step forecast</li>
+</ul>
+
+<h4 id="time-series-forecasting-defined-1">Time Series forecasting defined</h4>
+
+<h5 id="part-2">Part 2</h5>
+
+<h4 id="loading-data">Loading Data</h4>
+
+<ul>
+  <li>read_csv()</li>
+  <li>Pandas series</li>
+  <li>series.head()</li>
+  <li>series.tail()</li>
+  <li>series.size</li>
+  <li>series[time_index]</li>
+  <li>series.describe()</li>
+</ul>
+
+<h4 id="basic-feature-engineering">Basic Feature Engineering</h4>
+
+<ul>
+  <li>change the timeseries into something that can be digested by a supervised learning model</li>
+  <li>in essence we select the best features</li>
+  <li>we test by checking the results of all our features</li>
+  <li>honestly, feels like spray and pray</li>
+</ul>
+
+<h4 id="data-visualization">Data Visualization</h4>
+
+<ol>
+  <li>Line Plots.</li>
+  <li>Histograms and Density Plots.</li>
+  <li>Box and Whisker Plots.</li>
+  <li>Heat Maps.</li>
+  <li>Lag Plots or Scatter Plots.</li>
+  <li>Autocorrelation Plots.</li>
+</ol>
+
+<ul>
+  <li>
+    <p>All the visualisation methods can be used to quickly glean information about
+the data</p>
+  </li>
+  <li>
+    <p>Some linear time series forecasting methods assume a well-behaved
+distribution of observations (i.e. a bell curve or normal distribution)</p>
+  </li>
+  <li>
+    <p>Comparing box and whisker plots by consistent intervals is a useful tool.
+Within an interval, it can help to spot outliers (dots above or below the
+whiskers). Across intervals, in this case years, we can look for multiple
+year trends, seasonality, and other structural information that could be
+modeled.</p>
+  </li>
+</ul>

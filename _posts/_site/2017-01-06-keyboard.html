@@ -1,0 +1,142 @@
+<p>I was inspired by a colleague of mine to do some experimenting with
+electronics. After some thought, I decided to build a mechanical keyboard. It
+is reasonably straight-forward and seemed like a good project to cut my teeth
+on. This article is a brief overview of how I went about doing it.</p>
+
+<p>A basic keyboard is made up of a micro-controller, switches and some means of
+communicating with a computer (usually USB). The firmware on the
+microcontroller, translates the key presses into the appropriate keycodes
+which are received by the computer.</p>
+
+<p>My goal was to keep things as simple and inexpensive as possible. I chose a
+minimalistic design and a 40 key footprint. I was also wanted to make as much
+from scratch as possible. (While it is possible to cast you own key caps, but
+that was going too far down the rabbit hole for me!) The goal was to build a
+keyboard that I would use everyday.</p>
+
+<p>Once I understand how it worked <a href="http://blog.komar.be/how-to-make-a-keyboard-the-matrix/">1</a>, I set about designing and sourcing the
+parts. Here is a brief description of the components I used.</p>
+
+<h5 id="micro-controller">Micro-controller</h5>
+
+<p>I used the Pro Micro 5V/16MHz ATMega 32U4 Module <a href="https://learn.sparkfun.com/tutorials/pro-micro--fio-v3-hookup-guide">2</a> as seemed to be the most
+affordable. Its datasheet can be found here <a href="http://dlnmh9ip6v2uc.cloudfront.net/datasheets/Dev/Arduino/Boards/Pro-Micro-v11-5V_B.pdf">3</a>. I bought these from Ebay.</p>
+
+<h5 id="diodes">Diodes</h5>
+
+<p>I used the 1N4148 Diodes, which I purchased from Amazon.</p>
+
+<h5 id="switches">Switches</h5>
+
+<p>I decided to go with Gateron Brown Switches from Massdrop. I would have
+preferred the standard Cherry MX switches, but none were available at the time.
+These were tactile with an average activation force.</p>
+
+<h5 id="pcb">PCB</h5>
+
+<p>Initially, I designed my PCB with Eagle <a href="http://www.autodesk.com/products/eagle/overview">4</a>. It was only later in the design
+process that I discovered that the size provided in the free version was too
+small. I switched to KiCAD <a href="http://kicad-pcb.org/">5</a>, which looking back I should have used in the
+first place. Its open source, free and has a large community. Overall a very
+nice piece of software. I highly recommend it.</p>
+
+<p><img src="/images/keyboard/schema.jpg" alt="PCB Schema" class="img-responsive" /></p>
+
+<p>Once designed I had the PCB made in China. While I speak Mandaring, I had a
+friend who happened to be in China source out a manufacturer and had everything
+shipped to him. He then brought it to UK for me when he returned from his
+travels. One thing to note, is that the minimum order in my case was 10 pieces.</p>
+
+<p><img src="/images/keyboard/PCB.jpg" alt="PCB" class="img-responsive" /></p>
+
+<h5 id="firmware">Firmware</h5>
+
+<p>One of the decisions that influenced my choice of micro-controller was the
+keyboard firmware that it supported. The tmk_keyboard firmware <a href="https://github.com/tmk/tmk_keyboard">6</a> is available
+for the Pro Micro and it has a large community. It has a number for nice
+feature, including the support of various micro-controllers, a in-built
+layering system, good documentation and it was still being actively developed.
+In this case I stood on the shoulders of giants. I relied heavily on the kind
+folks at deskthority to get the right information to hook everything up
+correctly <a href="https://deskthority.net/workshop-f7/how-to-build-your-very-own-keyboard-firmware-t7177.html#p141386">7</a>, <a href="https://deskthority.net/workshop-f7/all-about-custom-keyboard-controllers-t2340.html">8</a> and <a href="https://deskthority.net/workshop-f7/how-to-use-a-pro-micro-as-a-cheap-controller-converter-like-soarer-s-t8448.html">9</a>.</p>
+
+<h6 id="keycaps">Keycaps</h6>
+
+<p>I used blank Ortholinear DSA PBT keycaps online <a href="http://pimpmykeyboard.com/">10</a> (ErgoDox base set). While
+the custom sets are beautiful, I wanted to be able to touch type, so having
+them blank seemed appropriate. Also, I could not justify the price.</p>
+
+<h5 id="layout">Layout</h5>
+
+<p>I used an amazing online keyboard layout tool <a href="http://www.keyboard-layout-editor.com/">11</a> to design and spec out my
+layout. I decided to go minimalist and see how far I could go with as little
+keys as possible. I eventually settled with a 40 key layout, with two
+additional functional layers.</p>
+
+<h5 id="case">Case</h5>
+
+<p>I came across a Case and Plate building tool <a href="http://builder.swillkb.com/">12</a>, which accepts keyboard
+layouts as inputs and returns SVG schematics for the switch plate and
+corresponding case. These have to be converted into STL. Thankfully, there is a
+youtube video <a href="https://youtu.be/8CROo67W24M?list=LL-4okkubPyyCkBs9PqysCdwa">13</a> that shows how this can be done with FreeCAD <a href="https://www.freecadweb.org/">14</a>. I had the
+case laser cut from Acrylic in China. Like the PCB, the minimum order was 10.</p>
+
+<p><img src="/images/keyboard/case.jpg" alt="PCB" class="img-responsive" /></p>
+
+<h5 id="screws">Screws</h5>
+
+<p>I went with a 5mm round head bolt and nut to screw the case together. This was
+purchased from Amazon.</p>
+
+<h5 id="tools">Tools</h5>
+
+<p>Seeing as I had never done this before, I had to get the tools to assemble
+everything. Here is the bare minimum tools that you would need to get the job
+done.</p>
+
+<ul>
+  <li>Soldering iron</li>
+  <li>Solder</li>
+  <li>Solder sucker</li>
+  <li>Flush Flathead craft pliers</li>
+  <li>Flat head screwdriver</li>
+  <li>Multimeter</li>
+  <li>Tweezers</li>
+</ul>
+
+<h5 id="summary">Summary</h5>
+
+<p>Here the final complete keyboard:</p>
+
+<p><img src="/images/keyboard/front.jpg" alt="Keyboard front" class="img-responsive" />
+<img src="/images/keyboard/back.jpg" alt="Keyboard back" class="img-responsive" /></p>
+
+<p>Break down of the cost of materials:</p>
+
+<ul>
+  <li>10x (Case and PCB) -&gt; £80   (£8 each)</li>
+  <li>100x diodes        -&gt; £1.70 (£0.68 for 40)</li>
+  <li>120x switches      -&gt; £31   (£10 for 40)</li>
+  <li>120x keycaps       -&gt; £62   (£20 for 40)</li>
+  <li>1x Microcontroller -&gt; £2.5  (£2.5 each)</li>
+  <li>1x USB cable       -&gt; £1.4  (£1.4 each)</li>
+</ul>
+
+<p>So it works out to about £43 per complete keyboard. It is now my main keyboard
+at work. Performance wise, it’s taking awhile to get used to the multiple
+keyboard layers and the switches are a bit lighter to the touch than what I’m
+used to. Also, the I’ve realised that the mini-USB connection on the
+micro-controller is the weakest point of the build. I’ve already managed to
+break it once, so constantly removing the cable is not really an option.
+Thankfully, I can leave it on when I store it.</p>
+
+<p>I have learned a lot about electronics and making for this project. It’s really
+opened my eyes in terms of what is possible with the Internet and the low price
+of electronic parts available online. I’ve replaced the resistors of my Samsung
+TV and fixed the broken switch of my bicycle lights with my new found skills.
+It’s amazing what one can do with a soldering iron and a multi-meter! Overall,
+I’m glad I did this project.</p>
+
+<p>For anyone thinking of building their own keyboard, I would highly recommend it
+and there are a ton of useful resources available here <a href="https://geekhack.org/index.php?topic=69582.0">15</a> to get you started.</p>
+
