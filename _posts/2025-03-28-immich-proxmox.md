@@ -328,3 +328,111 @@ This modular approach offers both the convenience of a self-hosted solution with
 - Implement a more robust backup solution like rsync to an additional backup disk
 - Set up email notifications when the disk space reaches a certain threshold
 - Add monitoring for the health of the RAID arrays and the media disk
+
+## Addendum
+
+# How to Resize an ext4 Root Partition in Proxmox
+
+If your Proxmox-based virtual machine (VM) is running out of space on its root partition and that partition is using the **ext4** filesystem, you can follow the steps below to enlarge the disk and extend your ext4 partition.
+
+> **Important**:
+> - Always create a snapshot or a backup of your VM prior to making changes to the disk or partitions.
+> - These instructions assume you have a Linux VM using **ext4** for the root filesystem on a standard partition (e.g., `/dev/sda3`) and not LVM. If you have LVM or another filesystem type (like XFS), the steps differ.
+
+---
+
+## 1. Increase the Virtual Disk Size in Proxmox
+
+1. **Shut down** your VM (this is recommended for safety, though some distros support online resize).
+2. In the **Proxmox web interface**, select the VM and go to the **Hardware** tab.
+3. Choose the disk device (often named `scsi0`, `virtio0`, or `sata0`).
+4. Click **Resize Disk**, then specify how much space you want to add (e.g., `+10G`).
+5. Once the operation completes, **boot** the VM back up.
+
+> **Tip:** Taking a Proxmox snapshot (or other backup) before resizing is a great safety measure.
+
+---
+
+## 2. Confirm the New Disk Size Inside the VM
+
+After the VM boots, check that the operating system "sees" the new total disk size. For example:
+
+```bash
+lsblk
+```
+
+You should see something like:
+
+```
+NAME   MAJ:MIN RM   SIZE RO TYPE MOUNTPOINT
+sda      8:0    0    40G  0 disk
+├─sda1   8:1    0   100M  0 part /boot/efi
+├─sda2   8:2    0     1G  0 part [some-other-partition]
+└─sda3   8:3    0    20G  0 part /
+```
+
+If sda is 40G while sda3 is still 20G, that's normal. You've expanded the underlying virtual disk, but the partition hasn't been resized yet.
+
+## 3. Resize the Partition
+
+You now need to make the VM's partition (/dev/sda3 in this example) consume the extra space. Two common approaches:
+
+### Option A: Use growpart
+
+If growpart is installed (commonly found in the cloud-guest-utils or cloud-init package on Debian/Ubuntu):
+
+```bash
+sudo growpart /dev/sda 3
+```
+
+This will automatically resize partition 3 to fill all available free space on the disk.
+
+### Option B: Use parted
+
+If you don't have growpart, you can use GNU parted:
+
+Enter parted:
+
+```bash
+sudo parted /dev/sda
+```
+
+Display the current partition table:
+
+```bash
+(parted) print
+```
+
+Resize partition 3 to the maximum available space:
+
+```bash
+(parted) resizepart 3 100%
+```
+
+Quit parted:
+
+```bash
+(parted) quit
+```
+
+At this point, /dev/sda3 should match the full capacity of the disk (in the example, 40G).
+
+## 4. Resize the ext4 Filesystem
+
+With the partition enlarged, all that's left is to grow the ext4 filesystem:
+
+```bash
+sudo resize2fs /dev/sda3
+```
+
+You can typically run resize2fs while the filesystem is mounted on modern Linux distributions. This command adjusts the filesystem so that it now spans the expanded partition.
+
+## 5. Verify the Expanded Space
+
+Finally, confirm the size change:
+
+```bash
+df -h
+```
+
+Look for the partition mounted at /, and you should see the increased capacity reflecting the new total size of /dev/sda3.

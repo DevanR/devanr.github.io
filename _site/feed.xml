@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.0">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2025-03-28T21:17:18+08:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Devan</title><subtitle>A repository of thoughts and notes</subtitle><entry><title type="html">Setting Up a ProxMox Server with Immich and a Removable SATA Drive</title><link href="http://localhost:4000/articles/2025/03/28/immich-proxmox.html" rel="alternate" type="text/html" title="Setting Up a ProxMox Server with Immich and a Removable SATA Drive" /><published>2025-03-28T00:00:00+08:00</published><updated>2025-03-28T00:00:00+08:00</updated><id>http://localhost:4000/articles/2025/03/28/immich-proxmox</id><content type="html" xml:base="http://localhost:4000/articles/2025/03/28/immich-proxmox.html">&lt;h1 id=&quot;setting-up-a-proxmox-server-with-immich-and-a-removable-sata-drive&quot;&gt;Setting Up a ProxMox Server with Immich and a Removable SATA Drive&lt;/h1&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.0">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2025-03-30T23:36:56+08:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Devan</title><subtitle>A repository of thoughts and notes</subtitle><entry><title type="html">Setting Up a ProxMox Server with Immich and a Removable SATA Drive</title><link href="http://localhost:4000/articles/2025/03/28/immich-proxmox.html" rel="alternate" type="text/html" title="Setting Up a ProxMox Server with Immich and a Removable SATA Drive" /><published>2025-03-28T00:00:00+08:00</published><updated>2025-03-28T00:00:00+08:00</updated><id>http://localhost:4000/articles/2025/03/28/immich-proxmox</id><content type="html" xml:base="http://localhost:4000/articles/2025/03/28/immich-proxmox.html">&lt;h1 id=&quot;setting-up-a-proxmox-server-with-immich-and-a-removable-sata-drive&quot;&gt;Setting Up a ProxMox Server with Immich and a Removable SATA Drive&lt;/h1&gt;
 
 &lt;p&gt;In this guide, I’ll walk through the complete process of setting up a Dell PowerEdge R410 as a ProxMox server with a removable SATA drive for a self-hosted Immich photo and video backup solution. This setup allows me to easily remove and back up the media disk whenever needed.&lt;/p&gt;
 
@@ -326,7 +326,114 @@ qm &lt;span class=&quot;nb&quot;&gt;set &lt;/span&gt;100 &lt;span class=&quot;nt
   &lt;li&gt;Implement a more robust backup solution like rsync to an additional backup disk&lt;/li&gt;
   &lt;li&gt;Set up email notifications when the disk space reaches a certain threshold&lt;/li&gt;
   &lt;li&gt;Add monitoring for the health of the RAID arrays and the media disk&lt;/li&gt;
-&lt;/ul&gt;</content><author><name></name></author><category term="articles" /><category term="dell" /><category term="poweredge" /><category term="r410" /><category term="raid" /><category term="proxmox" /><category term="immich" /><category term="docker" /></entry><entry><title type="html">Understanding Django’s Unit Test Process with Multiple Databases</title><link href="http://localhost:4000/articles/2024/01/18/django-test-flow.html" rel="alternate" type="text/html" title="Understanding Django’s Unit Test Process with Multiple Databases" /><published>2024-01-18T00:00:00+08:00</published><updated>2024-01-18T00:00:00+08:00</updated><id>http://localhost:4000/articles/2024/01/18/django-test-flow</id><content type="html" xml:base="http://localhost:4000/articles/2024/01/18/django-test-flow.html">&lt;p&gt;Django’s process for running unit tests, especially when multiple databases are
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;addendum&quot;&gt;Addendum&lt;/h2&gt;
+
+&lt;h1 id=&quot;how-to-resize-an-ext4-root-partition-in-proxmox&quot;&gt;How to Resize an ext4 Root Partition in Proxmox&lt;/h1&gt;
+
+&lt;p&gt;If your Proxmox-based virtual machine (VM) is running out of space on its root partition and that partition is using the &lt;strong&gt;ext4&lt;/strong&gt; filesystem, you can follow the steps below to enlarge the disk and extend your ext4 partition.&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;&lt;strong&gt;Important&lt;/strong&gt;:&lt;/p&gt;
+  &lt;ul&gt;
+    &lt;li&gt;Always create a snapshot or a backup of your VM prior to making changes to the disk or partitions.&lt;/li&gt;
+    &lt;li&gt;These instructions assume you have a Linux VM using &lt;strong&gt;ext4&lt;/strong&gt; for the root filesystem on a standard partition (e.g., &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/dev/sda3&lt;/code&gt;) and not LVM. If you have LVM or another filesystem type (like XFS), the steps differ.&lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/blockquote&gt;
+
+&lt;hr /&gt;
+
+&lt;h2 id=&quot;1-increase-the-virtual-disk-size-in-proxmox&quot;&gt;1. Increase the Virtual Disk Size in Proxmox&lt;/h2&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;&lt;strong&gt;Shut down&lt;/strong&gt; your VM (this is recommended for safety, though some distros support online resize).&lt;/li&gt;
+  &lt;li&gt;In the &lt;strong&gt;Proxmox web interface&lt;/strong&gt;, select the VM and go to the &lt;strong&gt;Hardware&lt;/strong&gt; tab.&lt;/li&gt;
+  &lt;li&gt;Choose the disk device (often named &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;scsi0&lt;/code&gt;, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;virtio0&lt;/code&gt;, or &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;sata0&lt;/code&gt;).&lt;/li&gt;
+  &lt;li&gt;Click &lt;strong&gt;Resize Disk&lt;/strong&gt;, then specify how much space you want to add (e.g., &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;+10G&lt;/code&gt;).&lt;/li&gt;
+  &lt;li&gt;Once the operation completes, &lt;strong&gt;boot&lt;/strong&gt; the VM back up.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;&lt;strong&gt;Tip:&lt;/strong&gt; Taking a Proxmox snapshot (or other backup) before resizing is a great safety measure.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;hr /&gt;
+
+&lt;h2 id=&quot;2-confirm-the-new-disk-size-inside-the-vm&quot;&gt;2. Confirm the New Disk Size Inside the VM&lt;/h2&gt;
+
+&lt;p&gt;After the VM boots, check that the operating system “sees” the new total disk size. For example:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;lsblk
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;You should see something like:&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;NAME   MAJ:MIN RM   SIZE RO TYPE MOUNTPOINT
+sda      8:0    0    40G  0 disk
+├─sda1   8:1    0   100M  0 part /boot/efi
+├─sda2   8:2    0     1G  0 part [some-other-partition]
+└─sda3   8:3    0    20G  0 part /
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;If sda is 40G while sda3 is still 20G, that’s normal. You’ve expanded the underlying virtual disk, but the partition hasn’t been resized yet.&lt;/p&gt;
+
+&lt;h2 id=&quot;3-resize-the-partition&quot;&gt;3. Resize the Partition&lt;/h2&gt;
+
+&lt;p&gt;You now need to make the VM’s partition (/dev/sda3 in this example) consume the extra space. Two common approaches:&lt;/p&gt;
+
+&lt;h3 id=&quot;option-a-use-growpart&quot;&gt;Option A: Use growpart&lt;/h3&gt;
+
+&lt;p&gt;If growpart is installed (commonly found in the cloud-guest-utils or cloud-init package on Debian/Ubuntu):&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;growpart /dev/sda 3
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;This will automatically resize partition 3 to fill all available free space on the disk.&lt;/p&gt;
+
+&lt;h3 id=&quot;option-b-use-parted&quot;&gt;Option B: Use parted&lt;/h3&gt;
+
+&lt;p&gt;If you don’t have growpart, you can use GNU parted:&lt;/p&gt;
+
+&lt;p&gt;Enter parted:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;parted /dev/sda
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Display the current partition table:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;parted&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; print
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Resize partition 3 to the maximum available space:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;parted&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; resizepart 3 100%
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Quit parted:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;parted&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; quit
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;At this point, /dev/sda3 should match the full capacity of the disk (in the example, 40G).&lt;/p&gt;
+
+&lt;h2 id=&quot;4-resize-the-ext4-filesystem&quot;&gt;4. Resize the ext4 Filesystem&lt;/h2&gt;
+
+&lt;p&gt;With the partition enlarged, all that’s left is to grow the ext4 filesystem:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;resize2fs /dev/sda3
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;You can typically run resize2fs while the filesystem is mounted on modern Linux distributions. This command adjusts the filesystem so that it now spans the expanded partition.&lt;/p&gt;
+
+&lt;h2 id=&quot;5-verify-the-expanded-space&quot;&gt;5. Verify the Expanded Space&lt;/h2&gt;
+
+&lt;p&gt;Finally, confirm the size change:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;df&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-h&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Look for the partition mounted at /, and you should see the increased capacity reflecting the new total size of /dev/sda3.&lt;/p&gt;</content><author><name></name></author><category term="articles" /><category term="dell" /><category term="poweredge" /><category term="r410" /><category term="raid" /><category term="proxmox" /><category term="immich" /><category term="docker" /></entry><entry><title type="html">Understanding Django’s Unit Test Process with Multiple Databases</title><link href="http://localhost:4000/articles/2024/01/18/django-test-flow.html" rel="alternate" type="text/html" title="Understanding Django’s Unit Test Process with Multiple Databases" /><published>2024-01-18T00:00:00+08:00</published><updated>2024-01-18T00:00:00+08:00</updated><id>http://localhost:4000/articles/2024/01/18/django-test-flow</id><content type="html" xml:base="http://localhost:4000/articles/2024/01/18/django-test-flow.html">&lt;p&gt;Django’s process for running unit tests, especially when multiple databases are
 involved, is both intricate and fascinating. In this post, we’ll break down the
 process step-by-step, from the moment you run &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;python manage.py test&lt;/code&gt;.&lt;/p&gt;
 
