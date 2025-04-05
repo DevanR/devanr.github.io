@@ -118,4 +118,9 @@ var store = [{
         "excerpt":"Setting Up a ProxMox Server with Immich and a Removable SATA Drive In this guide, I’ll walk through the complete process of setting up a Dell PowerEdge R410 as a ProxMox server with a removable SATA drive for a self-hosted Immich photo and video backup solution. This setup allows me...","categories": ["articles"],
         "tags": ["dell","poweredge","r410","raid","proxmox","immich","docker"],
         "url": "http://localhost:4000/articles/2025/03/28/immich-proxmox.html"
+      },{
+        "title": "Setting Up qBittorrent with VPN Integration on Ubuntu Server",
+        "excerpt":"Setting Up qBittorrent with VPN Integration on Ubuntu Server Setting up a torrent client on your home server can significantly enhance your media server setup, allowing you to automate downloads directly to your media library. This guide will walk you through setting up qBittorrent with VPN integration on an Ubuntu...","categories": ["articles"],
+        "tags": ["qbittorrent","ubuntu","vpn","jellyfin","media-server"],
+        "url": "http://localhost:4000/articles/2025/04/06/jellyfin-proxmox.html"
       }]

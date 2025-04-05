@@ -2,6 +2,14 @@
 
   
     {
+      "title"			: "Setting Up qBittorrent with VPN Integration on Ubuntu Server",
+      "link"			: "http://localhost:4000/articles/2025/04/06/jellyfin-proxmox.html",
+      "excerpt"		: ""
+    }
+  
+
+  
+    ,{
       "title"			: "Setting Up a ProxMox Server with Immich and a Removable SATA Drive",
       "link"			: "http://localhost:4000/articles/2025/03/28/immich-proxmox.html",
       "excerpt"		: ""

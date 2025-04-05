@@ -1,4 +1,262 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.0">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2025-03-30T23:36:56+08:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Devan</title><subtitle>A repository of thoughts and notes</subtitle><entry><title type="html">Setting Up a ProxMox Server with Immich and a Removable SATA Drive</title><link href="http://localhost:4000/articles/2025/03/28/immich-proxmox.html" rel="alternate" type="text/html" title="Setting Up a ProxMox Server with Immich and a Removable SATA Drive" /><published>2025-03-28T00:00:00+08:00</published><updated>2025-03-28T00:00:00+08:00</updated><id>http://localhost:4000/articles/2025/03/28/immich-proxmox</id><content type="html" xml:base="http://localhost:4000/articles/2025/03/28/immich-proxmox.html">&lt;h1 id=&quot;setting-up-a-proxmox-server-with-immich-and-a-removable-sata-drive&quot;&gt;Setting Up a ProxMox Server with Immich and a Removable SATA Drive&lt;/h1&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.0">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2025-04-06T00:40:13+08:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Devan</title><subtitle>A repository of thoughts and notes</subtitle><entry><title type="html">Setting Up qBittorrent with VPN Integration on Ubuntu Server</title><link href="http://localhost:4000/articles/2025/04/06/jellyfin-proxmox.html" rel="alternate" type="text/html" title="Setting Up qBittorrent with VPN Integration on Ubuntu Server" /><published>2025-04-06T00:00:00+08:00</published><updated>2025-04-06T00:00:00+08:00</updated><id>http://localhost:4000/articles/2025/04/06/jellyfin-proxmox</id><content type="html" xml:base="http://localhost:4000/articles/2025/04/06/jellyfin-proxmox.html">&lt;h1 id=&quot;setting-up-qbittorrent-with-vpn-integration-on-ubuntu-server&quot;&gt;Setting Up qBittorrent with VPN Integration on Ubuntu Server&lt;/h1&gt;
+
+&lt;p&gt;Setting up a torrent client on your home server can significantly enhance your media server setup, allowing you to automate downloads directly to your media library. This guide will walk you through setting up qBittorrent with VPN integration on an Ubuntu server, with specific focus on making it work with Jellyfin.&lt;/p&gt;
+
+&lt;h2 id=&quot;why-qbittorrent&quot;&gt;Why qBittorrent?&lt;/h2&gt;
+
+&lt;p&gt;After trying multiple solutions including Transmission, I settled on qBittorrent for its reliability, feature-rich web interface, and better stability. While Transmission is often recommended for its lightweight nature, I encountered numerous stability issues where the daemon would randomly crash or hang.&lt;/p&gt;
+
+&lt;h2 id=&quot;prerequisites&quot;&gt;Prerequisites&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Ubuntu server (this guide was tested on Ubuntu 24.04 LTS)&lt;/li&gt;
+  &lt;li&gt;An active VPN subscription (I use ExpressVPN)&lt;/li&gt;
+  &lt;li&gt;Basic familiarity with Linux command line&lt;/li&gt;
+  &lt;li&gt;SSH access to your server&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;installation-process&quot;&gt;Installation Process&lt;/h2&gt;
+
+&lt;h3 id=&quot;1-install-qbittorrent-nox-cli-version-with-webui&quot;&gt;1. Install qBittorrent-nox (CLI version with WebUI)&lt;/h3&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;apt update
+&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;apt &lt;span class=&quot;nb&quot;&gt;install &lt;/span&gt;qbittorrent-nox
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;2-set-up-a-service-for-qbittorrent&quot;&gt;2. Set Up a Service for qBittorrent&lt;/h3&gt;
+
+&lt;p&gt;Create a systemd service file to manage qBittorrent:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;nano /etc/systemd/system/qbittorrent.service
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Add the following content, replacing “yourusername” with your actual username:&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;[Unit]
+Description=qBittorrent Daemon Service
+After=network.target
+
+[Service]
+Type=simple
+User=yourusername
+Group=yourusername
+ExecStart=/usr/bin/qbittorrent-nox --webui-port=8080
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;3-create-download-directories&quot;&gt;3. Create Download Directories&lt;/h3&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;mkdir&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt; ~/downloads
+&lt;span class=&quot;nb&quot;&gt;mkdir&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt; ~/downloads/incomplete
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;4-configure-vpn-integration&quot;&gt;4. Configure VPN Integration&lt;/h3&gt;
+
+&lt;h4 id=&quot;install-openvpn&quot;&gt;Install OpenVPN&lt;/h4&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;apt &lt;span class=&quot;nb&quot;&gt;install &lt;/span&gt;openvpn
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h4 id=&quot;set-up-your-vpn-configuration&quot;&gt;Set Up Your VPN Configuration&lt;/h4&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Obtain your OpenVPN configuration files from your VPN provider&lt;/li&gt;
+  &lt;li&gt;Create a directory for your VPN configurations:&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;sudo mkdir&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt; /etc/openvpn/vpnprovider
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Upload your .ovpn file to this directory&lt;/li&gt;
+  &lt;li&gt;Create a credentials file:&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;nano /etc/openvpn/vpnprovider/credentials
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Add your VPN username on the first line and password on the second.&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Set secure permissions:&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;sudo chmod &lt;/span&gt;600 /etc/openvpn/vpnprovider/credentials
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h4 id=&quot;create-a-vpn-service&quot;&gt;Create a VPN Service&lt;/h4&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;nano /etc/systemd/system/vpn.service
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Add:&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;[Unit]
+Description=VPN Connection
+After=network.target
+
+[Service]
+ExecStart=/usr/sbin/openvpn --config /etc/openvpn/vpnprovider/your-chosen-server.ovpn --auth-user-pass /etc/openvpn/vpnprovider/credentials
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;5-link-qbittorrent-to-your-vpn&quot;&gt;5. Link qBittorrent to Your VPN&lt;/h3&gt;
+
+&lt;p&gt;Update the qBittorrent service file to depend on the VPN:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;nano /etc/systemd/system/qbittorrent.service
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Modify the [Unit] section:&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;[Unit]
+Description=qBittorrent Daemon Service
+After=network.target vpn.service
+Requires=vpn.service
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;6-enable-and-start-services&quot;&gt;6. Enable and Start Services&lt;/h3&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;systemctl daemon-reload
+&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;systemctl &lt;span class=&quot;nb&quot;&gt;enable &lt;/span&gt;vpn
+&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;systemctl &lt;span class=&quot;nb&quot;&gt;enable &lt;/span&gt;qbittorrent
+&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;systemctl start vpn
+&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;systemctl start qbittorrent
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;common-gotchas-and-troubleshooting&quot;&gt;Common Gotchas and Troubleshooting&lt;/h2&gt;
+
+&lt;h3 id=&quot;the-nonexistent-home-directory-error&quot;&gt;The “nonexistent” Home Directory Error&lt;/h3&gt;
+
+&lt;p&gt;If you see an error like:&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Could not create required directory '/nonexistent/.cache/qBittorrent'
+Aborted
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;This means the user running qBittorrent has an invalid home directory.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Solution&lt;/strong&gt;: Modify your service file to use your actual user account rather than a system user.&lt;/p&gt;
+
+&lt;h3 id=&quot;permission-issues-with-download-directories&quot;&gt;Permission Issues with Download Directories&lt;/h3&gt;
+
+&lt;p&gt;If Jellyfin can’t access your downloaded media:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# Add the jellyfin user to your group&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;usermod &lt;span class=&quot;nt&quot;&gt;-a&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-G&lt;/span&gt; yourusername jellyfin
+
+&lt;span class=&quot;c&quot;&gt;# Ensure your directories have appropriate permissions&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;chmod &lt;/span&gt;750 ~/downloads
+&lt;span class=&quot;nb&quot;&gt;chmod &lt;/span&gt;750 ~/downloads/incomplete
+&lt;span class=&quot;nb&quot;&gt;chmod &lt;/span&gt;750 ~/  &lt;span class=&quot;c&quot;&gt;# May be necessary if jellyfin needs to traverse your home dir&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# Restart jellyfin&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;systemctl restart jellyfin
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;vpn-connection-dropping&quot;&gt;VPN Connection Dropping&lt;/h3&gt;
+
+&lt;p&gt;If the VPN connection drops, qBittorrent may continue running but expose your real IP address.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Solution&lt;/strong&gt;: Bind qBittorrent specifically to the VPN interface by adding the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;--net-interface=tun0&lt;/code&gt; option:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;ExecStart&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;/usr/bin/qbittorrent-nox &lt;span class=&quot;nt&quot;&gt;--webui-port&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;8080 &lt;span class=&quot;nt&quot;&gt;--net-interface&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;tun0
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;web-ui-password-reset&quot;&gt;Web UI Password Reset&lt;/h3&gt;
+
+&lt;p&gt;If you forget your Web UI password:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Stop the service:
+    &lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;systemctl stop qbittorrent
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Edit the config file:
+    &lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;nano ~/.config/qBittorrent/qBittorrent.conf
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Find the WebUI section and remove or modify the password line:
+    &lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;[WebUI]
+Password=
+Username=admin
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Restart the service:
+    &lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;systemctl start qbittorrent
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h3 id=&quot;verifying-your-torrent-traffic-is-using-the-vpn&quot;&gt;Verifying Your Torrent Traffic Is Using the VPN&lt;/h3&gt;
+
+&lt;p&gt;Run this command to check:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;ss &lt;span class=&quot;nt&quot;&gt;-tpn&lt;/span&gt; | &lt;span class=&quot;nb&quot;&gt;grep &lt;/span&gt;qbittorrent
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Make sure connections show your VPN’s private IP (often starting with 10.x.x.x) rather than your actual network interface IP.&lt;/p&gt;
+
+&lt;h2 id=&quot;configuring-qbittorrent-for-best-performance&quot;&gt;Configuring qBittorrent for Best Performance&lt;/h2&gt;
+
+&lt;p&gt;Access the Web UI at &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;http://your-server-ip:8080&lt;/code&gt; (default credentials: admin/adminadmin)&lt;/p&gt;
+
+&lt;p&gt;Important settings to adjust:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;&lt;strong&gt;Downloads&lt;/strong&gt;
+    &lt;ul&gt;
+      &lt;li&gt;Set “Default Save Path” to your media directory&lt;/li&gt;
+      &lt;li&gt;Set proper incomplete download location&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Connection&lt;/strong&gt;
+    &lt;ul&gt;
+      &lt;li&gt;Bind to the VPN interface (tun0)&lt;/li&gt;
+      &lt;li&gt;Adjust maximum connections based on your server capacity&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Speed&lt;/strong&gt;
+    &lt;ul&gt;
+      &lt;li&gt;Set upload/download limits to avoid affecting other network activities&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;BitTorrent&lt;/strong&gt;
+    &lt;ul&gt;
+      &lt;li&gt;Enable encryption&lt;/li&gt;
+      &lt;li&gt;Configure port forwarding if supported by your VPN&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&quot;integrating-with-jellyfin&quot;&gt;Integrating with Jellyfin&lt;/h2&gt;
+
+&lt;p&gt;For optimal integration with Jellyfin:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Configure qBittorrent to download to directories that Jellyfin scans&lt;/li&gt;
+  &lt;li&gt;Ensure proper permissions as outlined in the troubleshooting section&lt;/li&gt;
+  &lt;li&gt;Consider setting up auto-categorization based on media type (TV shows vs. Movies)&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&quot;security-considerations&quot;&gt;Security Considerations&lt;/h2&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Change the default Web UI password immediately&lt;/li&gt;
+  &lt;li&gt;Use a VPN that doesn’t keep logs&lt;/li&gt;
+  &lt;li&gt;Consider implementing additional firewall rules&lt;/li&gt;
+  &lt;li&gt;Regularly update your system and qBittorrent&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h2&gt;
+
+&lt;p&gt;While setting up qBittorrent with VPN integration requires some initial effort, the result is a robust, secure downloading solution that integrates perfectly with media servers like Jellyfin. The combination of automated downloads and proper VPN protection makes for an excellent self-hosted solution that puts you in control of your media library.&lt;/p&gt;</content><author><name></name></author><category term="articles" /><category term="qbittorrent" /><category term="ubuntu" /><category term="vpn" /><category term="jellyfin" /><category term="media-server" /></entry><entry><title type="html">Setting Up a ProxMox Server with Immich and a Removable SATA Drive</title><link href="http://localhost:4000/articles/2025/03/28/immich-proxmox.html" rel="alternate" type="text/html" title="Setting Up a ProxMox Server with Immich and a Removable SATA Drive" /><published>2025-03-28T00:00:00+08:00</published><updated>2025-03-28T00:00:00+08:00</updated><id>http://localhost:4000/articles/2025/03/28/immich-proxmox</id><content type="html" xml:base="http://localhost:4000/articles/2025/03/28/immich-proxmox.html">&lt;h1 id=&quot;setting-up-a-proxmox-server-with-immich-and-a-removable-sata-drive&quot;&gt;Setting Up a ProxMox Server with Immich and a Removable SATA Drive&lt;/h1&gt;
 
 &lt;p&gt;In this guide, I’ll walk through the complete process of setting up a Dell PowerEdge R410 as a ProxMox server with a removable SATA drive for a self-hosted Immich photo and video backup solution. This setup allows me to easily remove and back up the media disk whenever needed.&lt;/p&gt;
 
@@ -433,91 +691,7 @@ sda      8:0    0    40G  0 disk
 &lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;df&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-h&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;p&gt;Look for the partition mounted at /, and you should see the increased capacity reflecting the new total size of /dev/sda3.&lt;/p&gt;</content><author><name></name></author><category term="articles" /><category term="dell" /><category term="poweredge" /><category term="r410" /><category term="raid" /><category term="proxmox" /><category term="immich" /><category term="docker" /></entry><entry><title type="html">Understanding Django’s Unit Test Process with Multiple Databases</title><link href="http://localhost:4000/articles/2024/01/18/django-test-flow.html" rel="alternate" type="text/html" title="Understanding Django’s Unit Test Process with Multiple Databases" /><published>2024-01-18T00:00:00+08:00</published><updated>2024-01-18T00:00:00+08:00</updated><id>http://localhost:4000/articles/2024/01/18/django-test-flow</id><content type="html" xml:base="http://localhost:4000/articles/2024/01/18/django-test-flow.html">&lt;p&gt;Django’s process for running unit tests, especially when multiple databases are
-involved, is both intricate and fascinating. In this post, we’ll break down the
-process step-by-step, from the moment you run &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;python manage.py test&lt;/code&gt;.&lt;/p&gt;
-
-&lt;h2 id=&quot;command-execution&quot;&gt;Command Execution&lt;/h2&gt;
-
-&lt;p&gt;When you execute &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;python manage.py test&lt;/code&gt;, Django’s &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;manage.py&lt;/code&gt; script first
-locates your project’s settings and initializes the Django environment. It then
-locates the test command and executes it.&lt;/p&gt;
-
-&lt;h2 id=&quot;test-discovery&quot;&gt;Test Discovery&lt;/h2&gt;
-
-&lt;p&gt;Django’s built-in test discovery mechanism automatically searches for tests. By
-default, it looks for files named &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;test*.py&lt;/code&gt; in your project directories,
-adhering to Python’s standard &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;unittest&lt;/code&gt; discovery rules.&lt;/p&gt;
-
-&lt;h2 id=&quot;database-selection&quot;&gt;Database Selection&lt;/h2&gt;
-
-&lt;p&gt;For a standard Django setup, tests use the default database. However, if your
-application employs multiple databases, you have control over which databases
-are used for each test:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;By default, tests target the default database.&lt;/li&gt;
-  &lt;li&gt;Use the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;databases&lt;/code&gt; attribute in the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;TestCase&lt;/code&gt; class to specify different databases for your tests.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&quot;test-database-creation&quot;&gt;Test Database Creation&lt;/h2&gt;
-
-&lt;p&gt;Django checks whether a test database needs to be created. This behavior can be
-customized:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;A separate test database is created by default.&lt;/li&gt;
-  &lt;li&gt;Tests that don’t require a database can use &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;SimpleTestCase&lt;/code&gt; or &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;TransactionTestCase&lt;/code&gt; with &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;databases=[]&lt;/code&gt;.&lt;/li&gt;
-  &lt;li&gt;For multiple databases, Django creates a test database for each, typically prefixed with &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;test_&lt;/code&gt;.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&quot;migrations&quot;&gt;Migrations&lt;/h2&gt;
-
-&lt;p&gt;Migrations are applied to ensure the test database schema matches your
-development environment. The &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;--keepdb&lt;/code&gt; flag can be used to retain the test
-database between runs, speeding up the process.&lt;/p&gt;
-
-&lt;h2 id=&quot;test-execution&quot;&gt;Test Execution&lt;/h2&gt;
-
-&lt;p&gt;Django uses the test runner defined in your settings (default:
-&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;django.test.runner.DiscoverRunner&lt;/code&gt;) to execute tests. Each test is run in
-isolation within a database transaction, maintaining test independence.&lt;/p&gt;
-
-&lt;h2 id=&quot;test-database-destruction&quot;&gt;Test Database Destruction&lt;/h2&gt;
-
-&lt;p&gt;Post-testing, Django destroys the test databases unless the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;--keepdb&lt;/code&gt; flag is
-used. This ensures a fresh start for subsequent test runs.&lt;/p&gt;
-
-&lt;h2 id=&quot;test-results&quot;&gt;Test Results&lt;/h2&gt;
-
-&lt;p&gt;The results, including the number of tests, assertions, failures, and errors,
-are displayed after the tests are complete.&lt;/p&gt;
-
-&lt;p&gt;Key Takeaway: In projects with multiple databases, it’s crucial to correctly
-specify the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;databases&lt;/code&gt; attribute in your &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;TestCase&lt;/code&gt; classes. This ensures
-proper setup and usage of the necessary databases for your tests.&lt;/p&gt;
-
-&lt;p&gt;Understanding and configuring this process is vital for effective testing in
-complex Django projects.&lt;/p&gt;
-
-&lt;h2 id=&quot;best-practices-for-multiple-database-applications&quot;&gt;Best Practices for Multiple Database Applications&lt;/h2&gt;
-
-&lt;p&gt;When managing tests in applications that support multiple databases, it’s
-generally advantageous to encourage modules to primarily interact with a single
-database wherever feasible. This approach simplifies the testing process and
-enhances maintainability.&lt;/p&gt;
-
-&lt;p&gt;Additionally, it’s important to be aware of the role of the Database Router’s
-&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;allow_migration&lt;/code&gt; method. This method plays a critical role during the
-migration phase, particularly when creating test databases. In scenarios
-involving secondary databases with unmanaged models, a notable consideration
-arises: you must manually create the schema and tables for these models. This
-step is crucial for ensuring that your tests execute correctly and interact as
-expected with these unmanaged database components.&lt;/p&gt;
-
-&lt;p&gt;Implementing these best practices can significantly streamline the testing
-process in complex Django environments, ensuring more robust and reliable test
-outcomes.&lt;/p&gt;</content><author><name></name></author><category term="articles" /><category term="presentation" /><category term="tdd" /></entry><entry><title type="html">Django Login: Embracing Third-Party Solutions</title><link href="http://localhost:4000/articles/2024/01/18/social-logins.html" rel="alternate" type="text/html" title="Django Login: Embracing Third-Party Solutions" /><published>2024-01-18T00:00:00+08:00</published><updated>2024-01-18T00:00:00+08:00</updated><id>http://localhost:4000/articles/2024/01/18/social-logins</id><content type="html" xml:base="http://localhost:4000/articles/2024/01/18/social-logins.html">&lt;p&gt;The landscape of authentication has evolved drastically, and in 2023, leveraging
+&lt;p&gt;Look for the partition mounted at /, and you should see the increased capacity reflecting the new total size of /dev/sda3.&lt;/p&gt;</content><author><name></name></author><category term="articles" /><category term="dell" /><category term="poweredge" /><category term="r410" /><category term="raid" /><category term="proxmox" /><category term="immich" /><category term="docker" /></entry><entry><title type="html">Django Login: Embracing Third-Party Solutions</title><link href="http://localhost:4000/articles/2024/01/18/social-logins.html" rel="alternate" type="text/html" title="Django Login: Embracing Third-Party Solutions" /><published>2024-01-18T00:00:00+08:00</published><updated>2024-01-18T00:00:00+08:00</updated><id>http://localhost:4000/articles/2024/01/18/social-logins</id><content type="html" xml:base="http://localhost:4000/articles/2024/01/18/social-logins.html">&lt;p&gt;The landscape of authentication has evolved drastically, and in 2023, leveraging
 third-party tools like Auth0, SuperTokens, and AWS Cognito can save significant
 time and resources while ensuring robust security. Let’s expand our discussion
 on Django authentication to include these tools and address why custom-building
@@ -602,7 +776,91 @@ experience, freeing up valuable time to focus on core application features.&lt;/
 third-party services depends on your specific project requirements, expertise,
 and resources. Whichever path you choose, keeping abreast of the latest
 developments in authentication technologies will always be key to maintaining
-secure and efficient login systems.&lt;/p&gt;</content><author><name></name></author><category term="articles" /><category term="survey" /><category term="django" /></entry><entry><title type="html">Grokking Codebases quickly</title><link href="http://localhost:4000/articles/2022/09/05/grokking_tools.html" rel="alternate" type="text/html" title="Grokking Codebases quickly" /><published>2022-09-05T00:00:00+08:00</published><updated>2022-09-05T00:00:00+08:00</updated><id>http://localhost:4000/articles/2022/09/05/grokking_tools</id><content type="html" xml:base="http://localhost:4000/articles/2022/09/05/grokking_tools.html">&lt;p&gt;I recently I had to work with a large legacy codebase. It was especially
+secure and efficient login systems.&lt;/p&gt;</content><author><name></name></author><category term="articles" /><category term="survey" /><category term="django" /></entry><entry><title type="html">Understanding Django’s Unit Test Process with Multiple Databases</title><link href="http://localhost:4000/articles/2024/01/18/django-test-flow.html" rel="alternate" type="text/html" title="Understanding Django’s Unit Test Process with Multiple Databases" /><published>2024-01-18T00:00:00+08:00</published><updated>2024-01-18T00:00:00+08:00</updated><id>http://localhost:4000/articles/2024/01/18/django-test-flow</id><content type="html" xml:base="http://localhost:4000/articles/2024/01/18/django-test-flow.html">&lt;p&gt;Django’s process for running unit tests, especially when multiple databases are
+involved, is both intricate and fascinating. In this post, we’ll break down the
+process step-by-step, from the moment you run &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;python manage.py test&lt;/code&gt;.&lt;/p&gt;
+
+&lt;h2 id=&quot;command-execution&quot;&gt;Command Execution&lt;/h2&gt;
+
+&lt;p&gt;When you execute &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;python manage.py test&lt;/code&gt;, Django’s &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;manage.py&lt;/code&gt; script first
+locates your project’s settings and initializes the Django environment. It then
+locates the test command and executes it.&lt;/p&gt;
+
+&lt;h2 id=&quot;test-discovery&quot;&gt;Test Discovery&lt;/h2&gt;
+
+&lt;p&gt;Django’s built-in test discovery mechanism automatically searches for tests. By
+default, it looks for files named &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;test*.py&lt;/code&gt; in your project directories,
+adhering to Python’s standard &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;unittest&lt;/code&gt; discovery rules.&lt;/p&gt;
+
+&lt;h2 id=&quot;database-selection&quot;&gt;Database Selection&lt;/h2&gt;
+
+&lt;p&gt;For a standard Django setup, tests use the default database. However, if your
+application employs multiple databases, you have control over which databases
+are used for each test:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;By default, tests target the default database.&lt;/li&gt;
+  &lt;li&gt;Use the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;databases&lt;/code&gt; attribute in the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;TestCase&lt;/code&gt; class to specify different databases for your tests.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;test-database-creation&quot;&gt;Test Database Creation&lt;/h2&gt;
+
+&lt;p&gt;Django checks whether a test database needs to be created. This behavior can be
+customized:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;A separate test database is created by default.&lt;/li&gt;
+  &lt;li&gt;Tests that don’t require a database can use &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;SimpleTestCase&lt;/code&gt; or &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;TransactionTestCase&lt;/code&gt; with &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;databases=[]&lt;/code&gt;.&lt;/li&gt;
+  &lt;li&gt;For multiple databases, Django creates a test database for each, typically prefixed with &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;test_&lt;/code&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;migrations&quot;&gt;Migrations&lt;/h2&gt;
+
+&lt;p&gt;Migrations are applied to ensure the test database schema matches your
+development environment. The &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;--keepdb&lt;/code&gt; flag can be used to retain the test
+database between runs, speeding up the process.&lt;/p&gt;
+
+&lt;h2 id=&quot;test-execution&quot;&gt;Test Execution&lt;/h2&gt;
+
+&lt;p&gt;Django uses the test runner defined in your settings (default:
+&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;django.test.runner.DiscoverRunner&lt;/code&gt;) to execute tests. Each test is run in
+isolation within a database transaction, maintaining test independence.&lt;/p&gt;
+
+&lt;h2 id=&quot;test-database-destruction&quot;&gt;Test Database Destruction&lt;/h2&gt;
+
+&lt;p&gt;Post-testing, Django destroys the test databases unless the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;--keepdb&lt;/code&gt; flag is
+used. This ensures a fresh start for subsequent test runs.&lt;/p&gt;
+
+&lt;h2 id=&quot;test-results&quot;&gt;Test Results&lt;/h2&gt;
+
+&lt;p&gt;The results, including the number of tests, assertions, failures, and errors,
+are displayed after the tests are complete.&lt;/p&gt;
+
+&lt;p&gt;Key Takeaway: In projects with multiple databases, it’s crucial to correctly
+specify the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;databases&lt;/code&gt; attribute in your &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;TestCase&lt;/code&gt; classes. This ensures
+proper setup and usage of the necessary databases for your tests.&lt;/p&gt;
+
+&lt;p&gt;Understanding and configuring this process is vital for effective testing in
+complex Django projects.&lt;/p&gt;
+
+&lt;h2 id=&quot;best-practices-for-multiple-database-applications&quot;&gt;Best Practices for Multiple Database Applications&lt;/h2&gt;
+
+&lt;p&gt;When managing tests in applications that support multiple databases, it’s
+generally advantageous to encourage modules to primarily interact with a single
+database wherever feasible. This approach simplifies the testing process and
+enhances maintainability.&lt;/p&gt;
+
+&lt;p&gt;Additionally, it’s important to be aware of the role of the Database Router’s
+&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;allow_migration&lt;/code&gt; method. This method plays a critical role during the
+migration phase, particularly when creating test databases. In scenarios
+involving secondary databases with unmanaged models, a notable consideration
+arises: you must manually create the schema and tables for these models. This
+step is crucial for ensuring that your tests execute correctly and interact as
+expected with these unmanaged database components.&lt;/p&gt;
+
+&lt;p&gt;Implementing these best practices can significantly streamline the testing
+process in complex Django environments, ensuring more robust and reliable test
+outcomes.&lt;/p&gt;</content><author><name></name></author><category term="articles" /><category term="presentation" /><category term="tdd" /></entry><entry><title type="html">Grokking Codebases quickly</title><link href="http://localhost:4000/articles/2022/09/05/grokking_tools.html" rel="alternate" type="text/html" title="Grokking Codebases quickly" /><published>2022-09-05T00:00:00+08:00</published><updated>2022-09-05T00:00:00+08:00</updated><id>http://localhost:4000/articles/2022/09/05/grokking_tools</id><content type="html" xml:base="http://localhost:4000/articles/2022/09/05/grokking_tools.html">&lt;p&gt;I recently I had to work with a large legacy codebase. It was especially
 confusing as there was no documentation available. In order to get myself up to
 speed as quickly as possible, I invested some time in finding some tools to aid
 me in understanding the architecture of the codebase.&lt;/p&gt;
@@ -758,44 +1016,4 @@ you read to find out what works best for you.&lt;/p&gt;
 
 &lt;h4 id=&quot;summary&quot;&gt;Summary&lt;/h4&gt;
 
-&lt;p&gt;Know what you want and fail your way to success.&lt;/p&gt;</content><author><name></name></author><category term="articles" /><category term="notes" /></entry><entry><title type="html">Notes on Test-Driven Development as Pragmatic Deliberate Practice</title><link href="http://localhost:4000/articles/2020/04/25/tdd-deliberate-practice.html" rel="alternate" type="text/html" title="Notes on Test-Driven Development as Pragmatic Deliberate Practice" /><published>2020-04-25T00:00:00+08:00</published><updated>2020-04-25T00:00:00+08:00</updated><id>http://localhost:4000/articles/2020/04/25/tdd-deliberate-practice</id><content type="html" xml:base="http://localhost:4000/articles/2020/04/25/tdd-deliberate-practice.html">&lt;p&gt;Book &lt;a href=&quot;https://blog.jbrains.ca/permalink/test-driven-development-as-pragmatic-deliberate-practice&quot;&gt;1&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;Test Driven Development has really helped me become a better programmer.  And
-there is no one better to learn it from from JB Rainsberger himself.  Here are
-some of my notes on two of my favourite topics, deliberate practice and TDD.&lt;/p&gt;
-
-&lt;p&gt;Fix bugs test first.&lt;/p&gt;
-
-&lt;p&gt;After reviewing the literature, I identified number of ways that experts in different fields learn:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;They engage in deliberate practice, so that each opportunity for practice has a goal and evaluation criteria.&lt;/li&gt;
-  &lt;li&gt;They compile an extensive experience bank.&lt;/li&gt;
-  &lt;li&gt;They obtain feedback that is accurate, diagnostic, and reasonably timely.&lt;/li&gt;
-  &lt;li&gt;They enrich their experiences by reviewing prior experience to derive new insights and lessons from mistakes.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;Goals for TDD practise sessions.&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Test-drive the integration point to a library you haven’t worked with before.&lt;/li&gt;
-  &lt;li&gt;Isolate more of your code from the integration point to a framework.&lt;/li&gt;
-  &lt;li&gt;Write fewer tests that need a framework testing library (like Robolectric, NUnitASP, rspec-rails, or JSFUnit) and more that use the plain testing framework (plain JUnit, RSpec, or pytest).&lt;/li&gt;
-  &lt;li&gt;Reduce the time it takes to write the next test.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;Evaluation criteria for TDD practise sessions.&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Did I build this part of the system more easily than usual?&lt;/li&gt;
-  &lt;li&gt;Do the names in this part of the system make it easier for others to understand how to change this code?&lt;/li&gt;
-  &lt;li&gt;Can I extend this part of the system more easily by only adding code, rather than having to change it?&lt;/li&gt;
-  &lt;li&gt;Does the setup code that I need to run my tests involve only the parts of the system that I’ve just designed?&lt;/li&gt;
-  &lt;li&gt;If I have multiple assertions in a test, do I consider this very strongly related to each other?&lt;/li&gt;
-  &lt;li&gt;Did the pace at which new tests passed feel fast to me? or at least faster than before?&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h5 id=&quot;thoughts&quot;&gt;Thoughts&lt;/h5&gt;
-
-&lt;p&gt;I think it boils down to having the discipline to invest in the time and
-opportunity to practice.&lt;/p&gt;</content><author><name></name></author><category term="articles" /><category term="tdd" /><category term="deliberate-practice" /></entry></feed>
+&lt;p&gt;Know what you want and fail your way to success.&lt;/p&gt;</content><author><name></name></author><category term="articles" /><category term="notes" /></entry></feed>
