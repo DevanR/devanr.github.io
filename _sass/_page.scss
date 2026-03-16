@@ -101,6 +101,18 @@ span + .entry-title {
 	}
 }
 
+/* reading time */
+
+.entry-reading-time {
+	@include font-size(14);
+	color: lighten($text-color, 40);
+	margin-top: 0.5em;
+
+	.fa {
+		margin-right: 0.3em;
+	}
+}
+
 /* page/post wrapper */
 
 .entry-wrapper {

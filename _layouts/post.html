@@ -21,6 +21,11 @@
         {% else %}
           <h1 class="entry-title">{% if page.headline %}{{ page.headline }}{% else %}{{ page.title }}{% endif %}</h1>
         {% endif %}
+        {% capture words %}{{ content | number_of_words }}{% endcapture %}
+        <p class="entry-reading-time">
+          <i class="fa fa-clock-o"></i>
+          {% if words contains "-" %}1{% else %}{{ words | plus: 0 | divided_by: 200 | at_least: 1 }}{% endif %} min read
+        </p>
       </header>
       <!--
         <footer class="entry-meta">
