@@ -1,3 +1,0 @@
-# devanr.github.io
-
-Blog
