@@ -1,6 +1,7 @@
 ---
 layout: post
 title: "Learning PostgreSQL with NASA's Cassini Data: A Curious Moon"
+exceprt: ""
 categories: articles
 tags: [postgresql, sql, nasa, cassini, enceladus, data-analysis]
 share: true
@@ -8,9 +9,9 @@ comments: false
 modified:
 ---
 
-## The Setup
-
 I recently worked through _A Curious Moon_ by Rob Conery, a PostgreSQL tutorial with a twist: instead of contrived examples, you analyse real data from NASA's Cassini spacecraft mission to Saturn's moon Enceladus. Here are the features and concepts that stood out.
+
+## The Setup
 
 Enceladus is one of the most scientifically interesting moons in our solar system -- water geysers erupt from its south pole, hinting at a subsurface ocean. The Cassini spacecraft flew past it 23 times between 2005 and 2015, collecting gigabytes of instrument data. That data is publicly available from NASA's Planetary Data System, and this book has you import and analyse it with PostgreSQL.
 
