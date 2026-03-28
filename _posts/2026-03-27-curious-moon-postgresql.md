@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Learning PostgreSQL with NASA's Cassini Data: A Curious Moon"
-exceprt: ""
+excerpt: ""
 categories: articles
 tags: [postgresql, sql, nasa, cassini, enceladus, data-analysis]
 share: true
