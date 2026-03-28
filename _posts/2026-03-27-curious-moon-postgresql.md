@@ -8,8 +8,6 @@ comments: false
 modified:
 ---
 
-# Learning PostgreSQL with NASA's Cassini Data: A Curious Moon
-
 I recently worked through _A Curious Moon_ by Rob Conery, a PostgreSQL tutorial with a twist: instead of contrived examples, you analyse real data from NASA's Cassini spacecraft mission to Saturn's moon Enceladus. Here are the features and concepts that stood out.
 
 ## The Setup
