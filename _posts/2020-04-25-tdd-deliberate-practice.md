@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Notes on Test-Driven Development as Pragmatic Deliberate Practice"
+title: "TDD as Deliberate Practice"
 excerpt: ""
 categories: articles
 tags: [tdd, deliberate-practice]

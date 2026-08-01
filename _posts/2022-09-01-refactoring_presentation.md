@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "A Presentation on Test Driven Development"
+title: "The TDD Talk I Gave at a Lunch and Learn"
 excerpt: ""
 categories: articles
 tags: [presentation, tdd]

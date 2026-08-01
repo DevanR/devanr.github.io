@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Understanding Django's Unit Test Process with Multiple Databases"
+title: "What Django Actually Does When You Run manage.py test"
 excerpt: ""
 categories: articles
 tags: [presentation, tdd]

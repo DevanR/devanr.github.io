@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Grokking Codebases quickly"
+title: "Getting Up to Speed on Code Nobody Documented"
 excerpt: ""
 categories: articles
 tags: [notes, visualisation]

@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Detecting Duplicate Django Tests"
+title: "Finding the Tests That Test Nothing New"
 excerpt: ""
 categories: articles
 tags: [notes, django, tdd, script]

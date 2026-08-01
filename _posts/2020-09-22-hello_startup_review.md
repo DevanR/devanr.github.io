@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Book Review: Hello Startup"
+title: "What Hello Startup Gets Right About Picking a Stack"
 excerpt: ""
 categories: articles
 tags: [notes, startup]

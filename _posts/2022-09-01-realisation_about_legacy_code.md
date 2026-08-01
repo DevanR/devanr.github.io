@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "A Moment of Enlightenment"
+title: "Everyone Thinks Their Codebase Is Horrible"
 excerpt: ""
 categories: articles
 tags: [notes, legacy-code]

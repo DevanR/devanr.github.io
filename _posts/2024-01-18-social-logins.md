@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Django Login: Embracing Third-Party Solutions"
+title: "Don't Write Your Own Login"
 excerpt: ""
 categories: articles
 tags: [survey, django]

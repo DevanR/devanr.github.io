@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Setting Up a ProxMox Server with Immich and a Removable SATA Drive"
+title: "Self-Hosting My Photos on a Drive I Can Pull Out"
 excerpt: ""
 categories: articles
 tags: [proxmox, immich]
@@ -9,8 +9,6 @@ share: true
 comments: false
 modified:
 ---
-
-# Setting Up a ProxMox Server with Immich and a Removable SATA Drive
 
 In this guide, I'll walk through the complete process of setting up a Dell PowerEdge R410 as a ProxMox server with a removable SATA drive for a self-hosted Immich photo and video backup solution. This setup allows me to easily remove and back up the media disk whenever needed.
 

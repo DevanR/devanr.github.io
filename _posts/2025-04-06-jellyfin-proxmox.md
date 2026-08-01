@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Setting Up qBittorrent with VPN Integration on Ubuntu Server"
+title: "Torrenting Through a VPN on a Home Server"
 excerpt: ""
 categories: articles
 tags: [qbittorrent, ubuntu, vpn, jellyfin, media-server]
@@ -8,8 +8,6 @@ share: true
 comments: false
 modified:
 ---
-
-# Setting Up qBittorrent with VPN Integration on Ubuntu Server
 
 Setting up a torrent client on your home server can significantly enhance your media server setup, allowing you to automate downloads directly to your media library. This guide will walk you through setting up qBittorrent with VPN integration on an Ubuntu server, with specific focus on making it work with Jellyfin.
 
