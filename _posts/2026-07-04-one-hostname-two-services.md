@@ -6,7 +6,7 @@ categories: articles
 tags: [load-balancing, cloud-run, gcp, architecture, cors, websockets]
 comments: false
 share: true
-modified:
+modified: 2026-09-24
 series: "Building it dark"
 series_part: 2
 ---
@@ -48,6 +48,15 @@ day of find-and-replace with a bad failure mode: the routes you miss return 404
 through the load balancer and 200 when you test the service directly.
 
 ## Price two: the health check must *not* move
+
+> **Update, September 2026.** Half of the reasoning in this section was wrong.
+> When I went back to correct a config comment, I checked what actually calls
+> the health endpoint. The platform's startup probe on this service is a plain
+> TCP check on the port, and there is no liveness probe, so the probe never
+> touched health and a prefix wouldn't have broken it. The deploy smoke test
+> does call health directly, on the new revision's own URL, so that half
+> stands. Health has since started answering on both the prefixed and
+> unprefixed paths. The general rule at the end of this section still holds.
 
 This is the one I'd want someone to tell me before I started.
 
